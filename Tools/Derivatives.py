@@ -1,0 +1,787 @@
+import numpy as np
+from scipy.sparse import diags
+import networkx as nx
+from scipy.sparse import csr_matrix, lil_matrix
+from joblib import Parallel, delayed
+
+class ApproximateDerivatives:
+    def __init__(self, function, derivative_method, perturbation):
+        """
+        Derivative Approximation using Finite Difference methods.
+        Input: 
+        function : function to be derivated
+        derivative_method : differential method to use (exact, forward, backward, central)
+        perturbation : small perturbation for finite difference
+        """
+        self.f = function
+        self.derivative_method = derivative_method
+        self.perturbation = perturbation
+            
+    def hessian(self,x, grad):
+        n = len(x)
+        H = np.zeros((n, n))  # Matrice Hessiana
+        
+        match self.derivative_method:
+            case "forward":
+                for i in range(n):
+                    for j in range(n):
+                        x_fwd_i = np.copy(x)
+                        x_fwd_j = np.copy(x)
+                        x_fwd_ij = np.copy(x)
+                        
+                        x_fwd_i[i] += self.perturbation
+                        x_fwd_j[j] += self.perturbation
+                        x_fwd_ij[i] += self.perturbation
+                        x_fwd_ij[j] += self.perturbation
+                        
+                        if i == j:
+                            H[i, j] = (self.f(x_fwd_i) - 2 * self.f(x) + 
+                                       self.f(x - self.perturbation * np.eye(n)[i])) / (self.perturbation ** 2)
+                        else:
+                            H[i, j] = (self.f(x_fwd_ij) - self.f(x_fwd_i) - 
+                                       self.f(x_fwd_j) + self.f(x)) / (self.perturbation ** 2)
+                return csr_matrix(H)
+
+            case "backward":
+                for i in range(n):
+                    for j in range(n):
+                        x_bwd_i = np.copy(x)
+                        x_bwd_j = np.copy(x)
+                        x_bwd_ij = np.copy(x)
+                        
+                        x_bwd_i[i] -= self.perturbation
+                        x_bwd_j[j] -= self.perturbation
+                        x_bwd_ij[i] -= self.perturbation
+                        x_bwd_ij[j] -= self.perturbation
+                        
+                        if i == j:
+                            H[i, j] = (self.f(x_bwd_i) - 2 * self.f(x) + 
+                                       self.f(x + self.perturbation * np.eye(n)[i])) / (self.perturbation ** 2)
+                        else:
+                            H[i, j] = (self.f(x) - self.f(x_bwd_i) - self.f(x_bwd_j) + 
+                                       self.f(x_bwd_ij)) / (self.perturbation ** 2)
+                return csr_matrix(H)
+
+            case "central":
+                for i in range(n):
+                    for j in range(n):
+                        x_fwd_i = np.copy(x)
+                        x_bwd_i = np.copy(x)
+                        x_fwd_j = np.copy(x)
+                        x_bwd_j = np.copy(x)
+                        x_fwd_ij = np.copy(x)
+                        x_bwd_ij = np.copy(x)
+
+                        x_fwd_i[i] += self.perturbation
+                        x_bwd_i[i] -= self.perturbation
+                        x_fwd_j[j] += self.perturbation
+                        x_bwd_j[j] -= self.perturbation
+                        x_fwd_ij[i] += self.perturbation
+                        x_fwd_ij[j] += self.perturbation
+                        x_bwd_ij[i] -= self.perturbation
+                        x_bwd_ij[j] -= self.perturbation
+                        
+                        if i == j:
+                            H[i, j] = (self.f(x_fwd_i) - 2 * self.f(x) + self.f(x_bwd_i)) / (self.perturbation ** 2)
+                        else:
+                            H[i, j] = (self.f(x_fwd_ij) - self.f(x_fwd_i) - self.f(x_fwd_j) + 2 * self.f(x) - 
+                                       self.f(x_bwd_i) - self.f(x_bwd_j) + self.f(x_bwd_ij)) / (2 * self.perturbation ** 2)
+                return csr_matrix(H)
+    
+
+class SparseApproximativeDerivatives(object):
+    """This class computes derivatives exploiting sparsity of matrices"""
+    def __init__(self,f,method,h):
+        self.f = f
+        self.method = method
+        self.partial_derivative = self.set_partial_derivative()
+        self.h = h
+    
+    def set_partial_derivative(self):
+        match self.method:
+            case "forward":
+                return self.fwd_partial
+            case "backward":
+                return self.bwd_partial
+            case "central":
+                return self.cntrl_partial
+
+    def fwd_partial(self, x, i, h):
+        x_plus = np.copy(x)
+        x_plus[i] += h
+        return (self.f(x_plus) - self.f(x)) / h
+
+    def bwd_partial(self, x, i, h):
+        x_minus = np.copy(x)
+        x_minus[i] -= h
+        return (self.f(x) - self.f(x_minus)) / h  # Backward difference
+    
+    def cntrl_partial(self, x, i, h):
+        x_plus = np.copy(x)
+        x_minus = np.copy(x)
+        x_plus[i] += h
+        x_minus[i] -= h
+        return (self.f(x_plus) - self.f(x_minus)) / (2 * h) 
+
+
+    def approximate_gradient_parallel(self, x, n_jobs=-1):
+        """
+        Approximate the gradient of a scalar function f at point x using finite differences.
+        Optimized for large-scale problems (n ≈ 10⁵).
+
+        Parameters:
+        x (np.ndarray): The point at which to approximate the gradient.
+        h (float): The step size for finite differences.
+        method (str): Finite difference method ('forward', 'backward', 'centered').
+        n_jobs (int): Number of parallel jobs for gradient computation. Use -1 for all cores.
+
+        Returns:
+        np.ndarray: The approximated gradient.
+        """
+        n = len(x)
+
+        # Parallelize the gradient computation
+        grad = Parallel(n_jobs=n_jobs)(delayed(self.partial_derivative)(x, i, self.h) for i in range(n))
+
+        return np.array(grad)
+
+    def hessian_vector_product(self, x, v, grad):
+        """
+        Approximate the Hessian-vector product (H @ v) using finite differences.
+
+        Parameters:
+        f (callable): The function whose Hessian we want to approximate.
+        x (np.ndarray): Input point (n-dimensional vector).
+        v (np.ndarray): Vector to multiply with the Hessian (same shape as x).
+        h (float): Step size for finite differences.
+
+        Returns:
+        np.ndarray: Approximated Hessian-vector product (Hv).
+        """
+
+        match self.method:
+            case "forward":
+                x_plus = x + self.h * v
+                grad_x_plus = self.approximate_gradient_parallel(x_plus)
+                Hv = (grad_x_plus - grad) / self.h
+            case "backward":
+                x_minus = x - self.h * v
+                grad_x_minus = self.approximate_gradient_parallel(x_minus)
+                Hv = (grad -  grad_x_minus) / self.h
+            case "central":
+                x_plus = x + self.h * v
+                x_minus = x - self.h * v
+                grad_x_plus = self.approximate_gradient_parallel(x_plus)
+                grad_x_minus = self.approximate_gradient_parallel(x_minus)
+                Hv = (grad_x_plus - grad_x_minus) / (2 * self.h)
+        return Hv
+
+    def hessian_approx_extendedros(self, x, grad):
+        """
+        Approximate the Hessian of a scalar function f at point x using finite differences
+        and a two-coloring technique, storing the result in a sparse matrix.
+
+        Optimized for large-scale problems (n ≈ 10⁵).
+
+        Parameters:
+        x (np.ndarray): The point at which to approximate the Hessian.
+        grad (np.ndarray): The gradient at x.
+        h (float): The step size for finite differences.
+        method (str): Finite difference method ('forward', 'backward', 'centered').
+
+        Returns:
+        scipy.sparse.csr_matrix: The approximated Hessian (stored as a sparse matrix).
+        """
+        n = len(x)
+
+        # Define coloring scheme (even and odd indices)
+        even_indices = np.arange(0, n, 2)
+        odd_indices = np.arange(1, n, 2)
+
+        # Precompute non-zero indices and values for the sparse matrix
+        rows, cols, data = [], [], []
+
+        match self.method:
+            case 'forward':
+                # Perturb even indices
+                x_perturbed_forward_even = x.copy()
+                x_perturbed_forward_even[even_indices] += self.h
+                grad_perturbed_forward_even = self.approximate_gradient_parallel(x_perturbed_forward_even)
+
+                # Perturb odd indices
+                x_perturbed_forward_odd = x.copy()
+                x_perturbed_forward_odd[odd_indices] += self.h
+                grad_perturbed_forward_odd = self.approximate_gradient_parallel(x_perturbed_forward_odd)
+
+                # Diagonal elements (even indices)
+                rows.extend(even_indices)
+                cols.extend(even_indices)
+                data.extend((grad_perturbed_forward_even[even_indices] - grad[even_indices]) / self.h)
+
+                # Diagonal elements (odd indices)
+                rows.extend(odd_indices)
+                cols.extend(odd_indices)
+                data.extend((grad_perturbed_forward_odd[odd_indices] - grad[odd_indices]) / self.h)
+
+                # Off-diagonal elements (even and odd pairs)
+                valid_super_diag = even_indices[even_indices + 1 < n]  # Ensure i+1 is in bounds
+                off_diag_values = (grad_perturbed_forward_even[valid_super_diag + 1] - grad[valid_super_diag + 1]) / self.h
+
+            case 'backward':
+                # Perturb even indices in backward direction
+                x_perturbed_backward_even = x.copy()
+                x_perturbed_backward_even[even_indices] -= self.h
+                grad_perturbed_backward_even = self.approximate_gradient_parallel(x_perturbed_backward_even)
+
+                # Perturb odd indices in backward direction
+                x_perturbed_backward_odd = x.copy()
+                x_perturbed_backward_odd[odd_indices] -= self.h
+                grad_perturbed_backward_odd = self.approximate_gradient_parallel(x_perturbed_backward_odd)
+
+                # Diagonal elements (even indices)
+                rows.extend(even_indices)
+                cols.extend(even_indices)
+                data.extend((grad[even_indices] - grad_perturbed_backward_even[even_indices]) / self.h)
+
+                # Diagonal elements (odd indices)
+                rows.extend(odd_indices)
+                cols.extend(odd_indices)
+                data.extend((grad[odd_indices] - grad_perturbed_backward_odd[odd_indices]) / self.h)
+
+                # Off-diagonal elements (even and odd pairs)
+                valid_super_diag = even_indices[even_indices + 1 < n]  # Ensure i+1 is in bounds
+                off_diag_values = (grad[valid_super_diag + 1] - grad_perturbed_backward_even[valid_super_diag + 1]) / self.h
+
+            case 'centered':
+                # Perturb even indices
+                x_perturbed_forward_even = x.copy()
+                x_perturbed_forward_even[even_indices] += self.h
+                grad_perturbed_forward_even = self.approximate_gradient_parallel(x_perturbed_forward_even)
+
+                # Perturb odd indices
+                x_perturbed_forward_odd = x.copy()
+                x_perturbed_forward_odd[odd_indices] += self.h
+                grad_perturbed_forward_odd = self.approximate_gradient_parallel(x_perturbed_forward_odd)
+
+                # Perturb even indices in backward direction
+                x_perturbed_backward_even = x.copy()
+                x_perturbed_backward_even[even_indices] -= self.h
+                grad_perturbed_backward_even = self.approximate_gradient_parallel(x_perturbed_backward_even)
+
+                # Perturb odd indices in backward direction
+                x_perturbed_backward_odd = x.copy()
+                x_perturbed_backward_odd[odd_indices] -= self.h
+                grad_perturbed_backward_odd = self.approximate_gradient_parallel(x_perturbed_backward_odd)
+
+                # Diagonal elements (even indices)
+                rows.extend(even_indices)
+                cols.extend(even_indices)
+                data.extend((grad_perturbed_forward_even[even_indices] - grad_perturbed_backward_even[even_indices]) / (2 * self.h))
+
+                # Diagonal elements (odd indices)
+                rows.extend(odd_indices)
+                cols.extend(odd_indices)
+                data.extend((grad_perturbed_forward_odd[odd_indices] - grad_perturbed_backward_odd[odd_indices]) / (2 * self.h))
+
+                # Off-diagonal elements (even and odd pairs)
+                valid_super_diag = even_indices[even_indices + 1 < n]  # Ensure i+1 is in bounds
+                off_diag_values = (grad_perturbed_forward_even[valid_super_diag + 1] - grad_perturbed_backward_even[valid_super_diag + 1]) / (2 * self.h)
+
+        # Upper triangular part
+        rows.extend(valid_super_diag)
+        cols.extend(valid_super_diag + 1)
+        data.extend(off_diag_values)
+
+        # Lower triangular part (symmetric)
+        rows.extend(valid_super_diag + 1)
+        cols.extend(valid_super_diag)
+        data.extend(off_diag_values)
+
+        # Construct the sparse matrix directly in CSR format
+        hessian = csr_matrix((data, (rows, cols)), shape=(n, n))
+
+        return hessian
+    
+    def hessian_approx_tridiagonal(self,x,grad):
+        """
+        Approximate the Hessian of a scalar function f at point x
+        assuming a TRIDIAGONAL structure (diagonal + first super/subdiagonal).
+        Exploits coloring to minimize function evaluations.
+        Optimized for large-scale problems (n ≈ 10⁵).
+
+        Parameters:
+        f (callable): The scalar function.
+        x (np.ndarray): The point at which to approximate the Hessian.
+        grad (np.ndarray): The gradient at x.
+        h (float): The step size for finite differences.
+
+        Returns:
+        scipy.sparse.csr_matrix: The approximated Hessian (stored as a sparse matrix).
+        """
+        n = len(x)
+
+        # Use two-coloring (even and odd indices)
+        even_indices = np.arange(0, n, 2)
+        odd_indices = np.arange(1, n, 2)
+
+        # Initialize arrays to store diagonal and off-diagonal elements
+        diagonal = np.zeros(n)
+        super_diagonal = np.zeros(n - 1)
+
+        match self.method:
+            case 'forward':
+                # Perturb even indices in forward direction and compute gradient
+                x_perturbed_forward_even = x.copy()
+                x_perturbed_forward_even[even_indices] += self.h
+                grad_perturbed_forward_even = self.approximate_gradient_parallel(x_perturbed_forward_even)
+
+                # Perturb odd indices in forward direction and compute gradient
+                x_perturbed_forward_odd = x.copy()
+                x_perturbed_forward_odd[odd_indices] += self.h
+                grad_perturbed_forward_odd = self.approximate_gradient_parallel(x_perturbed_forward_odd)
+
+                # Compute diagonal and super-diagonal for even indices using forward difference
+                diagonal[even_indices] = (grad_perturbed_forward_even[even_indices] - grad[even_indices]) / self.h
+                valid_super_even = even_indices[even_indices < n - 1]  # Ensure i+1 is in bounds
+                super_diagonal[valid_super_even] = (grad_perturbed_forward_even[valid_super_even + 1] - grad[valid_super_even + 1]) / self.h
+
+                # Compute diagonal and super-diagonal for odd indices using forward difference
+                diagonal[odd_indices] = (grad_perturbed_forward_odd[odd_indices] - grad[odd_indices]) / self.h
+                valid_super_odd = odd_indices[odd_indices < n - 1]  # Ensure i+1 is in bounds
+                super_diagonal[valid_super_odd] = (grad_perturbed_forward_odd[valid_super_odd + 1] - grad[valid_super_odd + 1]) / self.h
+
+            case 'backward':
+                # Perturb even indices in backward direction and compute gradient
+                x_perturbed_backward_even = x.copy()
+                x_perturbed_backward_even[even_indices] -= self.h
+                grad_perturbed_backward_even = self.approximate_gradient_parallel(x_perturbed_backward_even)
+
+                # Perturb odd indices in backward direction and compute gradient
+                x_perturbed_backward_odd = x.copy()
+                x_perturbed_backward_odd[odd_indices] -= self.h
+                grad_perturbed_backward_odd = self.approximate_gradient_parallel(x_perturbed_backward_odd)
+
+                # Compute diagonal and super-diagonal for even indices using backward difference
+                diagonal[even_indices] = (grad[even_indices] - grad_perturbed_backward_even[even_indices]) / self.h
+                valid_super_even = even_indices[even_indices < n - 1]  # Ensure i+1 is in bounds
+                super_diagonal[valid_super_even] = (grad[valid_super_even + 1] - grad_perturbed_backward_even[valid_super_even + 1]) / self.h
+
+                # Compute diagonal and super-diagonal for odd indices using backward difference
+                diagonal[odd_indices] = (grad[odd_indices] - grad_perturbed_backward_odd[odd_indices]) / self.h
+                valid_super_odd = odd_indices[odd_indices < n - 1]  # Ensure i+1 is in bounds
+                super_diagonal[valid_super_odd] = (grad[valid_super_odd + 1] - grad_perturbed_backward_odd[valid_super_odd + 1]) / self.h
+
+            case 'centered':
+                # Perturb even indices in forward direction and compute gradient
+                x_perturbed_forward_even = x.copy()
+                x_perturbed_forward_even[even_indices] += self.h
+                grad_perturbed_forward_even = self.approximate_gradient_parallel(x_perturbed_forward_even)
+
+                # Perturb odd indices in forward direction and compute gradient
+                x_perturbed_forward_odd = x.copy()
+                x_perturbed_forward_odd[odd_indices] += self.h
+                grad_perturbed_forward_odd = self.approximate_gradient_parallel(x_perturbed_forward_odd)
+
+                # Perturb even indices in backward direction and compute gradient
+                x_perturbed_backward_even = x.copy()
+                x_perturbed_backward_even[even_indices] -= self.h
+                grad_perturbed_backward_even = self.approximate_gradient_parallel(x_perturbed_backward_even)
+
+                # Perturb odd indices in backward direction and compute gradient
+                x_perturbed_backward_odd = x.copy()
+                x_perturbed_backward_odd[odd_indices] -= self.h
+                grad_perturbed_backward_odd = self.approximate_gradient_parallel(x_perturbed_backward_odd)
+
+                # Compute diagonal and super-diagonal for even indices using centered difference
+                diagonal[even_indices] = (grad_perturbed_forward_even[even_indices] - grad_perturbed_backward_even[even_indices]) / (2 * self.h)
+                valid_super_even = even_indices[even_indices < n - 1]  # Ensure i+1 is in bounds
+                super_diagonal[valid_super_even] = (grad_perturbed_forward_even[valid_super_even + 1] - grad_perturbed_backward_even[valid_super_even + 1]) / (2 * self.h)
+
+                # Compute diagonal and super-diagonal for odd indices using centered difference
+                diagonal[odd_indices] = (grad_perturbed_forward_odd[odd_indices] - grad_perturbed_backward_odd[odd_indices]) / (2 * self.h)
+                valid_super_odd = odd_indices[odd_indices < n - 1]  # Ensure i+1 is in bounds
+                super_diagonal[valid_super_odd] = (grad_perturbed_forward_odd[valid_super_odd + 1] - grad_perturbed_backward_odd[valid_super_odd + 1]) / (2 * self.h)
+
+        # Construct the sparse Hessian matrix
+        hessian = diags([super_diagonal, diagonal, super_diagonal], offsets=[-1, 0, 1], shape=(n, n), format="csr")
+
+        return hessian.tocsr()
+    
+class ExactDerivatives(object):
+    """This class computes exact derivatives of a given function in a given point"""
+    def __init__(self):
+        pass
+    
+    def extended_rosenbrock(self,x, hessian= True): 
+        """
+        Compute the exact value, gradient and hessian of the extended rosenbrock function at point x
+        Input:
+        x : point to evalutate the gradient
+        Returns:
+        grad : value of the gradient in x
+        """
+        
+        n = len(x)
+        assert n % 2 == 0, "Dimension must be even."
+        
+        f = np.zeros(n)  
+        J = lil_matrix((n,n))  # Sparse Jacobian
+        H = lil_matrix((n,n))  # Jacobian matrix
+        
+        for k in range(n):
+            if k % 2 == 0:  # Odd indices (k+1 in 1-based indexing)
+                f[k] = 10 * (x[k]**2 - x[k+1])
+                J[k, k] = 20 * x[k]  # df_k/dx_k
+                J[k, k+1] = -10  # df_k/dx_k+1
+            else: 
+                f[k] = x[k-1] - 1
+                J[k, k-1] = 1  # df_k/dx_k-1
+
+        if hessian == True:
+            # Compute Hessian as J^T J + sum(f_k * Hessian of f_k)
+            H += J.T @ J
+            for k in range(n):
+                #non-linearity corrections
+                if k % 2 == 0:
+                    H[k, k] += 20 * f[k]
+        
+        J = J.tocsr()
+        grad = J.T @ f
+
+        if hessian == False:
+            return grad
+        
+        return grad, csr_matrix(H)
+    
+
+    def discrete_boundary_value_problem(self,x,hessian=True):
+        """
+        Compute the exact value, gradient, and Hessian of the discrete boundary value problem function at point x.
+
+        F(x) = sum over i=1..n of [2 x_i - x_{i-1} - x_{i+1} + h^2 ( x_i + i*h + 1 )^(3/2)]^2
+
+        Boundary conditions: x_0 = x_{n+1} = 0
+        step size h = 1 / (n+1)
+        """
+
+        n = len(x)
+        assert n >= 2, "Dimension must be at least 2."
+
+        h = 1.0 / (n + 1)
+
+        f = np.zeros(n)
+        J = lil_matrix((n, n))
+        H = lil_matrix((n, n))
+
+        for i in range(n):
+            # term non lineare
+            nonlinear_base = x[i] + (i + 1)*h + 1.0
+            f[i] = 2.0 * x[i]
+
+            # x_{i-1} esiste se i>0, altrimenti e` 0
+            if i > 0:
+                f[i] -= x[i-1]
+            else:
+                # i=0 => x_{-1}=0
+                pass
+
+            if i < n - 1:
+                f[i] -= x[i+1]
+            else:
+                # i=n-1 => x_{n}=0 in definizione
+                pass
+
+            # Aggiunta parte h^2 (x_i + (i+1)h + 1)^(3/2)
+            f[i] += h**2 * (nonlinear_base**(3.0/2.0))
+
+        for i in range(n):
+            nonlinear_base = x[i] + (i + 1)*h + 1.0
+            d_nonlinear = (3.0/2.0)* (h**2) * (nonlinear_base**(1.0/2.0))
+            J[i,i] = 2.0 + d_nonlinear
+
+            if i > 0:
+                # df_i/dx_{i-1} = -1
+                J[i, i-1] = -1.0
+            if i < n - 1:
+                # df_i/dx_{i+1} = -1
+                J[i, i+1] = -1.0
+
+        if hessian == True:
+            H = J.T @ J
+            for i in range(n):
+                nonlinear_base = x[i] + (i+1)*h + 1.0
+                #  d/dx_i( (x[i]+...)^(3/2) ) = (3/2)( ... )^(1/2)
+                # second derivative => d^2/d x_i^2 = (3/2)(1/2)( ... )^(-1/2) = (3/4)( ... )^(-1/2)
+
+                second_derivative = (3.0/4.0)* (h**2) * (nonlinear_base**(-1.0/2.0))
+                H[i,i] += f[i] * second_derivative
+
+        J = J.tocsr()
+        grad = J.T @ f
+
+        if hessian == False:
+            return grad
+
+        return grad, csr_matrix(H)
+    
+    
+    def Broyden_tridiagonal_function(self,x,hessian=True):
+        """
+        Calcola il valore (F_x), il gradiente (grad) e l'Hessiano (H) della funzione
+        
+            F(x) = 0.5 * sum_{k=1}^n [f_k(x)]^2
+            f_k(x) = (3 - 2*x[k]) * x[k] + 1 - x[k-1] - x[k+1],
+    
+        soggetto alle condizioni al contorno x_0 = x_{n+1} = 0.
+        
+        Parametri
+        ----------
+        x : array di forma (n,)
+        Ritorna
+        -------
+        F_x : float
+            Il valore di F in x
+        grad : array di forma (n,)
+            Il gradiente di F in x
+        H : array di forma (n, n)
+            La matrice Hessiana di F in x
+        """
+        
+        n = len(x)
+        assert n >= 2, "La dimensione n deve essere almeno 2."
+        
+        f = np.zeros(n)
+        for i in range(n):
+            x_im1 = x[i-1] if i > 0 else 0.0
+            x_ip1 = x[i+1] if i < n-1 else 0.0
+            
+            f[i] = (3.0 - 2.0*x[i])*x[i] + 1.0 - x_im1 - x_ip1
+
+        J = lil_matrix((n, n))
+        for i in range(n):
+            if i > 0:
+                J[i, i-1] = -1.0
+            if i < n-1:
+                J[i, i+1] = -1.0
+            
+            J[i, i] = (3.0 - 4.0*x[i])
+        
+        J = J.tocsr()
+        grad = J.T @ f
+        
+        if hessian == True:
+            H = J.T @ J
+            
+            # Correzione diagonale
+            for i in range(n):
+                H[i, i] += f[i] * (-4.0)
+        else:
+            return grad
+        
+        return grad, csr_matrix(H)
+    
+    def exact_rosenbrock(self, x,hessian=True):
+        """ Compute the gradient and hessian of the Rosenbrock function. """
+            
+        n = len(x)
+        grad = np.zeros_like(x)
+        for i in range(len(x) - 1):
+            grad[i] += -400 * x[i] * (x[i+1] - x[i]**2) - 2 * (1 - x[i])
+            grad[i+1] += 200 * (x[i+1] - x[i]**2)
+    
+        if hessian == True:
+            H = np.zeros((n, n))
+            for i in range(n - 1):
+                H[i, i] += -400 * (x[i+1] - 3*x[i]**2) + 2
+                H[i, i+1] += -400 * x[i]
+                H[i+1, i] += -400 * x[i]
+                H[i+1, i+1] += 200
+        else:
+            return grad
+        
+        return grad, csr_matrix(H)
+    
+    def rosenbrock_hessian_vector_product(self, x, v, grad):
+        """
+        Compute the product of the Rosenbrock function's Hessian with a vector v,
+        without explicitly forming the Hessian matrix.
+
+        Parameters:
+        x (np.ndarray): Input point (n-dimensional vector).
+        v (np.ndarray): Vector to multiply with Hessian (same shape as x).
+
+        Returns:
+        np.ndarray: The result of H @ v.
+        """
+        n = len(x)
+        Hv = np.zeros(n)
+
+        for i in range(n - 1):
+            Hv[i] += (-400 * (x[i+1] - 3*x[i]**2) + 2) * v[i]  # Main diagonal contribution
+            Hv[i] += -400 * x[i] * v[i+1]  # Super-diagonal contribution
+            Hv[i+1] += -400 * x[i] * v[i]  # Sub-diagonal contribution
+            Hv[i+1] += 200 * v[i+1]  # Lower diagonal contribution
+
+        return Hv
+    
+    def dbv_hessian_vector_product(x, v, grad):
+        """
+        Compute the Hessian-vector product of the discrete boundary value problem function at point x.
+
+        F(x) = sum over i=1..n of [2 x_i - x_{i-1} - x_{i+1} + h^2 ( x_i + i*h + 1 )^(3/2)]^2
+
+        Boundary conditions: x_0 = x_{n+1} = 0
+        step size h = 1 / (n+1)
+        """
+        n = len(x)
+        assert n >= 2, "Dimension must be at least 2."
+        assert len(v) == n, "Vector v must have the same dimension as x."
+
+        # Step size
+        h = 1.0 / (n + 1)
+
+        # Residuals f_i
+        f = np.zeros(n)
+        # Jacobian J of f wrt x
+        J = lil_matrix((n, n))
+        
+        # Compute residuals f and Jacobian J
+        for i in range(n):
+            nonlinear_base = x[i] + (i + 1) * h + 1.0
+            f[i] = 2.0 * x[i]
+
+            if i > 0:
+                f[i] -= x[i - 1]
+            if i < n - 1:
+                f[i] -= x[i + 1]
+
+            f[i] += h**2 * (nonlinear_base ** (3.0 / 2.0))
+
+            # Jacobian entries
+            d_nonlinear = (3.0 / 2.0) * (h**2) * (nonlinear_base ** (1.0 / 2.0))
+            J[i, i] = 2.0 + d_nonlinear
+
+            if i > 0:
+                J[i, i - 1] = -1.0
+            if i < n - 1:
+                J[i, i + 1] = -1.0
+        
+        J = J.tocsr()
+
+        # Hessian-vector product: Hv = J^T (J v) + correction term
+        Jv = J @ v  # Matrix-vector product J * v
+        Hv = J.T @ Jv  # Matrix-vector product J^T * (J * v)
+
+        # Add the correction term for the Hessian-vector product
+        for i in range(n):
+            nonlinear_base = x[i] + (i + 1) * h + 1.0
+            second_derivative = (3.0 / 4.0) * (h**2) * (nonlinear_base ** (-1.0 / 2.0))
+            Hv[i] += f[i] * second_derivative * v[i]
+
+        return Hv
+    
+    def extended_rosenbrock_hessian_vector_product(x, v, grad):
+        """
+        Compute the Hessian-vector product for the extended Rosenbrock function at point x using sparse matrices.
+
+        Input:
+        x : point to evaluate the Hessian-vector product (numpy array of shape (n,))
+        v : vector to multiply with the Hessian (numpy array of shape (n,))
+        
+        Returns:
+        Hv : Hessian-vector product (numpy array of shape (n,))
+        """
+        n = len(x)
+        assert n % 2 == 0, "Dimension must be even."
+        assert len(v) == n, "Vector v must have the same dimension as x."
+
+        # Initialize sparse Jacobian in List of Lists (LIL) format
+        J = lil_matrix((n, n))
+
+        # Compute residuals f and Jacobian J
+        f = np.zeros(n)
+        for k in range(n):
+            if k % 2 == 0:  # Odd indices (k+1 in 1-based indexing)
+                f[k] = 10 * (x[k]**2 - x[k + 1])
+                J[k, k] = 20 * x[k]  # df_k/dx_k
+                J[k, k + 1] = -10  # df_k/dx_{k+1}
+            else:  # Even indices
+                f[k] = x[k - 1] - 1
+                J[k, k - 1] = 1  # df_k/dx_{k-1}
+
+        # Convert Jacobian to Compressed Sparse Row (CSR) format for efficient operations
+        J = J.tocsr()
+
+        # Compute Hessian-vector product: Hv = J^T (J v) + correction term
+        Jv = J @ v  # Matrix-vector product J * v
+        Hv = J.T @ Jv  # Matrix-vector product J^T * (J * v)
+
+        # Add the correction term for the Hessian-vector product
+        for k in range(0, n, 2):  # Only odd indices (k % 2 == 0)
+            Hv[k] += 20 * f[k] * v[k]  # Correction term: 20 * f_k * v_k
+
+        return Hv
+    
+    def broyden_hessian_vector_product(x, v, grad):
+        """
+        Compute the Hessian-vector product of the Broyden tridiagonal function at point x.
+
+        F(x) = 0.5 * sum_{k=1}^n [f_k(x)]^2
+
+        where
+
+            f_k(x) = (3 - 2*x[k]) * x[k] + 1 - x[k-1] - x[k+1],
+
+        subject to boundary conditions x_0 = x_{n+1} = 0.
+
+        Parameters
+        ----------
+        x : array of shape (n,)
+            The vector of unknowns x_1, ..., x_n (Python: x[0], ..., x[n-1])
+        v : array of shape (n,)
+            The vector for the Hessian-vector product
+
+        Returns
+        -------
+        Hv : array of shape (n,)
+            The Hessian-vector product H(x) * v
+        """
+        n = len(x)
+        assert n >= 2, "Dimension n must be at least 2."
+        assert len(v) == n, "Vector v must have the same dimension as x."
+
+        # 1) Compute the residuals f_i(x)
+        f = np.zeros(n)
+        for i in range(n):
+            # x_{i-1} => x[-1] = 0 if i=0
+            x_im1 = x[i - 1] if i > 0 else 0.0
+            # x_{i+1} => x[n] = 0 if i=n-1
+            x_ip1 = x[i + 1] if i < n - 1 else 0.0
+
+            # (3 - 2*x[i]) * x[i] + 1 - x[i-1] - x[i+1]
+            f[i] = (3.0 - 2.0 * x[i]) * x[i] + 1.0 - x_im1 - x_ip1
+
+        # 2) Compute the Jacobian matrix J of f (n x n)
+        J = lil_matrix((n, n))
+        for i in range(n):
+            # x_{i-1} => contribution -1
+            if i > 0:
+                J[i, i - 1] = -1.0
+            # x_{i+1} => contribution -1
+            if i < n - 1:
+                J[i, i + 1] = -1.0
+
+            # Derivative with respect to x[i] of (3 - 2*x[i]) * x[i] = 3 - 4*x[i]
+            J[i, i] = (3.0 - 4.0 * x[i])
+
+        J = J.tocsr()
+        # 3) Hessian-vector product: Hv = J^T (J v) + correction term
+        Jv = J @ v  # Matrix-vector product J * v
+        Hv = J.T @ Jv  # Matrix-vector product J^T * (J * v)
+
+        # Add the correction term for the Hessian-vector product
+        for i in range(n):
+            # Correction term: f[i] * (-4.0) * v[i]
+            Hv[i] += f[i] * (-4.0) * v[i]
+
+        return Hv
