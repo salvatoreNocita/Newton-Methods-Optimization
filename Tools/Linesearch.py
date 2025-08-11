@@ -17,7 +17,7 @@ class LineSearch(object):
     def Backtracking(self, xk: np.array, pk: np.array,gradf: np.array, alpha0: float, bt: int,
                      btmax: int, rho: float,c1: float,objective_function)-> float:
         alphak= alpha0
-        while self.ArmijoConditions_notmet(xk,alphak,pk,gradf,objective_function,c1) and bt<btmax:
+        while self.ArmijoConditions_notmet(xk,alphak,pk,gradf,c1,objective_function) and bt<btmax:
             alphak_1= rho*alphak
             alphak= alphak_1
             bt += 1

@@ -1,6 +1,6 @@
 import numpy as np
 import scipy as sci
-from scipy.sparse import lil_matrix
+import scipy.sparse as scis
 
 class Solvers(object):
     """ This class exploits Cholensky methods to support algorithms
@@ -18,13 +18,13 @@ class Solvers(object):
             OUTPUT:
             - L : np.ndarray -> Lower triangular matrix 
         """
-        if not sci.isspmatrix(A):                                   #Check ifa matrix is sparse
-            A = sci.csc_matrix(A)
-        elif not sci.isspmatrix_csc(A):
+        if not scis.isspmatrix(A):                                   #Check ifa matrix is sparse
+            A = scis.csc_matrix(A)
+        elif not scis.isspmatrix_csc(A):
             A = A.tocsc()                                           #We want to work in csc format
 
         n = A.shape[0]
-        L = lil_matrix((n,n))                                       #initialize empty matrix
+        L = scis.lil_matrix((n,n))                                       #initialize empty matrix
         eps = 1e-15                                                 #Tollerance
 
         for i in range(n):
@@ -58,13 +58,20 @@ class Solvers(object):
         return L.tocsr()
     
     def chol_Find_Pk(self,L: np.array,gradf: np.array) -> np.array:
-        forward_solving= sci.sparse.linalg.solve(L,-gradf)
-        backward_solving= sci.sparse.linalg.solve(L.T,forward_solving)
-        return backward_solving.flatten()
+        if scis.isspmatrix(L):
+            # Sparse triangular solves: preserve sparsity
+            y = sci.sparse.linalg.spsolve_triangular(L, -gradf, lower=True)
+            x = sci.sparse.linalg.spsolve_triangular(L.T, y, lower=False)
+            return x.flatten()
+        else:
+            # Dense Cholesky factor: use NumPy solves
+            y = np.linalg.solve(L, -gradf)
+            x = np.linalg.solve(L.T, y)
+            return x.flatten()
     
-    def CG_Find_pk(self,bk:np.array,gradf: np.array) -> np.array:
-        if self.precond == 'yes':
-            L = Solvers.ichol(bk,drop_tol=1e-4)
+    def CG_Find_pk(self,bk:np.array,gradf: np.array,precond: str='yes') -> np.array:
+        if precond == 'yes':
+            L = self.ichol(bk,drop_tol=1e-4)
 
             #We want to avoid to compute and store M=LL^-1 so We create a function that provides to 
             # the Linear operator istruction to how M^-1 (used for CG) shoul works)
@@ -84,10 +91,16 @@ class Solvers(object):
             print("CG do not converge")
 
         return pk
-    
-    def make_symmetric(self,Hessf: np.array,xk: np.array):
-        hessf= Hessf.copy()
-        if np.allclose(hessf,hessf.T, atol= 10e-8) == False:
-            return 0.5 * (hessf + hessf.T)
+
+    def make_symmetric(self, Hessf):
+        if scis.issparse(Hessf):
+            diff = (Hessf - Hessf.T).tocoo()                                    #(COO) format, (row_idx,col_idx,data)
+            if diff.data.size > 0 and not np.all(np.abs(diff.data) <= 1e-8):    #data.size = how many non null elements
+                return 0.5 * (Hessf + Hessf.T)
+            else:
+                return Hessf
         else:
-            return hessf
+            if not np.allclose(Hessf, Hessf.T, atol=1e-8):
+                return 0.5 * (Hessf + Hessf.T)
+            else:
+                return Hessf

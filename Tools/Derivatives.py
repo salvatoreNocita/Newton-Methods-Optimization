@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.sparse import diags
-import networkx as nx
 from scipy.sparse import csr_matrix, lil_matrix
+import networkx as nx
 from joblib import Parallel, delayed
 
 class ApproximateDerivatives:
@@ -17,7 +17,7 @@ class ApproximateDerivatives:
         self.derivative_method = derivative_method
         self.perturbation = perturbation
             
-    def hessian(self,x, grad):
+    def hessian(self,x):
         n = len(x)
         H = np.zeros((n, n))  # Matrice Hessiana
         

@@ -2,6 +2,7 @@ import numpy as np
 from Modified_Newton_Method import ModifiedNewtonMethod
 
 def main():
+    np.random.seed(26)
     x0 = np.random.rand(2)
     h = {'forward_difference': 1e-5, 'backward_difference': 1e-5, 'central_difference': 1e-6}
     NewtonBackTracking_ARG_f2= {'x0': x0,
@@ -9,13 +10,13 @@ def main():
                                 'btmax': 50,
                                 'rho': 0.5,
                                 'c1': 1e-4,
-                                'tolgrad': 1e-8,
+                                'tolgrad': 1e-2,
                                 'kmax': 1000,
                                 'function': 'rosenbrock',
                                 'solver_linear_system': 'cg',
-                                'H_correction_factor': 10,
+                                'H_correction_factor': 3,
                                 'precond': 'yes',
-                                'derivatives': 'exact',
+                                'derivatives': 'finite_differences',
                                 'derivative_method': 'forward',
                                 'perturbation': h['forward_difference']
                             }

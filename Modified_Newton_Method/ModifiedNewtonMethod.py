@@ -91,7 +91,10 @@ class ModifiedNewton(object):
         self.bt= 0
         self.x_seq= [x0]
         self.bt_seq= []
+        self.derivatives = derivatives
         
+        self.linesearch = LineSearch()
+        self.solvers = Solvers()
         self.exact_d = ExactDerivatives()
         self.finit_d = ApproximateDerivatives(self.objective_function,derivative_method, perturbation)
         self.sp_finit_d = SparseApproximativeDerivatives(self.objective_function, derivative_method,perturbation)
@@ -99,65 +102,101 @@ class ModifiedNewton(object):
     
     def H_is_positive_definite(self,hessf) -> np.array:
         try:
-            return sci.sparse.linalg.cholesky(hessf), hessf
+            import scipy.sparse as sp
+            if sp.issparse(hessf):
+                hessf = hessf.toarray()         #Converte in dense to apply cholesky (no sparse version available)
+        except Exception:
+            pass
+        try:
+            return np.linalg.cholesky(hessf), hessf
         except np.linalg.LinAlgError:
-            L, bk= self.Build_bk(hessf)
+            L, bk = self.Build_bk(hessf)
             return L, bk
                   
     def Build_bk(self,hessf: np.array) -> np.ndarray:
-        beta= 10e-3
-        diag_matrix= [hessf[i][i] for i in range(hessf.shape[0])]
-        if min(diag_matrix) > 0:
-            tau0= 0
-        else:
-            tau0= -min(diag_matrix) + beta 
-        tauk= tau0
-        bk= hessf + tauk* np.identity(hessf.shape[0])
+        beta = 1e-3
+        try:
+            import scipy.sparse as sp
+            if sp.issparse(hessf):
+                diag_elements = hessf.diagonal()
+                H = hessf.toarray()
+            else:
+                diag_elements = np.diag(hessf)
+                H = hessf
+        except Exception:
+            diag_elements = np.diag(hessf)
+            H = hessf
+        tau0 = 0 if np.min(diag_elements) > 0 else (-np.min(diag_elements) + beta)
+        tauk = tau0
+        bk = H + tauk * np.identity(H.shape[0])
         flag = False
         i = 0
-        while flag == False and i < self.kmax:
-            tauk_1= max(self.H_correction_factor*tauk,beta)
-            bk_1= bk + tauk_1*np.identity(bk.shape[0])
-            bk= bk_1
-            tauk= tauk_1
+        while not flag and i < self.kmax:
+            tauk_1 = max(self.H_correction_factor * tauk, beta)
+            bk = bk + tauk_1 * np.identity(bk.shape[0])
+            tauk = tauk_1
             try:
-                L= np.linalg.cholesky(bk)
-                flag= True
-
+                L = np.linalg.cholesky(bk)
+                flag = True
                 return L, bk
-            
             except np.linalg.LinAlgError:
-                pass
-                flag= False
+                flag = False
             i += 1
-        if flag == False:
-            print(f"Hessian can't be modified with {self.kmax}")
-            exit
+        raise np.linalg.LinAlgError(f"Hessian can't be modified with {self.kmax}")
 
     def compute_gradient_hessian(self, xk: np.array,derivatives: str):
         if derivatives == 'exact':
-            match self.function:
-                case 'extended_rosenbrock':
-                    return self.exact_d.extended_rosenbrock
-                case 'discrete_boundary_value_problem':
-                    return self.exact_d.discrete_boundary_value_problem
-                case 'broyden_tridiagonal_function':
-                    return self.exact_d.Broyden_tridiagonal_function
-                case 'rosenbrock':
-                    return self.exact_d.exact_rosenbrock
-                
+            if self.function == 'extended_rosenbrock':
+
+                def grad_fn(x):
+                    return self.exact_d.extended_rosenbrock(x, hessian=False)
+                def hess_fn(x):
+                    _, H = self.exact_d.extended_rosenbrock(x, hessian=True)
+                    return H.toarray() if hasattr(H, 'toarray') else np.asarray(H)
+                return grad_fn, hess_fn
+            
+            elif self.function == 'discrete_boundary_value_problem':
+                def grad_fn(x):
+                    return self.exact_d.discrete_boundary_value_problem(x, hessian=False)
+                def hess_fn(x):
+                    _, H = self.exact_d.discrete_boundary_value_problem(x, hessian=True)
+                    return H.toarray() if hasattr(H, 'toarray') else np.asarray(H)
+                return grad_fn, hess_fn
+            
+            elif self.function == 'broyden_tridiagonal_function':
+                def grad_fn(x):
+                    return self.exact_d.Broyden_tridiagonal_function(x, hessian=False)
+                def hess_fn(x):
+                    _, H = self.exact_d.Broyden_tridiagonal_function(x, hessian=True)
+                    return H.toarray() if hasattr(H, 'toarray') else np.asarray(H)
+                return grad_fn, hess_fn
+            
+            elif self.function == 'rosenbrock':
+                def grad_fn(x):
+                    return self.exact_d.exact_rosenbrock(x, hessian=False)
+                def hess_fn(x):
+                    _, H = self.exact_d.exact_rosenbrock(x, hessian=True)
+                    return H.toarray() if hasattr(H, 'toarray') else np.asarray(H)
+                return grad_fn, hess_fn
+            
+            else:
+                raise ValueError(f"Unknown function '{self.function}' for exact derivatives")
+            
         elif derivatives == 'finite_differences':
             grad = self.sp_finit_d.approximate_gradient_parallel
             if len(xk) < 10**3:
                 hessian = self.finit_d.hessian
-                return grad,hessian
+                return grad, hessian
+            
             else:
                 if self.function == 'extended_rosenbrock':
                     hessian = self.sp_finit_d.hessian_approx_extendedros
-                    return grad,hessian
-                else: 
+                else:
                     hessian = self.sp_finit_d.hessian_approx_tridiagonal
-                    return grad,hessian
+                return grad, hessian
+            
+        else:
+            raise ValueError("'derivatives' must be either 'exact' or 'finite_differences'")
         
     def Step(self,xk: np.array, alphak: float, pk: np.array) -> np.array:
         xk_1= xk+ alphak*pk
@@ -168,39 +207,35 @@ class ModifiedNewton(object):
         return self.k<self.kmax and np.linalg.norm(gradf)> self.tolgrad
 
     def Run(self)-> tuple[np.array, float, float, int, list[np.array], list[float]]:
-        xk= self.x0
+        xk = self.x0
         grad = self.compute_gradient(xk)
-        i = 0
         
         while self.StoppingCriterion_notmet(xk, grad):
-            if i != 0:                                                     #Avoid computing the same gradient two times
-                grad = self.compute_gradient(xk)
             hessf = self.compute_hessian(xk)
+            if isinstance(hessf, tuple) and len(hessf) == 2:
+                _, hessf = hessf
             if self.derivatives == 'finite_differences':
-                hessf = Solvers.make_symmetric(hessf,xk)                   #Approximation could make hessian not symmetric
-            L, bk= self.H_is_positive_definite(hessf)                     
+                hessf = self.solvers.make_symmetric(hessf)
+            L, bk = self.H_is_positive_definite(hessf)
             if self.solver_linear_system == 'cg':
-                pk= Solvers.CG_Find_pk(xk,bk,grad)
+                pk = self.solvers.CG_Find_pk(bk, grad, self.precond)
             elif self.solver_linear_system == 'chol':
                 if len(xk) < 10**3:
-                    pk= Solvers.chol_Find_Pk(L,grad)
+                    pk = self.solvers.chol_Find_Pk(L, grad)
                 else:
                     print(f"Is not possible to find pk with cholesky with dimension {len(xk)}")
                     exit
-            alphak= LineSearch.Backtracking(xk,pk,grad,self.alpha0,self.bt,self.btmax,
-                                            self.rho,self.c1,self.objective_function)
+            alphak = self.linesearch.Backtracking(xk, pk, grad, self.alpha0, self.bt, self.btmax,
+                                                  self.rho, self.c1, self.objective_function)
             self.bt_seq.append(alphak)
-            if alphak == None:
+            if alphak is None:
                 print(f"Backtracking strategy failed with {self.btmax} iterations")
                 print(f"Method doesn't converge")
                 exit
-            else:    
-                xk_1= self.Step(xk,alphak,pk)
-                self.x_seq.append(xk_1)
-                xk= xk_1
+            else:
+                xk = self.Step(xk, alphak, pk)
+                grad = self.compute_gradient(xk)
                 self.k += 1
-            i += 1
-        
-        norm_gradfxk= np.linalg.norm(grad)
 
-        return xk,self.objective_function(xk),norm_gradfxk, self.k, self.x_seq, self.bt_seq
+        norm_gradfxk = np.linalg.norm(grad)
+        return xk, self.objective_function(xk), norm_gradfxk, self.k, self.x_seq, self.bt_seq
