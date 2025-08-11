@@ -491,12 +491,12 @@ class ExactDerivatives(object):
                 # i=n-1 => x_{n}=0 in definizione
                 pass
 
-            # Aggiunta parte h^2 (x_i + (i+1)h + 1)^(3/2)
-            f[i] += h**2 * (nonlinear_base**(3.0/2.0))
+            # Aggiunta parte -h^2 (x_i + (i+1)h + 1)^(3/2)
+            f[i] -= h**2 * (nonlinear_base**(3.0/2.0))
 
         for i in range(n):
             nonlinear_base = x[i] + (i + 1)*h + 1.0
-            d_nonlinear = (3.0/2.0)* (h**2) * (nonlinear_base**(1.0/2.0))
+            d_nonlinear = -(3.0/2.0)* (h**2) * (nonlinear_base**(1.0/2.0))
             J[i,i] = 2.0 + d_nonlinear
 
             if i > 0:
@@ -527,58 +527,73 @@ class ExactDerivatives(object):
     
     def Broyden_tridiagonal_function(self,x,hessian=True):
         """
-        Calcola il valore (F_x), il gradiente (grad) e l'Hessiano (H) della funzione
-        
-            F(x) = 0.5 * sum_{k=1}^n [f_k(x)]^2
+        Calcola gradiente e Hessiano della **Generalized Broyden tridiagonal** (Problem 5):
+
+            F(x) = sum_{k=1}^n | f_k(x) |^p,    con p = 7/3
             f_k(x) = (3 - 2*x[k]) * x[k] + 1 - x[k-1] - x[k+1],
-    
-        soggetto alle condizioni al contorno x_0 = x_{n+1} = 0.
-        
+
+        con condizioni al contorno x_0 = x_{n+1} = 0.
+
         Parametri
         ----------
         x : array di forma (n,)
+
         Ritorna
         -------
-        F_x : float
-            Il valore di F in x
         grad : array di forma (n,)
             Il gradiente di F in x
-        H : array di forma (n, n)
+        H : scipy.sparse.csr_matrix
             La matrice Hessiana di F in x
         """
-        
+        p = 7.0/3.0
         n = len(x)
         assert n >= 2, "La dimensione n deve essere almeno 2."
-        
+
+        # Residuali f_k(x)
         f = np.zeros(n)
         for i in range(n):
             x_im1 = x[i-1] if i > 0 else 0.0
             x_ip1 = x[i+1] if i < n-1 else 0.0
-            
-            f[i] = (3.0 - 2.0*x[i])*x[i] + 1.0 - x_im1 - x_ip1
+            f[i] = (3.0 - 2.0*x[i]) * x[i] + 1.0 - x_im1 - x_ip1
 
+        # Jacobiano sparso J di f wrt x
         J = lil_matrix((n, n))
         for i in range(n):
             if i > 0:
                 J[i, i-1] = -1.0
             if i < n-1:
                 J[i, i+1] = -1.0
-            
-            J[i, i] = (3.0 - 4.0*x[i])
-        
+            # d/ dx_i [(3-2x_i)x_i] = 3 - 4 x_i
+            J[i, i] = (3.0 - 4.0 * x[i])
         J = J.tocsr()
-        grad = J.T @ f
-        
-        if hessian == True:
-            H = J.T @ J
-            
-            # Correzione diagonale
-            for i in range(n):
-                H[i, i] += f[i] * (-4.0)
-        else:
+
+        # Pesi per p-norma composita: 
+        # phi(t) = |t|^p  =>  phi'(t) = p|t|^{p-2} t,   phi''(t) = p(p-1)|t|^{p-2}  (per t != 0)
+        abs_f = np.abs(f)
+        w = p * (abs_f ** (p - 2.0)) * f               # lunghezza n
+        a = p * (p - 1.0) * (abs_f ** (p - 2.0))        # lunghezza n (>=0)
+
+        # Gradiente: grad = J^T w
+        grad = J.T @ w
+
+        if hessian is False:
             return grad
-        
-        return grad, csr_matrix(H)
+
+        # Hessiano: H = J^T diag(a) J + sum_i phi'(f_i) * Hessian(f_i)
+        # Qui Hessian(f_i) ha solo elemento (i,i) = -4.
+        D = diags(a, 0, shape=(n, n), format='csr')
+        H = (J.T @ D) @ J
+
+        # Correzione diagonale con phi'(f_i) * (-4)
+        # aggiorna la diagonale: H_ii += (-4) * w[i]
+        H = H.tolil()
+        diag = H.diagonal()
+        for i in range(n):
+            diag[i] += (-4.0) * w[i]
+        H.setdiag(diag)
+        H = H.tocsr()
+
+        return grad, H
     
     def exact_rosenbrock(self, x,hessian=True):
         """ Compute the gradient and hessian of the Rosenbrock function. """
@@ -724,64 +739,46 @@ class ExactDerivatives(object):
     
     def broyden_hessian_vector_product(x, v, grad):
         """
-        Compute the Hessian-vector product of the Broyden tridiagonal function at point x.
+        Hessian-vector product per la Generalized Broyden tridiagonal (Problem 5):
 
-        F(x) = 0.5 * sum_{k=1}^n [f_k(x)]^2
+            F(x) = sum_i |f_i(x)|^p,  p = 7/3
+            f_i(x) = (3 - 2*x[i]) * x[i] + 1 - x[i-1] - x[i+1],
+            con x_0 = x_{n+1} = 0.
 
-        where
-
-            f_k(x) = (3 - 2*x[k]) * x[k] + 1 - x[k-1] - x[k+1],
-
-        subject to boundary conditions x_0 = x_{n+1} = 0.
-
-        Parameters
-        ----------
-        x : array of shape (n,)
-            The vector of unknowns x_1, ..., x_n (Python: x[0], ..., x[n-1])
-        v : array of shape (n,)
-            The vector for the Hessian-vector product
-
-        Returns
-        -------
-        Hv : array of shape (n,)
-            The Hessian-vector product H(x) * v
+        Hv = (J^T diag(phi''(f)) J) v + [\sum_i phi'(f_i) * \nabla^2 f_i] v,
+        con phi'(t) = p|t|^{p-2} t,  phi''(t) = p(p-1)|t|^{p-2}.
         """
+        p = 7.0/3.0
         n = len(x)
         assert n >= 2, "Dimension n must be at least 2."
         assert len(v) == n, "Vector v must have the same dimension as x."
 
-        # 1) Compute the residuals f_i(x)
+        # Residuali f e Jacobiano J
         f = np.zeros(n)
         for i in range(n):
-            # x_{i-1} => x[-1] = 0 if i=0
             x_im1 = x[i - 1] if i > 0 else 0.0
-            # x_{i+1} => x[n] = 0 if i=n-1
             x_ip1 = x[i + 1] if i < n - 1 else 0.0
-
-            # (3 - 2*x[i]) * x[i] + 1 - x[i-1] - x[i+1]
             f[i] = (3.0 - 2.0 * x[i]) * x[i] + 1.0 - x_im1 - x_ip1
 
-        # 2) Compute the Jacobian matrix J of f (n x n)
         J = lil_matrix((n, n))
         for i in range(n):
-            # x_{i-1} => contribution -1
             if i > 0:
                 J[i, i - 1] = -1.0
-            # x_{i+1} => contribution -1
             if i < n - 1:
                 J[i, i + 1] = -1.0
-
-            # Derivative with respect to x[i] of (3 - 2*x[i]) * x[i] = 3 - 4*x[i]
             J[i, i] = (3.0 - 4.0 * x[i])
-
         J = J.tocsr()
-        # 3) Hessian-vector product: Hv = J^T (J v) + correction term
-        Jv = J @ v  # Matrix-vector product J * v
-        Hv = J.T @ Jv  # Matrix-vector product J^T * (J * v)
 
-        # Add the correction term for the Hessian-vector product
-        for i in range(n):
-            # Correction term: f[i] * (-4.0) * v[i]
-            Hv[i] += f[i] * (-4.0) * v[i]
+        abs_f = np.abs(f)
+        w = p * (abs_f ** (p - 2.0)) * f                 # phi'(f)
+        a = p * (p - 1.0) * (abs_f ** (p - 2.0))          # phi''(f)
+
+        # Primo termine: J^T diag(a) J v  =>  J^T ( a ⊙ (J v) )
+        Jv = J @ v
+        Hv = J.T @ (a * Jv)
+
+        # Secondo termine: [sum_i phi'(f_i) * Hessian(f_i)] v
+        # Hessian(f_i) ha solo (i,i) = -4  => contributo componente-wise
+        Hv += (-4.0) * (w * v)
 
         return Hv

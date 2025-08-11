@@ -147,7 +147,6 @@ class ModifiedNewton(object):
     def compute_gradient_hessian(self, xk: np.array,derivatives: str):
         if derivatives == 'exact':
             if self.function == 'extended_rosenbrock':
-
                 def grad_fn(x):
                     return self.exact_d.extended_rosenbrock(x, hessian=False)
                 def hess_fn(x):
@@ -187,7 +186,6 @@ class ModifiedNewton(object):
             if len(xk) < 10**3:
                 hessian = self.finit_d.hessian
                 return grad, hessian
-            
             else:
                 if self.function == 'extended_rosenbrock':
                     hessian = self.sp_finit_d.hessian_approx_extendedros
@@ -211,7 +209,13 @@ class ModifiedNewton(object):
         grad = self.compute_gradient(xk)
         
         while self.StoppingCriterion_notmet(xk, grad):
-            hessf = self.compute_hessian(xk)
+            if len(xk) < 10**3:
+                hessf = self.compute_hessian(xk)
+            else:
+                if self.function == "rosenbrock":
+                    hessf = self.compute_hessian(xk)
+                else:
+                    hessf = self.compute_hessian(xk,grad)
             if isinstance(hessf, tuple) and len(hessf) == 2:
                 _, hessf = hessf
             if self.derivatives == 'finite_differences':
@@ -225,6 +229,7 @@ class ModifiedNewton(object):
                 else:
                     print(f"Is not possible to find pk with cholesky with dimension {len(xk)}")
                     exit
+                    
             alphak = self.linesearch.Backtracking(xk, pk, grad, self.alpha0, self.bt, self.btmax,
                                                   self.rho, self.c1, self.objective_function)
             self.bt_seq.append(alphak)

@@ -51,26 +51,25 @@ class FunctionDefinition(object):
         V = x + (i_array+1)*h + 1.0  # shape (n,)
 
         f = 2.*x - x_im1 - x_ip1 + (h*h)*(V**1.5)
-        return 0.5*np.sum(f*f)  # scalare
+        return np.sum(f*f)  # scalare
     
-    def btf_function(self,x):
+    def btf_function(self, x):
         """
-        Calcola F(x) = 0.5 * sum_{k=1}^n ( f_k(x)^2 ) in maniera vettoriale,
-        con
-            f_k(x) = (3 - 2*x[k]) * x[k] + 1 - x[k-1] - x[k+1],
-        e x_0 = x_{n+1} = 0.
+        Generalized Broyden tridiagonal (Problem 5):
+        F(x) = sum_{i=1}^n | (3 - 2*x_i)*x_i + 1 - x_{i-1} - x_{i+1} |^p
+        con p = 7/3 e x_0 = x_{n+1} = 0.
         """
+        p = 7.0 / 3.0
         n = len(x)
-        
-        # Costruiamo x_{i-1} e x_{i+1} tramite roll
-        x_im1 = np.roll(x, 1)  # shift di 1 a destra
-        x_im1[0] = 0.0         # x_{-1} = 0
-        
-        x_ip1 = np.roll(x, -1) # shift di 1 a sinistra
-        x_ip1[-1] = 0.0        # x_{n} = 0
-        
+
+        # vicini con condizioni al bordo nulle
+        x_im1 = np.roll(x, 1)
+        x_im1[0] = 0.0
+        x_ip1 = np.roll(x, -1)
+        x_ip1[-1] = 0.0
+
         f = (3.0 - 2.0*x) * x + 1.0 - x_im1 - x_ip1
-        return 0.5 * np.sum(f**2)
+        return np.sum(np.abs(f) ** p)
     
     def rosenbrock_function(self, x):
         """ Compute the Rosenbrock function value for a given vector x. """
