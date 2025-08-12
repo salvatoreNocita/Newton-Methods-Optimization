@@ -92,13 +92,14 @@ class ModifiedNewton(object):
         self.x_seq= [x0]
         self.bt_seq= []
         self.derivatives = derivatives
+        self.gradient = np.zeros(len(self.x0))
         
         self.linesearch = LineSearch()
         self.solvers = Solvers()
         self.exact_d = ExactDerivatives()
         self.finit_d = ApproximateDerivatives(self.objective_function,derivative_method, perturbation)
         self.sp_finit_d = SparseApproximativeDerivatives(self.objective_function, derivative_method,perturbation)
-        self.compute_gradient, self.compute_hessian = self.compute_gradient_hessian(self.x0,derivatives)
+        self.compute_gradient, self.compute_hessian = self.compute_gradient_hessian(self.x0,self.gradient)
     
     def H_is_positive_definite(self,hessf) -> np.array:
         try:
@@ -144,12 +145,12 @@ class ModifiedNewton(object):
             i += 1
         raise np.linalg.LinAlgError(f"Hessian can't be modified with {self.kmax}")
 
-    def compute_gradient_hessian(self, xk: np.array,derivatives: str):
-        if derivatives == 'exact':
+    def compute_gradient_hessian(self, xk: np.array,gradient:np.array):
+        if self.derivatives == 'exact':
             if self.function == 'extended_rosenbrock':
                 def grad_fn(x):
                     return self.exact_d.extended_rosenbrock(x, hessian=False)
-                def hess_fn(x):
+                def hess_fn(x,gradient):
                     _, H = self.exact_d.extended_rosenbrock(x, hessian=True)
                     return H.toarray() if hasattr(H, 'toarray') else np.asarray(H)
                 return grad_fn, hess_fn
@@ -157,7 +158,7 @@ class ModifiedNewton(object):
             elif self.function == 'discrete_boundary_value_problem':
                 def grad_fn(x):
                     return self.exact_d.discrete_boundary_value_problem(x, hessian=False)
-                def hess_fn(x):
+                def hess_fn(x,gradient):
                     _, H = self.exact_d.discrete_boundary_value_problem(x, hessian=True)
                     return H.toarray() if hasattr(H, 'toarray') else np.asarray(H)
                 return grad_fn, hess_fn
@@ -165,7 +166,7 @@ class ModifiedNewton(object):
             elif self.function == 'broyden_tridiagonal_function':
                 def grad_fn(x):
                     return self.exact_d.Broyden_tridiagonal_function(x, hessian=False)
-                def hess_fn(x):
+                def hess_fn(x,gradient):
                     _, H = self.exact_d.Broyden_tridiagonal_function(x, hessian=True)
                     return H.toarray() if hasattr(H, 'toarray') else np.asarray(H)
                 return grad_fn, hess_fn
@@ -173,7 +174,7 @@ class ModifiedNewton(object):
             elif self.function == 'rosenbrock':
                 def grad_fn(x):
                     return self.exact_d.exact_rosenbrock(x, hessian=False)
-                def hess_fn(x):
+                def hess_fn(x,gradient):
                     _, H = self.exact_d.exact_rosenbrock(x, hessian=True)
                     return H.toarray() if hasattr(H, 'toarray') else np.asarray(H)
                 return grad_fn, hess_fn
@@ -181,7 +182,7 @@ class ModifiedNewton(object):
             else:
                 raise ValueError(f"Unknown function '{self.function}' for exact derivatives")
             
-        elif derivatives == 'finite_differences':
+        elif self.derivatives == 'finite_differences':
             grad = self.sp_finit_d.approximate_gradient_parallel
             if len(xk) < 10**3:
                 hessian = self.finit_d.hessian
@@ -207,15 +208,10 @@ class ModifiedNewton(object):
     def Run(self)-> tuple[np.array, float, float, int, list[np.array], list[float]]:
         xk = self.x0
         grad = self.compute_gradient(xk)
+        self.gradient = grad
         
         while self.StoppingCriterion_notmet(xk, grad):
-            if len(xk) < 10**3:
-                hessf = self.compute_hessian(xk)
-            else:
-                if self.function == "rosenbrock":
-                    hessf = self.compute_hessian(xk)
-                else:
-                    hessf = self.compute_hessian(xk,grad)
+            hessf = self.compute_hessian(xk,grad)
             if isinstance(hessf, tuple) and len(hessf) == 2:
                 _, hessf = hessf
             if self.derivatives == 'finite_differences':
@@ -227,9 +223,8 @@ class ModifiedNewton(object):
                 if len(xk) < 10**3:
                     pk = self.solvers.chol_Find_Pk(L, grad)
                 else:
-                    print(f"Is not possible to find pk with cholesky with dimension {len(xk)}")
-                    exit
-                    
+                    raise(f"Is not possible to find pk with cholesky with dimension {len(xk)}")
+                
             alphak = self.linesearch.Backtracking(xk, pk, grad, self.alpha0, self.bt, self.btmax,
                                                   self.rho, self.c1, self.objective_function)
             self.bt_seq.append(alphak)
@@ -240,6 +235,7 @@ class ModifiedNewton(object):
             else:
                 xk = self.Step(xk, alphak, pk)
                 grad = self.compute_gradient(xk)
+                self.gradient = grad
                 self.k += 1
 
         norm_gradfxk = np.linalg.norm(grad)

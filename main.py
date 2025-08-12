@@ -14,7 +14,7 @@ def main():
                                 'tolgrad': 1e-8,
                                 'kmax': 1000,
                                 'function': 'broyden_tridiagonal_function',
-                                'solver_linear_system': 'cg',
+                                'solver_linear_system': 'chol',
                                 'H_correction_factor': 3,
                                 'precond': 'yes',
                                 'derivatives': 'exact',
