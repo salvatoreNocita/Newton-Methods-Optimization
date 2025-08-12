@@ -17,9 +17,9 @@ class ApproximateDerivatives:
         self.derivative_method = derivative_method
         self.perturbation = perturbation
             
-    def hessian(self,x):
+    def hessian(self,x,grad):
         n = len(x)
-        H = np.zeros((n, n))  # Matrice Hessiana
+        H = np.zeros((n, n))
         
         match self.derivative_method:
             case "forward":
@@ -80,12 +80,21 @@ class ApproximateDerivatives:
                         x_fwd_ij[j] += self.perturbation
                         x_bwd_ij[i] -= self.perturbation
                         x_bwd_ij[j] -= self.perturbation
+
+                        x_pp = np.copy(x); x_pm = np.copy(x); x_mp = np.copy(x); x_mm = np.copy(x)
+                        x_pp[i] += self.perturbation; x_pp[j] += self.perturbation
+                        x_pm[i] += self.perturbation; x_pm[j] -= self.perturbation
+                        x_mp[i] -= self.perturbation; x_mp[j] += self.perturbation
+                        x_mm[i] -= self.perturbation; x_mm[j] -= self.perturbation
                         
                         if i == j:
-                            H[i, j] = (self.f(x_fwd_i) - 2 * self.f(x) + self.f(x_bwd_i)) / (self.perturbation ** 2)
+                            H[i, j] = (
+                                        self.f(x_fwd_i) - 2 * self.f(x) + self.f(x_bwd_i)
+                                        ) / (self.perturbation ** 2)
                         else:
-                            H[i, j] = (self.f(x_fwd_ij) - self.f(x_fwd_i) - self.f(x_fwd_j) + 2 * self.f(x) - 
-                                       self.f(x_bwd_i) - self.f(x_bwd_j) + self.f(x_bwd_ij)) / (2 * self.perturbation ** 2)
+                            H[i, j] = (
+                                        self.f(x_pp) - self.f(x_pm) - self.f(x_mp) + self.f(x_mm)
+                                       ) / (4 * self.perturbation ** 2)
                 return csr_matrix(H)
     
 
@@ -94,8 +103,8 @@ class SparseApproximativeDerivatives(object):
     def __init__(self,f,method,h):
         self.f = f
         self.method = method
-        self.partial_derivative = self.set_partial_derivative()
         self.h = h
+        self.partial_derivative = self.set_partial_derivative()
     
     def set_partial_derivative(self):
         match self.method:
@@ -114,7 +123,7 @@ class SparseApproximativeDerivatives(object):
     def bwd_partial(self, x, i, h):
         x_minus = np.copy(x)
         x_minus[i] -= h
-        return (self.f(x) - self.f(x_minus)) / h  # Backward difference
+        return (self.f(x) - self.f(x_minus)) / h
     
     def cntrl_partial(self, x, i, h):
         x_plus = np.copy(x)
@@ -491,12 +500,12 @@ class ExactDerivatives(object):
                 # i=n-1 => x_{n}=0 in definizione
                 pass
 
-            # Aggiunta parte -h^2 (x_i + (i+1)h + 1)^(3/2)
-            f[i] -= h**2 * (nonlinear_base**(3.0/2.0))
+            # Aggiunta parte +h^2 (x_i + (i+1)h + 1)^(3/2)
+            f[i] += h**2 * (nonlinear_base**(3.0/2.0))
 
         for i in range(n):
             nonlinear_base = x[i] + (i + 1)*h + 1.0
-            d_nonlinear = -(3.0/2.0)* (h**2) * (nonlinear_base**(1.0/2.0))
+            d_nonlinear = (3.0/2.0)* (h**2) * (nonlinear_base**(1.0/2.0))
             J[i,i] = 2.0 + d_nonlinear
 
             if i > 0:

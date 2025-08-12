@@ -9,6 +9,37 @@ class Solvers(object):
     def __init__(self):
         pass
 
+    def Build_bk(self,hessf: np.array,k_max: int,corr_fact: float) -> np.ndarray:
+        beta = 1e-3
+        try:
+            import scipy.sparse as sp
+            if sp.issparse(hessf):
+                diag_elements = hessf.diagonal()
+                H = hessf.toarray()
+            else:
+                diag_elements = np.diag(hessf)
+                H = hessf
+        except Exception:
+            diag_elements = np.diag(hessf)
+            H = hessf
+        tau0 = 0 if np.min(diag_elements) > 0 else (-np.min(diag_elements) + beta)
+        tauk = tau0
+        bk = H + tauk * np.identity(H.shape[0])
+        flag = False
+        i = 0
+        while not flag and i < k_max:
+            tauk_1 = max(corr_fact * tauk, beta)
+            bk = bk + tauk_1 * np.identity(bk.shape[0])
+            tauk = tauk_1
+            try:
+                L = np.linalg.cholesky(bk)
+                flag = True
+                return L, bk
+            except np.linalg.LinAlgError:
+                flag = False
+            i += 1
+        raise np.linalg.LinAlgError(f"Hessian can't be modified with {k_max}")
+
     def ichol(self,A,drop_tol : float = 1e-4):
         """ This function performs Incomplite Cholesky Factorization, i.e. computes a lower triangular matrix L
             such that A=LL^T, without computing all elements as Cholesky (esxploits sparsity of the matrix A) 

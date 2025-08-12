@@ -9,6 +9,7 @@ from Tools.Derivatives import ApproximateDerivatives,ExactDerivatives,SparseAppr
 from Tools.Functions import FunctionDefinition
 from Tools.Linesearch import LineSearch
 from SolverInstruments import Solvers
+from Tools.Conditions import CheckConditions
 
 class ModifiedNewton(object):
     """
@@ -94,56 +95,13 @@ class ModifiedNewton(object):
         self.derivatives = derivatives
         self.gradient = np.zeros(len(self.x0))
         
+        self.conditions = CheckConditions()
         self.linesearch = LineSearch()
         self.solvers = Solvers()
         self.exact_d = ExactDerivatives()
         self.finit_d = ApproximateDerivatives(self.objective_function,derivative_method, perturbation)
         self.sp_finit_d = SparseApproximativeDerivatives(self.objective_function, derivative_method,perturbation)
         self.compute_gradient, self.compute_hessian = self.compute_gradient_hessian(self.x0,self.gradient)
-    
-    def H_is_positive_definite(self,hessf) -> np.array:
-        try:
-            import scipy.sparse as sp
-            if sp.issparse(hessf):
-                hessf = hessf.toarray()         #Converte in dense to apply cholesky (no sparse version available)
-        except Exception:
-            pass
-        try:
-            return np.linalg.cholesky(hessf), hessf
-        except np.linalg.LinAlgError:
-            L, bk = self.Build_bk(hessf)
-            return L, bk
-                  
-    def Build_bk(self,hessf: np.array) -> np.ndarray:
-        beta = 1e-3
-        try:
-            import scipy.sparse as sp
-            if sp.issparse(hessf):
-                diag_elements = hessf.diagonal()
-                H = hessf.toarray()
-            else:
-                diag_elements = np.diag(hessf)
-                H = hessf
-        except Exception:
-            diag_elements = np.diag(hessf)
-            H = hessf
-        tau0 = 0 if np.min(diag_elements) > 0 else (-np.min(diag_elements) + beta)
-        tauk = tau0
-        bk = H + tauk * np.identity(H.shape[0])
-        flag = False
-        i = 0
-        while not flag and i < self.kmax:
-            tauk_1 = max(self.H_correction_factor * tauk, beta)
-            bk = bk + tauk_1 * np.identity(bk.shape[0])
-            tauk = tauk_1
-            try:
-                L = np.linalg.cholesky(bk)
-                flag = True
-                return L, bk
-            except np.linalg.LinAlgError:
-                flag = False
-            i += 1
-        raise np.linalg.LinAlgError(f"Hessian can't be modified with {self.kmax}")
 
     def compute_gradient_hessian(self, xk: np.array,gradient:np.array):
         if self.derivatives == 'exact':
@@ -201,22 +159,19 @@ class ModifiedNewton(object):
         xk_1= xk+ alphak*pk
         self.x_seq.append(xk_1)
         return xk_1
-                
-    def StoppingCriterion_notmet(self,xk: np.array, gradf)-> bool:
-        return self.k<self.kmax and np.linalg.norm(gradf)> self.tolgrad
 
     def Run(self)-> tuple[np.array, float, float, int, list[np.array], list[float]]:
         xk = self.x0
         grad = self.compute_gradient(xk)
         self.gradient = grad
         
-        while self.StoppingCriterion_notmet(xk, grad):
+        while self.conditions.StoppingCriterion_notmet(xk,grad,self.tolgrad,self.k,self.kmax):
             hessf = self.compute_hessian(xk,grad)
             if isinstance(hessf, tuple) and len(hessf) == 2:
                 _, hessf = hessf
             if self.derivatives == 'finite_differences':
                 hessf = self.solvers.make_symmetric(hessf)
-            L, bk = self.H_is_positive_definite(hessf)
+            L, bk = self.conditions.H_is_positive_definite(hessf,self.kmax,self.H_correction_factor)
             if self.solver_linear_system == 'cg':
                 pk = self.solvers.CG_Find_pk(bk, grad, self.precond)
             elif self.solver_linear_system == 'chol':
@@ -239,4 +194,6 @@ class ModifiedNewton(object):
                 self.k += 1
 
         norm_gradfxk = np.linalg.norm(grad)
+        self.conditions.check_residuals_norm(xk,self.function)
+
         return xk, self.objective_function(xk), norm_gradfxk, self.k, self.x_seq, self.bt_seq
