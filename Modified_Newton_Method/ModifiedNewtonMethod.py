@@ -165,7 +165,16 @@ class ModifiedNewton(object):
         grad = self.compute_gradient(xk)
         self.gradient = grad
         
-        while self.conditions.StoppingCriterion_notmet(xk,grad,self.tolgrad,self.k,self.kmax):
+        while self.conditions.StoppingCriterion_notmet(
+                xk,
+                grad,
+                self.tolgrad,
+                self.k,
+                self.kmax,
+                function=self.function,
+                tolres=1e-6,
+                mode=('res' if self.function == 'discrete_boundary_value_problem' else 'grad')
+            ):
             hessf = self.compute_hessian(xk,grad)
             if isinstance(hessf, tuple) and len(hessf) == 2:
                 _, hessf = hessf

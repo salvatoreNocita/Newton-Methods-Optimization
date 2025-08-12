@@ -261,7 +261,7 @@ class SparseApproximativeDerivatives(object):
                 valid_super_diag = even_indices[even_indices + 1 < n]  # Ensure i+1 is in bounds
                 off_diag_values = (grad[valid_super_diag + 1] - grad_perturbed_backward_even[valid_super_diag + 1]) / self.h
 
-            case 'centered':
+            case 'central':
                 # Perturb even indices
                 x_perturbed_forward_even = x.copy()
                 x_perturbed_forward_even[even_indices] += self.h
