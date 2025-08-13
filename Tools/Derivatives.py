@@ -1,8 +1,13 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+
 import numpy as np
 from scipy.sparse import diags
 from scipy.sparse import csr_matrix, lil_matrix
-import networkx as nx
 from joblib import Parallel, delayed
+from Conditions import CheckConditions
 
 class ApproximateDerivatives:
     def __init__(self, function, derivative_method, perturbation):
@@ -17,10 +22,16 @@ class ApproximateDerivatives:
         self.derivative_method = derivative_method
         self.perturbation = perturbation
             
-    def hessian(self,x,grad):
+    def hessian(self,x,grad,adaptive=False):
         n = len(x)
         H = np.zeros((n, n))
-        
+
+        if adaptive:
+            builder = CheckConditions()
+            h = builder.build_perturbation_vector(x,self.perturbation)
+        else:
+            h = self.perturbation
+
         match self.derivative_method:
             case "forward":
                 for i in range(n):
@@ -29,17 +40,17 @@ class ApproximateDerivatives:
                         x_fwd_j = np.copy(x)
                         x_fwd_ij = np.copy(x)
                         
-                        x_fwd_i[i] += self.perturbation
-                        x_fwd_j[j] += self.perturbation
-                        x_fwd_ij[i] += self.perturbation
-                        x_fwd_ij[j] += self.perturbation
+                        x_fwd_i[i] += h
+                        x_fwd_j[j] += h
+                        x_fwd_ij[i] += h
+                        x_fwd_ij[j] += h
                         
                         if i == j:
                             H[i, j] = (self.f(x_fwd_i) - 2 * self.f(x) + 
-                                       self.f(x - self.perturbation * np.eye(n)[i])) / (self.perturbation ** 2)
+                                       self.f(x - h * np.eye(n)[i])) / (h ** 2)
                         else:
                             H[i, j] = (self.f(x_fwd_ij) - self.f(x_fwd_i) - 
-                                       self.f(x_fwd_j) + self.f(x)) / (self.perturbation ** 2)
+                                       self.f(x_fwd_j) + self.f(x)) / (h ** 2)
                 return csr_matrix(H)
 
             case "backward":
@@ -49,17 +60,17 @@ class ApproximateDerivatives:
                         x_bwd_j = np.copy(x)
                         x_bwd_ij = np.copy(x)
                         
-                        x_bwd_i[i] -= self.perturbation
-                        x_bwd_j[j] -= self.perturbation
-                        x_bwd_ij[i] -= self.perturbation
-                        x_bwd_ij[j] -= self.perturbation
+                        x_bwd_i[i] -= h
+                        x_bwd_j[j] -= h
+                        x_bwd_ij[i] -= h
+                        x_bwd_ij[j] -= h
                         
                         if i == j:
                             H[i, j] = (self.f(x_bwd_i) - 2 * self.f(x) + 
-                                       self.f(x + self.perturbation * np.eye(n)[i])) / (self.perturbation ** 2)
+                                       self.f(x + h * np.eye(n)[i])) / (h ** 2)
                         else:
                             H[i, j] = (self.f(x) - self.f(x_bwd_i) - self.f(x_bwd_j) + 
-                                       self.f(x_bwd_ij)) / (self.perturbation ** 2)
+                                       self.f(x_bwd_ij)) / (h ** 2)
                 return csr_matrix(H)
 
             case "central":
@@ -72,29 +83,29 @@ class ApproximateDerivatives:
                         x_fwd_ij = np.copy(x)
                         x_bwd_ij = np.copy(x)
 
-                        x_fwd_i[i] += self.perturbation
-                        x_bwd_i[i] -= self.perturbation
-                        x_fwd_j[j] += self.perturbation
-                        x_bwd_j[j] -= self.perturbation
-                        x_fwd_ij[i] += self.perturbation
-                        x_fwd_ij[j] += self.perturbation
-                        x_bwd_ij[i] -= self.perturbation
-                        x_bwd_ij[j] -= self.perturbation
+                        x_fwd_i[i] += h
+                        x_bwd_i[i] -= h
+                        x_fwd_j[j] += h
+                        x_bwd_j[j] -= h
+                        x_fwd_ij[i] += h
+                        x_fwd_ij[j] += h
+                        x_bwd_ij[i] -= h
+                        x_bwd_ij[j] -= h
 
                         x_pp = np.copy(x); x_pm = np.copy(x); x_mp = np.copy(x); x_mm = np.copy(x)
-                        x_pp[i] += self.perturbation; x_pp[j] += self.perturbation
-                        x_pm[i] += self.perturbation; x_pm[j] -= self.perturbation
-                        x_mp[i] -= self.perturbation; x_mp[j] += self.perturbation
-                        x_mm[i] -= self.perturbation; x_mm[j] -= self.perturbation
+                        x_pp[i] += h; x_pp[j] += h
+                        x_pm[i] += h; x_pm[j] -= h
+                        x_mp[i] -= h; x_mp[j] += h
+                        x_mm[i] -= h; x_mm[j] -= h
                         
                         if i == j:
                             H[i, j] = (
                                         self.f(x_fwd_i) - 2 * self.f(x) + self.f(x_bwd_i)
-                                        ) / (self.perturbation ** 2)
+                                        ) / (h ** 2)
                         else:
                             H[i, j] = (
                                         self.f(x_pp) - self.f(x_pm) - self.f(x_mp) + self.f(x_mm)
-                                       ) / (4 * self.perturbation ** 2)
+                                       ) / (4 * h ** 2)
                 return csr_matrix(H)
     
 
@@ -133,7 +144,7 @@ class SparseApproximativeDerivatives(object):
         return (self.f(x_plus) - self.f(x_minus)) / (2 * h) 
 
 
-    def approximate_gradient_parallel(self, x, n_jobs=-1):
+    def approximate_gradient_parallel(self, x, n_jobs=-1, adaptive=False):
         """
         Approximate the gradient of a scalar function f at point x using finite differences.
         Optimized for large-scale problems (n ≈ 10⁵).
@@ -149,8 +160,18 @@ class SparseApproximativeDerivatives(object):
         """
         n = len(x)
 
-        # Parallelize the gradient computation
-        grad = Parallel(n_jobs=n_jobs)(delayed(self.partial_derivative)(x, i, self.h) for i in range(n))
+        if adaptive:
+            builder = CheckConditions()
+            h_vec = builder.build_perturbation_vector(x, self.h)
+            # Use the per-coordinate step size for each partial derivative
+            grad = Parallel(n_jobs=n_jobs)(
+                delayed(self.partial_derivative)(x, i, h_vec[i]) for i in range(n)
+            )
+        else:
+            step = self.h
+            grad = Parallel(n_jobs=n_jobs)(
+                delayed(self.partial_derivative)(x, i, step) for i in range(n)
+            )
 
         return np.array(grad)
 
@@ -185,7 +206,7 @@ class SparseApproximativeDerivatives(object):
                 Hv = (grad_x_plus - grad_x_minus) / (2 * self.h)
         return Hv
 
-    def hessian_approx_extendedros(self, x, grad):
+    def hessian_approx_extendedros(self, x, grad, adaptive=False):
         """
         Approximate the Hessian of a scalar function f at point x using finite differences
         and a two-coloring technique, storing the result in a sparse matrix.
@@ -195,13 +216,19 @@ class SparseApproximativeDerivatives(object):
         Parameters:
         x (np.ndarray): The point at which to approximate the Hessian.
         grad (np.ndarray): The gradient at x.
-        h (float): The step size for finite differences.
-        method (str): Finite difference method ('forward', 'backward', 'centered').
+        adaptive (bool): If True, build and use a per-coordinate perturbation vector.
 
         Returns:
         scipy.sparse.csr_matrix: The approximated Hessian (stored as a sparse matrix).
         """
         n = len(x)
+
+        # Build (possibly vector) step size
+        if adaptive:
+            builder = CheckConditions()
+            h_vec = builder.build_perturbation_vector(x, self.h)
+        else:
+            h_vec = self.h
 
         # Define coloring scheme (even and odd indices)
         even_indices = np.arange(0, n, 2)
@@ -210,91 +237,120 @@ class SparseApproximativeDerivatives(object):
         # Precompute non-zero indices and values for the sparse matrix
         rows, cols, data = [], [], []
 
+        # Helpers to select the right step per index set
+        def _step_for(idx):
+            return h_vec if np.isscalar(h_vec) else h_vec[idx]
+
         match self.method:
             case 'forward':
                 # Perturb even indices
                 x_perturbed_forward_even = x.copy()
-                x_perturbed_forward_even[even_indices] += self.h
-                grad_perturbed_forward_even = self.approximate_gradient_parallel(x_perturbed_forward_even)
+                x_perturbed_forward_even[even_indices] += _step_for(even_indices)
+                grad_perturbed_forward_even = self.approximate_gradient_parallel(
+                    x_perturbed_forward_even, adaptive=adaptive
+                )
 
                 # Perturb odd indices
                 x_perturbed_forward_odd = x.copy()
-                x_perturbed_forward_odd[odd_indices] += self.h
-                grad_perturbed_forward_odd = self.approximate_gradient_parallel(x_perturbed_forward_odd)
+                x_perturbed_forward_odd[odd_indices] += _step_for(odd_indices)
+                grad_perturbed_forward_odd = self.approximate_gradient_parallel(
+                    x_perturbed_forward_odd, adaptive=adaptive
+                )
 
                 # Diagonal elements (even indices)
                 rows.extend(even_indices)
                 cols.extend(even_indices)
-                data.extend((grad_perturbed_forward_even[even_indices] - grad[even_indices]) / self.h)
+                denom_even = _step_for(even_indices)
+                data.extend((grad_perturbed_forward_even[even_indices] - grad[even_indices]) / denom_even)
 
                 # Diagonal elements (odd indices)
                 rows.extend(odd_indices)
                 cols.extend(odd_indices)
-                data.extend((grad_perturbed_forward_odd[odd_indices] - grad[odd_indices]) / self.h)
+                denom_odd = _step_for(odd_indices)
+                data.extend((grad_perturbed_forward_odd[odd_indices] - grad[odd_indices]) / denom_odd)
 
                 # Off-diagonal elements (even and odd pairs)
-                valid_super_diag = even_indices[even_indices + 1 < n]  # Ensure i+1 is in bounds
-                off_diag_values = (grad_perturbed_forward_even[valid_super_diag + 1] - grad[valid_super_diag + 1]) / self.h
+                valid_super_diag = even_indices[even_indices + 1 < n]
+                denom_sd = _step_for(valid_super_diag)
+                off_diag_values = (grad_perturbed_forward_even[valid_super_diag + 1] - grad[valid_super_diag + 1]) / denom_sd
 
             case 'backward':
                 # Perturb even indices in backward direction
                 x_perturbed_backward_even = x.copy()
-                x_perturbed_backward_even[even_indices] -= self.h
-                grad_perturbed_backward_even = self.approximate_gradient_parallel(x_perturbed_backward_even)
+                x_perturbed_backward_even[even_indices] -= _step_for(even_indices)
+                grad_perturbed_backward_even = self.approximate_gradient_parallel(
+                    x_perturbed_backward_even, adaptive=adaptive
+                )
 
                 # Perturb odd indices in backward direction
                 x_perturbed_backward_odd = x.copy()
-                x_perturbed_backward_odd[odd_indices] -= self.h
-                grad_perturbed_backward_odd = self.approximate_gradient_parallel(x_perturbed_backward_odd)
+                x_perturbed_backward_odd[odd_indices] -= _step_for(odd_indices)
+                grad_perturbed_backward_odd = self.approximate_gradient_parallel(
+                    x_perturbed_backward_odd, adaptive=adaptive
+                )
 
                 # Diagonal elements (even indices)
                 rows.extend(even_indices)
                 cols.extend(even_indices)
-                data.extend((grad[even_indices] - grad_perturbed_backward_even[even_indices]) / self.h)
+                denom_even = _step_for(even_indices)
+                data.extend((grad[even_indices] - grad_perturbed_backward_even[even_indices]) / denom_even)
 
                 # Diagonal elements (odd indices)
                 rows.extend(odd_indices)
                 cols.extend(odd_indices)
-                data.extend((grad[odd_indices] - grad_perturbed_backward_odd[odd_indices]) / self.h)
+                denom_odd = _step_for(odd_indices)
+                data.extend((grad[odd_indices] - grad_perturbed_backward_odd[odd_indices]) / denom_odd)
 
                 # Off-diagonal elements (even and odd pairs)
-                valid_super_diag = even_indices[even_indices + 1 < n]  # Ensure i+1 is in bounds
-                off_diag_values = (grad[valid_super_diag + 1] - grad_perturbed_backward_even[valid_super_diag + 1]) / self.h
+                valid_super_diag = even_indices[even_indices + 1 < n]
+                denom_sd = _step_for(valid_super_diag)
+                off_diag_values = (grad[valid_super_diag + 1] - grad_perturbed_backward_even[valid_super_diag + 1]) / denom_sd
 
             case 'central':
                 # Perturb even indices
                 x_perturbed_forward_even = x.copy()
-                x_perturbed_forward_even[even_indices] += self.h
-                grad_perturbed_forward_even = self.approximate_gradient_parallel(x_perturbed_forward_even)
+                x_perturbed_forward_even[even_indices] += _step_for(even_indices)
+                grad_perturbed_forward_even = self.approximate_gradient_parallel(
+                    x_perturbed_forward_even, adaptive=adaptive
+                )
 
                 # Perturb odd indices
                 x_perturbed_forward_odd = x.copy()
-                x_perturbed_forward_odd[odd_indices] += self.h
-                grad_perturbed_forward_odd = self.approximate_gradient_parallel(x_perturbed_forward_odd)
+                x_perturbed_forward_odd[odd_indices] += _step_for(odd_indices)
+                grad_perturbed_forward_odd = self.approximate_gradient_parallel(
+                    x_perturbed_forward_odd, adaptive=adaptive
+                )
 
                 # Perturb even indices in backward direction
                 x_perturbed_backward_even = x.copy()
-                x_perturbed_backward_even[even_indices] -= self.h
-                grad_perturbed_backward_even = self.approximate_gradient_parallel(x_perturbed_backward_even)
+                x_perturbed_backward_even[even_indices] -= _step_for(even_indices)
+                grad_perturbed_backward_even = self.approximate_gradient_parallel(
+                    x_perturbed_backward_even, adaptive=adaptive
+                )
 
                 # Perturb odd indices in backward direction
                 x_perturbed_backward_odd = x.copy()
-                x_perturbed_backward_odd[odd_indices] -= self.h
-                grad_perturbed_backward_odd = self.approximate_gradient_parallel(x_perturbed_backward_odd)
+                x_perturbed_backward_odd[odd_indices] -= _step_for(odd_indices)
+                grad_perturbed_backward_odd = self.approximate_gradient_parallel(
+                    x_perturbed_backward_odd, adaptive=adaptive
+                )
 
                 # Diagonal elements (even indices)
                 rows.extend(even_indices)
                 cols.extend(even_indices)
-                data.extend((grad_perturbed_forward_even[even_indices] - grad_perturbed_backward_even[even_indices]) / (2 * self.h))
+                denom_even = _step_for(even_indices)
+                data.extend((grad_perturbed_forward_even[even_indices] - grad_perturbed_backward_even[even_indices]) / (2 * denom_even))
 
                 # Diagonal elements (odd indices)
                 rows.extend(odd_indices)
                 cols.extend(odd_indices)
-                data.extend((grad_perturbed_forward_odd[odd_indices] - grad_perturbed_backward_odd[odd_indices]) / (2 * self.h))
+                denom_odd = _step_for(odd_indices)
+                data.extend((grad_perturbed_forward_odd[odd_indices] - grad_perturbed_backward_odd[odd_indices]) / (2 * denom_odd))
 
                 # Off-diagonal elements (even and odd pairs)
-                valid_super_diag = even_indices[even_indices + 1 < n]  # Ensure i+1 is in bounds
-                off_diag_values = (grad_perturbed_forward_even[valid_super_diag + 1] - grad_perturbed_backward_even[valid_super_diag + 1]) / (2 * self.h)
+                valid_super_diag = even_indices[even_indices + 1 < n]
+                denom_sd = _step_for(valid_super_diag)
+                off_diag_values = (grad_perturbed_forward_even[valid_super_diag + 1] - grad_perturbed_backward_even[valid_super_diag + 1]) / (2 * denom_sd)
 
         # Upper triangular part
         rows.extend(valid_super_diag)
@@ -311,105 +367,92 @@ class SparseApproximativeDerivatives(object):
 
         return hessian
     
-    def hessian_approx_tridiagonal(self,x,grad):
+    def hessian_approx_tridiagonal(self, x, grad, adaptive=False):
         """
         Approximate the Hessian of a scalar function f at point x
         assuming a TRIDIAGONAL structure (diagonal + first super/subdiagonal).
-        Exploits coloring to minimize function evaluations.
-        Optimized for large-scale problems (n ≈ 10⁵).
+        Uses three-coloring to avoid off-diagonal contamination.
 
         Parameters:
-        f (callable): The scalar function.
-        x (np.ndarray): The point at which to approximate the Hessian.
-        grad (np.ndarray): The gradient at x.
-        h (float): The step size for finite differences.
-
-        Returns:
-        scipy.sparse.csr_matrix: The approximated Hessian (stored as a sparse matrix).
+        x (np.ndarray): Point where to approximate the Hessian
+        grad (np.ndarray): Gradient at x
+        adaptive (bool): If True, build and use a per-coordinate perturbation vector.
         """
         n = len(x)
 
-        # Use two-coloring (even and odd indices)
-        even_indices = np.arange(0, n, 2)
-        odd_indices = np.arange(1, n, 2)
+        # Build (possibly vector) step size
+        if adaptive:
+            builder = CheckConditions()
+            h_vec = builder.build_perturbation_vector(x, self.h)
+        else:
+            h_vec = self.h
+
+        # Base gradient at x (use provided grad if available)
+        base_grad = grad if grad is not None else self.approximate_gradient_parallel(x, adaptive=adaptive)
+
+        # Three-coloring to avoid contamination at distance 1
+        color_classes = [np.arange(shift, n, 3) for shift in range(3)]
 
         # Initialize arrays to store diagonal and off-diagonal elements
         diagonal = np.zeros(n)
         super_diagonal = np.zeros(n - 1)
 
+        # Helper for step selection
+        def _step_for(idx):
+            return h_vec if np.isscalar(h_vec) else h_vec[idx]
+
         match self.method:
             case 'forward':
-                # Perturb even indices in forward direction and compute gradient
-                x_perturbed_forward_even = x.copy()
-                x_perturbed_forward_even[even_indices] += self.h
-                grad_perturbed_forward_even = self.approximate_gradient_parallel(x_perturbed_forward_even)
+                for idx in color_classes:
+                    if idx.size == 0:
+                        continue
+                    x_pert = x.copy()
+                    x_pert[idx] += _step_for(idx)
+                    g_pert = self.approximate_gradient_parallel(x_pert, adaptive=adaptive)
 
-                # Perturb odd indices in forward direction and compute gradient
-                x_perturbed_forward_odd = x.copy()
-                x_perturbed_forward_odd[odd_indices] += self.h
-                grad_perturbed_forward_odd = self.approximate_gradient_parallel(x_perturbed_forward_odd)
-
-                # Compute diagonal and super-diagonal for even indices using forward difference
-                diagonal[even_indices] = (grad_perturbed_forward_even[even_indices] - grad[even_indices]) / self.h
-                valid_super_even = even_indices[even_indices < n - 1]  # Ensure i+1 is in bounds
-                super_diagonal[valid_super_even] = (grad_perturbed_forward_even[valid_super_even + 1] - grad[valid_super_even + 1]) / self.h
-
-                # Compute diagonal and super-diagonal for odd indices using forward difference
-                diagonal[odd_indices] = (grad_perturbed_forward_odd[odd_indices] - grad[odd_indices]) / self.h
-                valid_super_odd = odd_indices[odd_indices < n - 1]  # Ensure i+1 is in bounds
-                super_diagonal[valid_super_odd] = (grad_perturbed_forward_odd[valid_super_odd + 1] - grad[valid_super_odd + 1]) / self.h
+                    # Diagonal H_ii
+                    denom = _step_for(idx)
+                    diagonal[idx] = (g_pert[idx] - base_grad[idx]) / denom
+                    # Super-diagonal H_{i,i+1}
+                    valid = idx[idx < n - 1]
+                    if valid.size:
+                        denom_sd = _step_for(valid)
+                        super_diagonal[valid] = (g_pert[valid + 1] - base_grad[valid + 1]) / denom_sd
 
             case 'backward':
-                # Perturb even indices in backward direction and compute gradient
-                x_perturbed_backward_even = x.copy()
-                x_perturbed_backward_even[even_indices] -= self.h
-                grad_perturbed_backward_even = self.approximate_gradient_parallel(x_perturbed_backward_even)
+                for idx in color_classes:
+                    if idx.size == 0:
+                        continue
+                    x_pert = x.copy()
+                    x_pert[idx] -= _step_for(idx)
+                    g_pert = self.approximate_gradient_parallel(x_pert, adaptive=adaptive)
 
-                # Perturb odd indices in backward direction and compute gradient
-                x_perturbed_backward_odd = x.copy()
-                x_perturbed_backward_odd[odd_indices] -= self.h
-                grad_perturbed_backward_odd = self.approximate_gradient_parallel(x_perturbed_backward_odd)
+                    denom = _step_for(idx)
+                    diagonal[idx] = (base_grad[idx] - g_pert[idx]) / denom
+                    valid = idx[idx < n - 1]
+                    if valid.size:
+                        denom_sd = _step_for(valid)
+                        super_diagonal[valid] = (base_grad[valid + 1] - g_pert[valid + 1]) / denom_sd
 
-                # Compute diagonal and super-diagonal for even indices using backward difference
-                diagonal[even_indices] = (grad[even_indices] - grad_perturbed_backward_even[even_indices]) / self.h
-                valid_super_even = even_indices[even_indices < n - 1]  # Ensure i+1 is in bounds
-                super_diagonal[valid_super_even] = (grad[valid_super_even + 1] - grad_perturbed_backward_even[valid_super_even + 1]) / self.h
+            case 'central':
+                for idx in color_classes:
+                    if idx.size == 0:
+                        continue
+                    x_plus = x.copy(); x_plus[idx] += _step_for(idx)
+                    x_minus = x.copy(); x_minus[idx] -= _step_for(idx)
 
-                # Compute diagonal and super-diagonal for odd indices using backward difference
-                diagonal[odd_indices] = (grad[odd_indices] - grad_perturbed_backward_odd[odd_indices]) / self.h
-                valid_super_odd = odd_indices[odd_indices < n - 1]  # Ensure i+1 is in bounds
-                super_diagonal[valid_super_odd] = (grad[valid_super_odd + 1] - grad_perturbed_backward_odd[valid_super_odd + 1]) / self.h
+                    g_plus = self.approximate_gradient_parallel(x_plus, adaptive=adaptive)
+                    g_minus = self.approximate_gradient_parallel(x_minus, adaptive=adaptive)
 
-            case 'centered':
-                # Perturb even indices in forward direction and compute gradient
-                x_perturbed_forward_even = x.copy()
-                x_perturbed_forward_even[even_indices] += self.h
-                grad_perturbed_forward_even = self.approximate_gradient_parallel(x_perturbed_forward_even)
+                    denom = _step_for(idx)
+                    diagonal[idx] = (g_plus[idx] - g_minus[idx]) / (2 * denom)
+                    valid = idx[idx < n - 1]
+                    if valid.size:
+                        denom_sd = _step_for(valid)
+                        super_diagonal[valid] = (g_plus[valid + 1] - g_minus[valid + 1]) / (2 * denom_sd)
 
-                # Perturb odd indices in forward direction and compute gradient
-                x_perturbed_forward_odd = x.copy()
-                x_perturbed_forward_odd[odd_indices] += self.h
-                grad_perturbed_forward_odd = self.approximate_gradient_parallel(x_perturbed_forward_odd)
-
-                # Perturb even indices in backward direction and compute gradient
-                x_perturbed_backward_even = x.copy()
-                x_perturbed_backward_even[even_indices] -= self.h
-                grad_perturbed_backward_even = self.approximate_gradient_parallel(x_perturbed_backward_even)
-
-                # Perturb odd indices in backward direction and compute gradient
-                x_perturbed_backward_odd = x.copy()
-                x_perturbed_backward_odd[odd_indices] -= self.h
-                grad_perturbed_backward_odd = self.approximate_gradient_parallel(x_perturbed_backward_odd)
-
-                # Compute diagonal and super-diagonal for even indices using centered difference
-                diagonal[even_indices] = (grad_perturbed_forward_even[even_indices] - grad_perturbed_backward_even[even_indices]) / (2 * self.h)
-                valid_super_even = even_indices[even_indices < n - 1]  # Ensure i+1 is in bounds
-                super_diagonal[valid_super_even] = (grad_perturbed_forward_even[valid_super_even + 1] - grad_perturbed_backward_even[valid_super_even + 1]) / (2 * self.h)
-
-                # Compute diagonal and super-diagonal for odd indices using centered difference
-                diagonal[odd_indices] = (grad_perturbed_forward_odd[odd_indices] - grad_perturbed_backward_odd[odd_indices]) / (2 * self.h)
-                valid_super_odd = odd_indices[odd_indices < n - 1]  # Ensure i+1 is in bounds
-                super_diagonal[valid_super_odd] = (grad_perturbed_forward_odd[valid_super_odd + 1] - grad_perturbed_backward_odd[valid_super_odd + 1]) / (2 * self.h)
+            case _:
+                raise ValueError(f"Unknown finite-difference method: {self.method}. Use 'forward', 'backward', or 'central'.")
 
         # Construct the sparse Hessian matrix
         hessian = diags([super_diagonal, diagonal, super_diagonal], offsets=[-1, 0, 1], shape=(n, n), format="csr")

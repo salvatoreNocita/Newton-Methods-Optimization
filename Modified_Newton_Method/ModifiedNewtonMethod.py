@@ -62,7 +62,7 @@ class ModifiedNewton(object):
     - Step(xk, alphak, pk) -> Performs an iteration step: x_{k+1} = x_k + alphak * pk.
     - Run() -> Executes the full optimization procedure and returns the final solution, function value, gradient norm, total iterations, and iteration history.
     """
-    def __init__(self, x0: np.array,alpha0: float, function: str, kmax: int, tolgrad: float, c1: float, 
+    def __init__(self, x0: np.array,function: str,alpha0: float, kmax: int, tolgrad: float, c1: float, 
                  rho: float, btmax: int, solver_linear_system: str,H_correction_factor,precond: str,
                  derivatives: str, derivative_method: str, perturbation: float):
         
@@ -140,7 +140,7 @@ class ModifiedNewton(object):
             else:
                 raise ValueError(f"Unknown function '{self.function}' for exact derivatives")
             
-        elif self.derivatives == 'finite_differences':
+        elif self.derivatives == 'finite_differences' or self.derivatives == 'adaptive_finite_differences':
             grad = self.sp_finit_d.approximate_gradient_parallel
             if len(xk) < 10**3:
                 hessian = self.finit_d.hessian
@@ -162,11 +162,17 @@ class ModifiedNewton(object):
 
     def Run(self)-> tuple[np.array, float, float, int, list[np.array], list[float]]:
         xk = self.x0
-        grad = self.compute_gradient(xk)
+        if self.derivatives == 'adaptive_finite_differences':
+            grad = self.compute_gradient(xk,adaptive=True)
+        else:
+            grad = self.compute_gradient(xk,adaptive=False)
         self.gradient = grad
         
         while self.conditions.StoppingCriterion_notmet(xk,grad,self.tolgrad,self.k,self.kmax):
-            hessf = self.compute_hessian(xk,grad)
+            if self.derivatives == 'adaptive_finite_differences':
+                hessf = self.compute_hessian(xk,grad,adaptive=True)
+            else:
+                hessf = self.compute_hessian(xk,grad,adaptive=False)
             if isinstance(hessf, tuple) and len(hessf) == 2:
                 _, hessf = hessf
             if self.derivatives == 'finite_differences':
@@ -194,6 +200,5 @@ class ModifiedNewton(object):
                 self.k += 1
 
         norm_gradfxk = np.linalg.norm(grad)
-        self.conditions.check_solution_error(xk,self.function,tol=10e-6)
 
         return xk, self.objective_function(xk), norm_gradfxk, self.k, self.x_seq, self.bt_seq
