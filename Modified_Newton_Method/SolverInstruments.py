@@ -11,17 +11,13 @@ class Solvers(object):
 
     def Build_bk(self,hessf: np.array,k_max: int,corr_fact: float) -> np.ndarray:
         beta = 1e-3
-        try:
-            import scipy.sparse as sp
-            if sp.issparse(hessf):
-                diag_elements = hessf.diagonal()
-                H = hessf.toarray()
-            else:
-                diag_elements = np.diag(hessf)
-                H = hessf
-        except Exception:
+        if sci.issparse(hessf):
+            diag_elements = hessf.diagonal()
+            H = hessf.toarray()
+        else:
             diag_elements = np.diag(hessf)
             H = hessf
+
         tau0 = 0 if np.min(diag_elements) > 0 else (-np.min(diag_elements) + beta)
         tauk = tau0
         bk = H + tauk * np.identity(H.shape[0])
@@ -55,7 +51,7 @@ class Solvers(object):
             A = A.tocsc()                                           #We want to work in csc format
 
         n = A.shape[0]
-        L = scis.lil_matrix((n,n))                                       #initialize empty matrix
+        L = scis.lil_matrix((n,n))                                  #initialize empty matrix
         eps = 1e-15                                                 #Tollerance
 
         for i in range(n):
