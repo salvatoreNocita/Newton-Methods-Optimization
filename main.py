@@ -6,7 +6,7 @@ from Testers import Test_settings
 def main():
     np.random.seed(1)
     test = Test_settings()
-    x0 = test.initialize_x0("extended_rosenbrock", 10**5)
+    x0 = test.initialize_x0("discrete_boundary_value_problem", 10**3)
     #x0 = np.zeros(10**3)
     h = {'forward_difference': 1e-5, 'backward_difference': 1e-5, 'central_difference': 1e-6}
     NewtonBackTracking_ARG_f2= {'x0': x0,
@@ -14,15 +14,15 @@ def main():
                                 'btmax': 50,
                                 'rho': 0.5,
                                 'c1': 1e-4,
-                                'tolgrad': 1e-3,
+                                'tolgrad': 1e-7,
                                 'kmax': 500,
                                 'eta': 0.5,
-                                'function': 'extended_rosenbrock',
+                                'function': 'discrete_boundary_value_problem',
                                 #'solver_linear_system': 'cg',
                                 #'H_correction_factor': 3,
                                 #'precond': 'yes',
                                 'rate_of_convergence': 'superlinear',
-                                'derivatives': 'finite_differences',
+                                'derivatives': 'exact',
                                 'derivative_method': 'forward',
                                 'perturbation': h['forward_difference']
                             }

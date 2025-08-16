@@ -38,7 +38,7 @@ class Test_settings(object):
             case "discrete_boundary_value_problem":
                 h = 1.0 / (n + 1)
                 i_array = np.arange(1, n+1)
-                return i_array * h * (1 - i_array * h)
+                return i_array * h * (-1 + i_array * h)
             case "broyden_tridiagonal_function":
                 return -np.ones(n, dtype=float)
             case _:

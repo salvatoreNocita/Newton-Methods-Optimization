@@ -43,31 +43,40 @@ class FunctionDefinition(object):
 
         return F_x
     
-    def dbv_function(self,x):
+    def dbv_function(self, x):
         """
-        Calcola F(x) = sum_i( f_i(x)^2 ) per un DBVP,
-        in modo vettoriale (senza loop Python) per x shape (n,).
+        Computes F(x) = sum_i( f_i(x)^2 ) for the discrete boundary value problem.
 
-        f_i(x) = 2*x[i] - x[i-1] - x[i+1] + h^2 * ( x[i] + (i+1)*h + 1 )^(3/2)
-        con x[-1] = 0 se i=0, x[n] = 0 se i=n-1.
-        Nota: il problema non ha il fattore 0.5 davanti alla somma.
+        f_i(x) = 2*x[i] - x[i-1] - x[i+1] + h^2 * (x[i] + (i+1)*h + 1)^3 / 2
+        with boundary conditions x[0] = 0 (implicit) and x[n+1] = 0 (handled via padding).
+
+        Parameters:
+        x (numpy.ndarray): Array of shape (n,) containing x_1 to x_n.
+
+        Returns:
+        float: The value of F(x).
         """
+        import numpy as np
+
         n = len(x)
-        h = 1.0/(n+1)
-        # shift
-        x_im1 = np.roll(x, 1)
-        x_im1[0] = 0.0                  # x[-1] = 0
-        x_ip1 = np.roll(x, -1)
-        x_ip1[-1] = 0.0                 # x[n] = 0
-
-        i_array = np.arange(n)
-        V = x + (i_array+1)*h + 1.0 
-
-        # Potenza 3/2 robusta: evita NaN se V < 0 durante l'ottimizzazione se fisicamente V>=0
-        V32 = np.clip(V, 0.0, None)**1.5  
-
-        f = 2.0*x - x_im1 - x_ip1 + (h*h)*V32
-        return np.sum(f*f)  # scalare
+        h = 1.0 / (n + 1)
+        
+        # Handle boundary conditions: x_0 = x_{n+1} = 0
+        x_padded = np.concatenate([[0.0], x, [0.0]])  # [x_0, x_1, ..., x_n, x_{n+1}]
+        
+        # Compute terms using vectorized operations
+        x_i = x_padded[1:-1]  # x_1 to x_n
+        x_im1 = x_padded[:-2]  # x_0 to x_{n-1}
+        x_ip1 = x_padded[2:]   # x_2 to x_{n+1}
+        
+        i_array = np.arange(1, n + 1)  # i from 1 to n
+        V = x_i + i_array * h + 1.0    # x_i + i*h + 1
+        
+        # Compute (V)^3 / 2 (problem statement has ^3/2, not ^1.5)
+        V_term = (V ** 3) / 2.0
+        
+        f_i = 2.0 * x_i - x_im1 - x_ip1 + (h ** 2) * V_term
+        return np.sum(f_i ** 2)
     
     def btf_function(self, x):
         """

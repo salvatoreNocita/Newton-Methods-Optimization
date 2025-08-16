@@ -690,60 +690,61 @@ class ExactDerivatives(object):
             Hv[i+1] += 200 * v[i+1]  # Lower diagonal contribution
 
         return Hv
-    
+
     def dbv_hessian_vector_product(self, x, v, grad):
         """
-        Compute the Hessian-vector product of the discrete boundary value problem function at point x.
+        Compute the Hessian-vector product for the DBVP function:
+        F(x) = sum_{i=1..n} [2x_i - x_{i-1} - x_{i+1} + (h²/2)(x_i + i h + 1)^3]^2.
 
-        F(x) = sum over i=1..n of [2 x_i - x_{i-1} - x_{i+1} + h^2 ( x_i + i*h + 1 )^(3/2)]^2
+        Boundary conditions: x_0 = x_{n+1} = 0, h = 1/(n+1).
 
-        Boundary conditions: x_0 = x_{n+1} = 0
-        step size h = 1 / (n+1)
+        Args:
+            x (np.ndarray): Current point (x_1, ..., x_n).
+            v (np.ndarray): Vector to multiply with the Hessian.
+
+        Returns:
+            np.ndarray: Hessian-vector product H(x) @ v.
         """
         n = len(x)
         assert n >= 2, "Dimension must be at least 2."
-        assert len(v) == n, "Vector v must have the same dimension as x."
+        assert len(v) == n, "Vector v must match dimension of x."
 
-        # Step size
         h = 1.0 / (n + 1)
+        h_sq_over_2 = (h ** 2) / 2  # Precompute h²/2
+        f = np.zeros(n)  # Residuals f_i(x)
+        J = lil_matrix((n, n))  # Jacobian (sparse)
+        Hv = np.zeros(n)  # Hessian-vector product
 
-        # Residuals f_i
-        f = np.zeros(n)
-        # Jacobian J of f wrt x
-        J = lil_matrix((n, n))
-        
-        # Compute residuals f and Jacobian J
+        # Precompute terms
+        i_array = np.arange(1, n + 1)  # i = 1..n
+        V = x + i_array * h + 1.0  # x_i + i h + 1
+        V_cubed = V ** 3  # (x_i + i h + 1)^3
+        V_squared = V ** 2  # (x_i + i h + 1)^2 (for derivatives)
+
+        # Compute residuals f_i and Jacobian J
         for i in range(n):
-            nonlinear_base = x[i] + (i + 1) * h + 1.0
-            f[i] = 2.0 * x[i]
+            f[i] = 2 * x[i] - (x[i - 1] if i > 0 else 0) - (x[i + 1] if i < n - 1 else 0)
+            f[i] += h_sq_over_2 * V_cubed[i]
 
+            # Diagonal of Jacobian: 2 + (3 h²/2) (x_i + i h + 1)^2
+            J[i, i] = 2 + 3 * h_sq_over_2 * V_squared[i]
+
+            # Off-diagonals: -1 (from FD Laplacian)
             if i > 0:
-                f[i] -= x[i - 1]
+                J[i, i - 1] = -1
             if i < n - 1:
-                f[i] -= x[i + 1]
+                J[i, i + 1] = -1
 
-            f[i] += h**2 * (nonlinear_base ** (3.0 / 2.0))
+        J = J.tocsr()  # Convert to CSR for efficient operations
 
-            # Jacobian entries
-            d_nonlinear = (3.0 / 2.0) * (h**2) * (nonlinear_base ** (1.0 / 2.0))
-            J[i, i] = 2.0 + d_nonlinear
+        # Hessian-vector product: Hv = J^T (J v) + (sum f_i ∇²f_i) v
+        Jv = J @ v
+        Hv = J.T @ Jv  # First term: J^T J v
 
-            if i > 0:
-                J[i, i - 1] = -1.0
-            if i < n - 1:
-                J[i, i + 1] = -1.0
-        
-        J = J.tocsr()
-
-        # Hessian-vector product: Hv = J^T (J v) + correction term
-        Jv = J @ v  # Matrix-vector product J * v
-        Hv = J.T @ Jv  # Matrix-vector product J^T * (J * v)
-
-        # Add the correction term for the Hessian-vector product
-        for i in range(n):
-            nonlinear_base = x[i] + (i + 1) * h + 1.0
-            second_derivative = (3.0 / 4.0) * (h**2) * (nonlinear_base ** (-1.0 / 2.0))
-            Hv[i] += f[i] * second_derivative * v[i]
+        # Second term: sum f_i ∇²f_i v (correction term)
+        # ∇²f_i = 3 h² (x_i + i h + 1) = 3 h² V_i
+        correction = 3 * (h ** 2) * V  # ∇²f_i = 3 h² V_i
+        Hv += f * correction * v  # Add (f_i ∇²f_i) v component-wise
 
         return Hv
     
