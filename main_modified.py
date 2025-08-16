@@ -3,8 +3,8 @@ from Modified_Newton_Method import ModifiedNewtonMethod
 
 def main():
     np.random.seed(26)
-    x0 = np.random.rand(10**3)
-    #x0 = np.zeros(10**3)
+    #x0 = np.random.rand(10**3)
+    x0 = np.zeros(10**4)
     h = {'forward_difference': 1e-5, 'backward_difference': 1e-5, 'central_difference': 1e-6}
     NewtonBackTracking_ARG_f2= {'x0': x0,
                                 'alpha0': 1,

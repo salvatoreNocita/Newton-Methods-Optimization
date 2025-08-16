@@ -15,7 +15,7 @@ import wandb
 def computation(comb,function):
     MNM = ModifiedNewtonMethod.ModifiedNewton(**comb,function=function)
     t0 = time.perf_counter()
-    xk,fxk,norm_gradfx_seq,k,x_seq,success= MNM.Run()
+    xk,fxk,norm_gradfx_seq,k,x_seq,success= MNM.Run(timing=True)
     execution = time.perf_counter() - t0
     
     return execution,xk,fxk,norm_gradfx_seq,k,success
@@ -45,7 +45,6 @@ def plot_results(execution, xk, fxk, norm_gradfx_seq, k, success):
             "Iteration": i,
             "Norm Gradient": norm_gradfx
         })
-
 
 def Test(n,method,function):
     testers = Test_settings()

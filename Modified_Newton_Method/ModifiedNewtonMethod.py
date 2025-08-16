@@ -149,11 +149,13 @@ class ModifiedNewton(object):
             else:
                 if self.function == 'extended_rosenbrock':
                     hessian = self.sp_finit_d.hessian_approx_extendedros
+                    return grad,hessian
                 if self.function == 'broyden_tridiagonal_function':
                     hessian = self.sp_finit_d.hessian_approx_broyden_tridiagonal
+                    return grad,hessian
                 else:
                     hessian = self.sp_finit_d.hessian_approx_tridiagonal
-                return grad, hessian
+                    return grad, hessian
                   
         else:
             raise ValueError("'derivatives' must be either 'exact' or 'finite_differences'")
@@ -183,7 +185,7 @@ class ModifiedNewton(object):
             if isinstance(hessf, tuple) and len(hessf) == 2:
                 _, hessf = hessf
 
-            if self.derivatives == 'finite_differences':
+            if self.derivatives == 'finite_differences' or self.derivatives == 'adaptive_finite_differences':
                 hessf = self.solvers.make_symmetric(hessf)
             L, bk = self.conditions.H_is_positive_definite(hessf,self.kmax,self.H_correction_factor)
             
