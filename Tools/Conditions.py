@@ -4,7 +4,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 import numpy as np
-import scipy as sci
+import scipy.sparse as ssp
 from Modified_Newton_Method.SolverInstruments import Solvers
 
 class CheckConditions(object):
@@ -17,7 +17,7 @@ class CheckConditions(object):
         return k < k_max and np.linalg.norm(gradf) > tolgrad
 
     def H_is_positive_definite(self,hessf,k_max,corr_fact) -> np.array:
-        if sci.issparse(hessf):
+        if ssp.issparse(hessf):
             hessf = hessf.toarray()         #Convert in dense to apply cholesky (no sparse version available)
         try:
             return np.linalg.cholesky(hessf), hessf

@@ -1,4 +1,6 @@
 import numpy as np
+from itertools import product
+import math
 
 class Test_settings(object):
     """ This class is used to retrieve Tests setting. """
@@ -6,8 +8,9 @@ class Test_settings(object):
     def __init__(self):
         pass
 
-    def get_params(self):
-        NewtonBackTracking_ARG_f= {'alpha0': 1,
+    def get_modified_Newton_params(self):
+        NewtonBackTracking_ARG_f= {'x0': ['fixed','sampled'],
+                                    'alpha0': 1,
                                     'btmax': 50,
                                     'rho': 0.5,
                                     'c1': 1e-4,
@@ -22,6 +25,34 @@ class Test_settings(object):
                                 }
         
         return NewtonBackTracking_ARG_f
+
+    def expand_param_grid(self, params):
+        combos = []
+        keys = list(params.keys())
+        values_lists = [
+            v if isinstance(v, (list, tuple, np.ndarray)) else [v]
+            for v in params.values()
+        ]
+        for combo in product(*values_lists):
+            c = dict(zip(keys, combo))
+
+            # Filtra combinazioni inutili:
+            if c.get("derivatives") == "exact":
+                c["derivative_method"] = np.nan
+                c["perturbation"] = np.nan
+
+            combos.append(c)
+
+        # Rimuove duplicati mantenendo l'ordine
+        seen = set()
+        unique_combos = []
+        for c in combos:
+            t = tuple(sorted(c.items()))
+            if t not in seen:
+                seen.add(t)
+                unique_combos.append(c)
+
+        return unique_combos
 
     def initialize_x0(self, function: str, n: int):
         """ Return a standard(theorical) initial guess x0 for the chosen test function. 
@@ -38,7 +69,7 @@ class Test_settings(object):
             case "discrete_boundary_value_problem":
                 h = 1.0 / (n + 1)
                 i_array = np.arange(1, n+1)
-                return i_array * h * (-1 + i_array * h)
+                return i_array * h * (1 - i_array * h)
             case "broyden_tridiagonal_function":
                 return -np.ones(n, dtype=float)
             case _:
@@ -63,3 +94,25 @@ class Test_settings(object):
 
         return x0_list
     
+    def experimental_convergence_rate(self,grad_norms,tail=3,eps=1e-16):
+        """ This function retrieve experimental rate of convergence without knowning optimal solution of the problem.
+            Used formula: p_k = log(e_k+1/e_k)/log(e_k/e_k-1) where e_k = ||gradf(x_k)|| 
+            INPUT:
+            - norm_grad_seq = retrieved sequence of gradients norms of each iteration
+            - tail = number of values of the sequence taken into account (last elements of sequence, more reilable)
+        """
+        g = [max(float(v), eps) for v in grad_norms if v is not None and np.isfinite(v)]
+        if len(g) < 3:
+            #We cannot retrieve and experimental rate
+            return np.nan
+
+        g = g[-(tail+2):]  # (tail+2) to compute p_k
+        pk_vals = []
+        for i in range(1, len(g) - 1):
+            x_k_1, x_k, x_k__1 = g[i-1], g[i], g[i+1]       #x_k__1 is x_k+1)
+            if x_k_1 > 0 and x_k > 0 and x_k__1 > 0 and x_k_1 != x_k:
+                p = math.log(x_k__1/x_k) / math.log(x_k/x_k_1)
+                if np.isfinite(p):
+                    pk_vals.append(p)
+
+        return float(np.median(pk_vals)) if pk_vals else np.nan

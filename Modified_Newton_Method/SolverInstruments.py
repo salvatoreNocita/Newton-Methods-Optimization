@@ -11,7 +11,7 @@ class Solvers(object):
 
     def Build_bk(self,hessf: np.array,k_max: int,corr_fact: float) -> np.ndarray:
         beta = 1e-3
-        if sci.issparse(hessf):
+        if scis.issparse(hessf):
             diag_elements = hessf.diagonal()
             H = hessf.toarray()
         else:
