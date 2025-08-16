@@ -8,7 +8,7 @@ import scipy as sci
 from Tools.Derivatives import ApproximateDerivatives,ExactDerivatives,SparseApproximativeDerivatives
 from Tools.Functions import FunctionDefinition
 from Tools.Linesearch import LineSearch
-from SolverInstruments import Solvers
+from .SolverInstruments import Solvers
 from Tools.Conditions import CheckConditions
 import time 
 

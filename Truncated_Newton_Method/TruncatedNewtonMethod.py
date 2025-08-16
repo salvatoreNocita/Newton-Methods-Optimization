@@ -31,6 +31,7 @@ class TruncatedNewtonMethod:
         self.rho= rho
         self.btmax= btmax
         self.rate_of_convergence = rate_of_convergence
+        self.norm_grad_seq = []
         self.k= 0
         self.bt= 0
         self.x_seq= [x0]
@@ -107,7 +108,13 @@ class TruncatedNewtonMethod:
 
         iter_cg = []
 
-        while self.conditions.StoppingCriterion_notmet(xk,gradf,self.tolgrad,self.k,self.kmax):
+        start_time = time.perf_counter()
+        max_time = float(np.clip( 20 * (len(xk) / 1e3)**0.6 , a_min=10.0, a_max=300.0))     #Heuristic
+        success = True
+
+        while self.conditions.StoppingCriterion_notmet(xk,gradf,self.tolgrad,self.k,self.kmax) and \
+                (time.perf_counter() - start_time) < max_time:
+            
             start = time.time()
             tol_cg = min(self.eta, eta_k(gradf_norm)) * gradf_norm
             
@@ -130,6 +137,7 @@ class TruncatedNewtonMethod:
 
             gradf = self.compute_gradient(xk)
             gradf_norm = np.linalg.norm(gradf)
+            self.norm_grad_seq.append(gradf_norm)
             self.k += 1
 
             if self.k % print_every == 0:
@@ -142,8 +150,10 @@ class TruncatedNewtonMethod:
             if self.k % print_every == 0:
                 print(Fore.RED + f"Iteration {self.k} took {end - start:.4f} seconds" + Fore.RESET)
 
+        if gradf_norm > self.tolgrad or (time.perf_counter() - start_time) >= max_time:
+            success = False
         
-        return xk, self.objective_function(xk), gradf_norm, self.k, self.x_seq, self.bt_seq
+        return xk, self.objective_function(xk), self.norm_grad_seq, self.k, self.x_seq, success
     
 
     def _set_eta_k(self):

@@ -26,6 +26,22 @@ class Test_settings(object):
         
         return NewtonBackTracking_ARG_f
 
+    def get_truncated_Newton_params(self):
+        NewtonBackTracking_ARG_f= {'x0': ['fixed','sampled'],
+                                        'alpha0': 1,
+                                        'btmax': 50,
+                                        'rho': 0.5,
+                                        'c1': 1e-4,
+                                        'tolgrad': 1e-3,
+                                        'kmax': 1000,
+                                        'eta': 0.5,
+                                        'rate_of_convergence': ['superlinear','quadratic'],
+                                        'derivatives': ['exact','finite_differences','adaptive_finite_differences'],
+                                        'derivative_method': ['forward','backward','central'],
+                                        'perturbation': [1e-2,1e-4,1e-6,1e-8,1e-10,1e-12]
+                                    }
+        return NewtonBackTracking_ARG_f
+
     def expand_param_grid(self, params):
         combos = []
         keys = list(params.keys())
