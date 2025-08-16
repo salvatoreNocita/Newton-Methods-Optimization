@@ -366,6 +366,143 @@ class SparseApproximativeDerivatives(object):
         hessian = csr_matrix((data, (rows, cols)), shape=(n, n))
 
         return hessian
+
+    def hessian_approx_broyden_tridiagonal(self, x, grad, adaptive=False):
+        """
+        Approximate the Hessian for the Generalized Broyden tridiagonal function
+        using finite differences while exploiting its *penta-diagonal* structure.
+
+        Structure rationale:
+        - F(x) = sum_i |f_i(x)|^p with f_i depending on (x_{i-1}, x_i, x_{i+1}).
+        - J is tridiagonal, so J^T diag(a) J is penta-diagonal (bandwidth=2).
+        - The nonlinear correction adds only to the diagonal.
+
+        We therefore approximate only the diagonal, first, and second off-diagonals
+        using a distance-2 coloring (5-coloring) to avoid cross-contamination when
+        perturbing multiple coordinates at once.
+
+        Parameters
+        ----------
+        x : np.ndarray
+            Point where to approximate the Hessian
+        grad : np.ndarray | None
+            Gradient at x. If None, it is computed internally.
+        adaptive : bool
+            If True, use a per-coordinate step vector.
+
+        Returns
+        -------
+        scipy.sparse.csr_matrix
+            Approximated Hessian in CSR format with offsets [-2, -1, 0, 1, 2].
+        """
+        n = len(x)
+        assert n >= 2, "Dimension must be at least 2."
+
+        # Build (possibly vector) step size
+        if adaptive:
+            builder = CheckConditions()
+            h_vec = builder.build_perturbation_vector(x, self.h)
+        else:
+            h_vec = self.h
+
+        # Base gradient at x (use provided grad if available)
+        base_grad = grad if grad is not None else self.approximate_gradient_parallel(x, adaptive=adaptive)
+
+        # 5-coloring to avoid distance-2 contamination (bandwidth=2)
+        color_classes = [np.arange(shift, n, 5) for shift in range(5)]
+
+        # Allocate bands
+        diagonal = np.zeros(n)
+        super1 = np.zeros(max(n - 1, 0))  # H_{i,i+1}
+        super2 = np.zeros(max(n - 2, 0))  # H_{i,i+2}
+
+        def _step_for(idx):
+            return h_vec if np.isscalar(h_vec) else h_vec[idx]
+
+        match self.method:
+            case 'forward':
+                for idx in color_classes:
+                    if idx.size == 0:
+                        continue
+                    x_pert = x.copy()
+                    x_pert[idx] += _step_for(idx)
+                    g_pert = self.approximate_gradient_parallel(x_pert, adaptive=adaptive)
+
+                    # Diagonal H_{ii}
+                    denom = _step_for(idx)
+                    diagonal[idx] = (g_pert[idx] - base_grad[idx]) / denom
+
+                    # First super-diagonal H_{i,i+1}
+                    valid1 = idx[idx < n - 1]
+                    if valid1.size:
+                        denom1 = _step_for(valid1)
+                        super1[valid1] = (g_pert[valid1 + 1] - base_grad[valid1 + 1]) / denom1
+
+                    # Second super-diagonal H_{i,i+2}
+                    valid2 = idx[idx < n - 2]
+                    if valid2.size:
+                        denom2 = _step_for(valid2)
+                        super2[valid2] = (g_pert[valid2 + 2] - base_grad[valid2 + 2]) / denom2
+
+            case 'backward':
+                for idx in color_classes:
+                    if idx.size == 0:
+                        continue
+                    x_pert = x.copy()
+                    x_pert[idx] -= _step_for(idx)
+                    g_pert = self.approximate_gradient_parallel(x_pert, adaptive=adaptive)
+
+                    denom = _step_for(idx)
+                    diagonal[idx] = (base_grad[idx] - g_pert[idx]) / denom
+
+                    valid1 = idx[idx < n - 1]
+                    if valid1.size:
+                        denom1 = _step_for(valid1)
+                        super1[valid1] = (base_grad[valid1 + 1] - g_pert[valid1 + 1]) / denom1
+
+                    valid2 = idx[idx < n - 2]
+                    if valid2.size:
+                        denom2 = _step_for(valid2)
+                        super2[valid2] = (base_grad[valid2 + 2] - g_pert[valid2 + 2]) / denom2
+
+            case 'central':
+                for idx in color_classes:
+                    if idx.size == 0:
+                        continue
+                    x_plus = x.copy(); x_plus[idx] += _step_for(idx)
+                    x_minus = x.copy(); x_minus[idx] -= _step_for(idx)
+
+                    g_plus = self.approximate_gradient_parallel(x_plus, adaptive=adaptive)
+                    g_minus = self.approximate_gradient_parallel(x_minus, adaptive=adaptive)
+
+                    denom = _step_for(idx)
+                    diagonal[idx] = (g_plus[idx] - g_minus[idx]) / (2 * denom)
+
+                    valid1 = idx[idx < n - 1]
+                    if valid1.size:
+                        denom1 = _step_for(valid1)
+                        super1[valid1] = (g_plus[valid1 + 1] - g_minus[valid1 + 1]) / (2 * denom1)
+
+                    valid2 = idx[idx < n - 2]
+                    if valid2.size:
+                        denom2 = _step_for(valid2)
+                        super2[valid2] = (g_plus[valid2 + 2] - g_minus[valid2 + 2]) / (2 * denom2)
+            case _:
+                raise ValueError(f"Unknown finite-difference method: {self.method}. Use 'forward', 'backward', or 'central'.")
+
+        # Assemble sparse penta-diagonal Hessian
+        offsets = [0]
+        datas = [diagonal]
+        if n >= 2:
+            offsets.extend([-1, 1])
+            datas.extend([super1, super1])
+        if n >= 3:
+            offsets.extend([-2, 2])
+            datas.extend([super2, super2])
+
+        H = diags(datas, offsets, shape=(n, n), format='csr')
+
+        return H
     
     def hessian_approx_tridiagonal_upgraded(self, x, grad, adaptive=False):
         """

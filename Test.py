@@ -57,7 +57,7 @@ def Test(n,method,function):
         case 'modified':
             params = testers.get_modified_Newton_params()
         case 'truncated':
-            pass
+            params = testers.get_truncated_Newton_params()
         case _:
             raise ValueError(f"Unsupported method: {method}")
 

@@ -4,11 +4,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 import numpy as np
-import scipy as sci
 from Tools.Derivatives import ApproximateDerivatives,ExactDerivatives,SparseApproximativeDerivatives
 from Tools.Functions import FunctionDefinition
 from Tools.Linesearch import LineSearch
-from .SolverInstruments import Solvers
+from SolverInstruments import Solvers
 from Tools.Conditions import CheckConditions
 import time 
 
@@ -150,6 +149,8 @@ class ModifiedNewton(object):
             else:
                 if self.function == 'extended_rosenbrock':
                     hessian = self.sp_finit_d.hessian_approx_extendedros
+                if self.function == 'broyden_tridiagonal_function':
+                    hessian = self.sp_finit_d.hessian_approx_broyden_tridiagonal
                 else:
                     hessian = self.sp_finit_d.hessian_approx_tridiagonal
                 return grad, hessian
@@ -162,14 +163,17 @@ class ModifiedNewton(object):
         self.x_seq.append(xk_1)
         return xk_1
 
-    def Run(self)-> tuple[np.array, float, float, int, list[np.array], list[float], bool]:
+    def Run(self,timing=False)-> tuple[np.array, float, float, int, list[np.array], list[float], bool]:
         xk = self.x0
         grad = self.compute_gradient(xk, adaptive=self.adaptive_h)
         self.gradient = grad
         self.norm_grad_seq.append(np.linalg.norm(grad))
 
         start_time = time.perf_counter()
-        max_time = float(np.clip( 20 * (len(xk) / 1e3)**0.6 , a_min=10.0, a_max=300.0))     #Heuristic
+        if timing:
+            max_time = float(np.clip( 20 * (len(xk) / 1e3)**0.6 , a_min=10.0, a_max=300.0))     #Heuristic
+        else:
+            max_time = np.inf
         success = True
         
         while self.conditions.StoppingCriterion_notmet(xk,grad,self.tolgrad,self.k,self.kmax) and \
