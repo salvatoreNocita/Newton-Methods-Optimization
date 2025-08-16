@@ -175,7 +175,7 @@ class SparseApproximativeDerivatives(object):
 
         return np.array(grad)
 
-    def hessian_vector_product(self, x, v, grad):
+    def hessian_vector_product(self, x, v, grad, adaptive = False):
         """
         Approximate the Hessian-vector product (H @ v) using finite differences.
 
@@ -691,7 +691,7 @@ class ExactDerivatives(object):
 
         return Hv
     
-    def dbv_hessian_vector_product(x, v, grad):
+    def dbv_hessian_vector_product(self, x, v, grad):
         """
         Compute the Hessian-vector product of the discrete boundary value problem function at point x.
 
@@ -747,7 +747,7 @@ class ExactDerivatives(object):
 
         return Hv
     
-    def extended_rosenbrock_hessian_vector_product(x, v, grad):
+    def extended_rosenbrock_hessian_vector_product(self, x, v, grad):
         """
         Compute the Hessian-vector product for the extended Rosenbrock function at point x using sparse matrices.
 
@@ -789,7 +789,7 @@ class ExactDerivatives(object):
 
         return Hv
     
-    def broyden_hessian_vector_product(x, v, grad):
+    def broyden_hessian_vector_product(self, x, v, grad):
         """
         Hessian-vector product per la Generalized Broyden tridiagonal (Problem 5):
 

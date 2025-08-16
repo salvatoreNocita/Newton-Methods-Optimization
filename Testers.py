@@ -3,10 +3,10 @@ import numpy as np
 class Test_settings(object):
     """ This class is used to retrieve Tests setting. """
 
-    def __init__():
+    def __init__(self):
         pass
 
-    def get_params():
+    def get_params(self):
         NewtonBackTracking_ARG_f= {'alpha0': 1,
                                     'btmax': 50,
                                     'rho': 0.5,

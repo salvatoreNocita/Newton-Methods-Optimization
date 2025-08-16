@@ -1,9 +1,12 @@
 import numpy as np
 from Modified_Newton_Method import ModifiedNewtonMethod
+from Truncated_Newton_Method import TruncatedNewtonMethod
+from Testers import Test_settings
 
 def main():
     np.random.seed(1)
-    x0 = np.random.rand(10**3)
+    test = Test_settings()
+    x0 = test.initialize_x0("extended_rosenbrock", 10**5)
     #x0 = np.zeros(10**3)
     h = {'forward_difference': 1e-5, 'backward_difference': 1e-5, 'central_difference': 1e-6}
     NewtonBackTracking_ARG_f2= {'x0': x0,
@@ -12,17 +15,19 @@ def main():
                                 'rho': 0.5,
                                 'c1': 1e-4,
                                 'tolgrad': 1e-3,
-                                'kmax': 1000,
-                                'function': 'discrete_boundary_value_problem',
-                                'solver_linear_system': 'cg',
-                                'H_correction_factor': 3,
-                                'precond': 'yes',
-                                'derivatives': 'adaptive_finite_differences',
-                                'derivative_method': 'central',
-                                'perturbation': h['central_difference']
+                                'kmax': 500,
+                                'eta': 0.5,
+                                'function': 'extended_rosenbrock',
+                                #'solver_linear_system': 'cg',
+                                #'H_correction_factor': 3,
+                                #'precond': 'yes',
+                                'rate_of_convergence': 'superlinear',
+                                'derivatives': 'finite_differences',
+                                'derivative_method': 'forward',
+                                'perturbation': h['forward_difference']
                             }
     
-    Nbk= ModifiedNewtonMethod.ModifiedNewton(**NewtonBackTracking_ARG_f2)
+    Nbk= TruncatedNewtonMethod.TruncatedNewtonMethod(**NewtonBackTracking_ARG_f2)
     xk2,fxk2,norm_gradfxk2,k2,x_seq2,bt_seq2= Nbk.Run()
     print('-'*50)
     print(f'Newton Method after {k2} iterations:')

@@ -4,6 +4,18 @@ class FunctionDefinition(object):
     """This class computes specified function in a given point"""
     def __init__(self):
         pass
+        
+    def get_objective_function(self, function_name: str):
+        self.function_map = {
+            'extended_rosenbrock': self.extended_rosenbrock,
+            'discrete_boundary_value_problem': self.dbv_function,
+            'broyden_tridiagonal_function': self.btf_function,
+            'rosenbrock': self.rosenbrock_function
+        }
+        if function_name in self.function_map:
+            return self.function_map[function_name]
+        else:
+            raise ValueError(f"Function '{function_name}' is not defined in FunctionDefinition class.")
 
     def extended_rosenbrock(self,x):
         """
