@@ -208,7 +208,12 @@ def Test(n,method,function):
 
 
 if __name__ == '__main__':
-    n = 50
+    """ Possible values:
+        - n = [10**3,10**4,10**5]
+        - method = [modified,truncated]
+        - functions = [extended_rosenbrock,extended_powell,broyden_tridiagonal_function]
+    """
+    n = 10**3
     method = 'modified'
     function = 'extended_rosenbrock'
     Test(n,method,function)
