@@ -82,10 +82,13 @@ class Test_settings(object):
                 x0[0::2] = -1.2
                 x0[1::2] = 1.0
                 return x0
-            case "discrete_boundary_value_problem":
-                h = 1.0 / (n + 1)
-                i_array = np.arange(1, n+1)
-                return i_array * h * (1 - i_array * h)
+            case "extended_powell":
+                x0 = np.empty(n, dtype=float)
+                x0[0::4] = 3.0
+                x0[1::4] = -1.0
+                x0[2::4] = 0.0
+                x0[3::4] = 1.0
+                return x0
             case "broyden_tridiagonal_function":
                 return -np.ones(n, dtype=float)
             case _:
