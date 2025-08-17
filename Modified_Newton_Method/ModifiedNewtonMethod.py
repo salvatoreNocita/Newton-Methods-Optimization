@@ -71,8 +71,8 @@ class ModifiedNewton(object):
         match self.function:
             case 'extended_rosenbrock':
                 self.objective_function = functions.extended_rosenbrock            
-            case 'discrete_boundary_value_problem':
-                self.objective_function = functions.dbv_function                      
+            case 'extended_powell':
+                self.objective_function = functions.extended_powell                      
             case 'broyden_tridiagonal_function':
                 self.objective_function = functions.btf_function
             case 'rosenbrock':
@@ -114,11 +114,11 @@ class ModifiedNewton(object):
                     return H.toarray() if hasattr(H, 'toarray') else np.asarray(H)
                 return grad_fn, hess_fn
             
-            elif self.function == 'discrete_boundary_value_problem':
+            elif self.function == 'extended_powell':
                 def grad_fn(x, adaptive=None):
-                    return self.exact_d.discrete_boundary_value_problem(x, hessian=False)
+                    return self.exact_d.extended_powell(x, hessian=False)
                 def hess_fn(x,gradient,h):
-                    _, H = self.exact_d.discrete_boundary_value_problem(x, hessian=True)
+                    _, H = self.exact_d.extended_powell(x, hessian=True)
                     return H.toarray() if hasattr(H, 'toarray') else np.asarray(H)
                 return grad_fn, hess_fn
             
@@ -150,13 +150,12 @@ class ModifiedNewton(object):
                 if self.function == 'extended_rosenbrock':
                     hessian = self.sp_finit_d.hessian_approx_extendedros
                     return grad,hessian
-                if self.function == 'broyden_tridiagonal_function':
+                elif self.function == 'broyden_tridiagonal_function':
                     hessian = self.sp_finit_d.hessian_approx_broyden_tridiagonal
                     return grad,hessian
-                else:
-                    hessian = self.sp_finit_d.hessian_approx_tridiagonal
+                elif self.function == 'extended_powell':
+                    hessian = self.sp_finit_d.hessian_approx_extended_powell
                     return grad, hessian
-                  
         else:
             raise ValueError("'derivatives' must be either 'exact' or 'finite_differences'")
         
@@ -173,7 +172,7 @@ class ModifiedNewton(object):
 
         start_time = time.perf_counter()
         if timing:
-            max_time = float(np.clip( 20 * (len(xk) / 1e3)**0.6 , a_min=10.0, a_max=300.0))     #Heuristic
+            max_time = float(np.clip( 20 * (len(xk) / 1e3)**0.6 , a_min=10.0, a_max=300.0))                 #Heuristic formula
         else:
             max_time = np.inf
         success = True

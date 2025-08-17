@@ -43,41 +43,6 @@ class FunctionDefinition(object):
 
         return F_x
     
-    def dbv_function(self, x):
-        """
-        Computes F(x) = sum_i( f_i(x)^2 ) for the discrete boundary value problem.
-
-        f_i(x) = 2*x[i] - x[i-1] - x[i+1] + h^2 * (x[i] + (i+1)*h + 1)^3 / 2
-        with boundary conditions x[0] = 0 (implicit) and x[n+1] = 0 (handled via padding).
-
-        Parameters:
-        x (numpy.ndarray): Array of shape (n,) containing x_1 to x_n.
-
-        Returns:
-        float: The value of F(x).
-        """
-        import numpy as np
-
-        n = len(x)
-        h = 1.0 / (n + 1)
-        
-        # Handle boundary conditions: x_0 = x_{n+1} = 0
-        x_padded = np.concatenate([[0.0], x, [0.0]])  # [x_0, x_1, ..., x_n, x_{n+1}]
-        
-        # Compute terms using vectorized operations
-        x_i = x_padded[1:-1]  # x_1 to x_n
-        x_im1 = x_padded[:-2]  # x_0 to x_{n-1}
-        x_ip1 = x_padded[2:]   # x_2 to x_{n+1}
-        
-        i_array = np.arange(1, n + 1)  # i from 1 to n
-        V = x_i + i_array * h + 1.0    # x_i + i*h + 1
-        
-        # Compute (V)^3 / 2 (problem statement has ^3/2, not ^1.5)
-        V_term = (V ** 3) / 2.0
-        
-        f_i = 2.0 * x_i - x_im1 - x_ip1 + (h ** 2) * V_term
-        return np.sum(f_i ** 2)
-    
     def btf_function(self, x):
         """
         Generalized Broyden tridiagonal (Problem 5):
@@ -95,6 +60,45 @@ class FunctionDefinition(object):
 
         f = (3.0 - 2.0*x) * x + 1.0 - x_im1 - x_ip1
         return np.sum(np.abs(f) ** p)
+    
+    def extended_powell(self, x):
+        """
+        Compute the block-structured function
+            F(x) = (1/n) * \sum_{k=1}^{n} f_k(x)^2
+        where n is a multiple of 4 and, for each block j = 1, ..., n/4
+            f_{4j-3}(x) = x_{4j-3} + 10 x_{4j-2}
+            f_{4j-2}(x) = sqrt(5) * (x_{4j-1} - x_{4j})
+            f_{4j-1}(x) = (x_{4j-2} - 2 x_{4j-1})**2
+            f_{4j}(x)   = sqrt(10) * (x_{4j-3} - x_{4j})**2
+        The returned value is F(x).
+
+        Parameters
+        ----------
+        x : np.ndarray
+            1-D array of length n, with n % 4 == 0.
+
+        Returns
+        -------
+        float
+            Function value F(x).
+        """
+        x = np.asarray(x, dtype=float)
+        n = x.size
+
+        # Work blockwise: [a, b, c, d] = [x_{4j-3}, x_{4j-2}, x_{4j-1}, x_{4j}]
+        blocks = x.reshape(-1, 4)
+        a = blocks[:, 0]
+        b = blocks[:, 1]
+        c = blocks[:, 2]
+        d = blocks[:, 3]
+
+        f1 = a + 10.0 * b
+        f2 = np.sqrt(5.0) * (c - d)
+        f3 = (b - 2.0 * c) ** 2
+        f4 = np.sqrt(10.0) * (a - d) ** 2
+
+        f = np.concatenate([f1, f2, f3, f4])
+        return float((1.0 / n) * np.sum(f ** 2))
     
     def rosenbrock_function(self, x):
         """ Compute the Rosenbrock function value for a given vector x. """

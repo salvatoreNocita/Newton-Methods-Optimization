@@ -503,6 +503,99 @@ class SparseApproximativeDerivatives(object):
         H = diags(datas, offsets, shape=(n, n), format='csr')
 
         return H
+
+    def hessian_approx_extended_powell(self, x, grad, adaptive=False):
+        """
+        Approximate the Hessian of the **Extended Powell (Powell singular)** objective using
+        finite differences while exploiting its *block-diagonal* sparsity (independent 4×4 blocks).
+
+        The function couples variables only within 4-length blocks, so the Hessian is block-diagonal.
+        We perturb disjoint index sets using a 4-coloring by index mod 4 so that within each block
+        only one coordinate is perturbed at a time (no contamination).
+
+        Parameters
+        ----------
+        x : np.ndarray
+            Point where to approximate the Hessian (n must be a multiple of 4).
+        grad : np.ndarray | None
+            Gradient at x. If None, it is computed internally via finite differences.
+        adaptive : bool
+            If True, use a per-coordinate step vector.
+
+        Returns
+        -------
+            Approximated Hessian in CSR format (block-diagonal with 4x4 blocks).
+        """
+        n = len(x)
+
+        # Build (possibly vector) step size
+        if adaptive:
+            builder = CheckConditions()
+            h_vec = builder.build_perturbation_vector(x, self.h)
+        else:
+            h_vec = self.h
+
+        def _step_for(idx):
+            return h_vec if np.isscalar(h_vec) else h_vec[idx]
+
+        # 4-coloring by block position: indices 0..n-1 split by (i % 4)
+        color_classes = [np.arange(shift, n, 4) for shift in range(4)]
+
+        # We'll accumulate the full (sparse) Hessian by columns using LIL for efficiency
+        H = lil_matrix((n, n))
+
+        match self.method:
+            case 'forward':
+                for cls in color_classes:
+                    if cls.size == 0:
+                        continue
+                    x_pert = x.copy()
+                    x_pert[cls] += _step_for(cls)
+                    g_pert = self.approximate_gradient_parallel(x_pert, adaptive=adaptive)
+
+                    # For each perturbed coordinate k, fill its column within its 4×4 block
+                    for k in cls:
+                        denom = _step_for(k)
+                        b0 = (k // 4) * 4  # block start
+                        block_js = range(b0, b0 + 4)
+                        for j in block_js:
+                            H[j, k] = (g_pert[j] - grad[j]) / denom
+
+            case 'backward':
+                for cls in color_classes:
+                    if cls.size == 0:
+                        continue
+                    x_pert = x.copy()
+                    x_pert[cls] -= _step_for(cls)
+                    g_pert = self.approximate_gradient_parallel(x_pert, adaptive=adaptive)
+
+                    for k in cls:
+                        denom = _step_for(k)
+                        b0 = (k // 4) * 4
+                        block_js = range(b0, b0 + 4)
+                        for j in block_js:
+                            H[j, k] = (grad[j] - g_pert[j]) / denom
+
+            case 'central':
+                for cls in color_classes:
+                    if cls.size == 0:
+                        continue
+                    x_plus = x.copy();  x_plus[cls]  += _step_for(cls)
+                    x_minus = x.copy(); x_minus[cls] -= _step_for(cls)
+
+                    g_plus = self.approximate_gradient_parallel(x_plus, adaptive=adaptive)
+                    g_minus = self.approximate_gradient_parallel(x_minus, adaptive=adaptive)
+
+                    for k in cls:
+                        denom = _step_for(k)
+                        b0 = (k // 4) * 4
+                        block_js = range(b0, b0 + 4)
+                        for j in block_js:
+                            H[j, k] = (g_plus[j] - g_minus[j]) / (2.0 * denom)
+            case _:
+                raise ValueError(f"Unknown finite-difference method: {self.method}. Use 'forward', 'backward', or 'central'.")
+
+        return csr_matrix(H)
     
 class ExactDerivatives(object):
     """This class computes exact derivatives of a given function in a given point"""
@@ -549,78 +642,126 @@ class ExactDerivatives(object):
             return grad
         
         return grad, csr_matrix(H)
-    
 
-    def discrete_boundary_value_problem(self,x,hessian=True):
+    def extended_powell(self, x, hessian=True):
         """
-        Compute the exact value, gradient, and Hessian of the discrete boundary value problem function at point x.
+        Compute the exact gradient and (optionally) Hessian of the **Extended Powell singular function**
+        arranged in 4-variable blocks, keeping the same signature/name for compatibility.
 
-        F(x) = sum over i=1..n of [2 x_i - x_{i-1} - x_{i+1} + h^2 ( x_i + i*h + 1 )^(3/2)]^2
+        Block residuals for each j = 0, 1, ..., m-1 with variables
+            a = x[4j], b = x[4j+1], c = x[4j+2], d = x[4j+3]:
 
-        Boundary conditions: x_0 = x_{n+1} = 0
-        step size h = 1 / (n+1)
+            r1 = a + 10 b
+            r2 = sqrt(5) (c - d)
+            r3 = (b - 2 c)^2
+            r4 = sqrt(10) (a - d)^2
+
+        Objective: F(x) = (1/n) * sum_k r_k(x)^2  (the 1/n factor does not change
+        the location of stationary points but you can drop it if your global
+        objective definition differs; here we follow the residual/J/H pattern so
+        gradient = J^T r and Hessian = J^T J + sum_k r_k * \nabla^2 r_k).
+
+        Parameters
+        ----------
+        x : np.ndarray of shape (n,)
+            n must be a multiple of 4.
+        hessian : bool
+            If True, also return the sparse Hessian (CSR).
+
+        Returns
+        -------
+        grad : np.ndarray
+            Exact gradient at x.
+        H : scipy.sparse.csr_matrix, optional
+            Exact Hessian at x (returned only if hessian=True).
         """
 
+        x = np.asarray(x, dtype=float)
         n = len(x)
-        assert n >= 2, "Dimension must be at least 2."
+        assert n % 4 == 0, "Dimension n must be a multiple of 4."
 
-        h = 1.0 / (n + 1)
+        m = n  # number of residuals equals number of variables here
+        r = np.zeros(m, dtype=float)
+        J = lil_matrix((m, n))
+        H = lil_matrix((n, n)) if hessian else None
 
-        f = np.zeros(n)
-        J = lil_matrix((n, n))
-        H = lil_matrix((n, n))
+        # Process each 4-variable block
+        for j in range(n // 4):
+            idx = 4 * j
+            a, b, c, d = x[idx], x[idx + 1], x[idx + 2], x[idx + 3]
 
-        for i in range(n):
-            # term non lineare
-            nonlinear_base = x[i] + (i + 1)*h + 1.0
-            f[i] = 2.0 * x[i]
+            # Residual indices
+            k1, k2, k3, k4 = idx, idx + 1, idx + 2, idx + 3
 
-            # x_{i-1} esiste se i>0, altrimenti e` 0
-            if i > 0:
-                f[i] -= x[i-1]
-            else:
-                # i=0 => x_{-1}=0
-                pass
+            # r1 = a + 10 b
+            r1 = a + 10.0 * b
+            r[k1] = r1
+            J[k1, idx] = 1.0
+            J[k1, idx + 1] = 10.0
+            # Hessian(r1) = 0
 
-            if i < n - 1:
-                f[i] -= x[i+1]
-            else:
-                # i=n-1 => x_{n}=0 in definizione
-                pass
+            # r2 = sqrt(5) (c - d)
+            s5 = np.sqrt(5.0)
+            r2 = s5 * (c - d)
+            r[k2] = r2
+            J[k2, idx + 2] = s5
+            J[k2, idx + 3] = -s5
+            # Hessian(r2) = 0
 
-            # Aggiunta parte +h^2 (x_i + (i+1)h + 1)^(3/2)
-            f[i] += h**2 * (nonlinear_base**(3.0/2.0))
+            # r3 = (b - 2 c)^2
+            t = (b - 2.0 * c)
+            r3 = t * t
+            r[k3] = r3
+            # grad r3
+            J[k3, idx + 1] = 2.0 * t
+            J[k3, idx + 2] = -4.0 * t
+            # Hessian(r3) = [[0,0,0,0],[0,2,-4,0],[0,-4,8,0],[0,0,0,0]] in the block
+            # (correction added later)
 
-        for i in range(n):
-            nonlinear_base = x[i] + (i + 1)*h + 1.0
-            d_nonlinear = (3.0/2.0)* (h**2) * (nonlinear_base**(1.0/2.0))
-            J[i,i] = 2.0 + d_nonlinear
+            # r4 = sqrt(10) (a - d)^2
+            s10 = np.sqrt(10.0)
+            u = (a - d)
+            r4 = s10 * (u * u)
+            r[k4] = r4
+            # grad r4
+            J[k4, idx] = s10 * 2.0 * u
+            J[k4, idx + 3] = -s10 * 2.0 * u
+            # Hessian(r4) = s10 * [[2,0,0,-2],[0,0,0,0],[0,0,0,0],[-2,0,0,2]] in the block
+            # (correction added later)
 
-            if i > 0:
-                # df_i/dx_{i-1} = -1
-                J[i, i-1] = -1.0
-            if i < n - 1:
-                # df_i/dx_{i+1} = -1
-                J[i, i+1] = -1.0
-
-        if hessian == True:
-            H = J.T @ J
-            for i in range(n):
-                nonlinear_base = x[i] + (i+1)*h + 1.0
-                #  d/dx_i( (x[i]+...)^(3/2) ) = (3/2)( ... )^(1/2)
-                # second derivative => d^2/d x_i^2 = (3/2)(1/2)( ... )^(-1/2) = (3/4)( ... )^(-1/2)
-
-                second_derivative = (3.0/4.0)* (h**2) * (nonlinear_base**(-1.0/2.0))
-                H[i,i] += f[i] * second_derivative
-
+        # Gradient
         J = J.tocsr()
-        grad = J.T @ f
+        grad = J.T @ r
 
-        if hessian == False:
+        if not hessian:
             return grad
 
-        return grad, csr_matrix(H)
-    
+        # Start with Gauss-Newton term
+        H = (J.T @ J).tolil()
+
+        # Add nonlinearity corrections: sum_k r_k * Hessian(r_k)
+        for j in range(n // 4):
+            idx = 4 * j
+            a, b, c, d = x[idx], x[idx + 1], x[idx + 2], x[idx + 3]
+
+            # r3 correction (Hessian of (b - 2c)^2)
+            t = (b - 2.0 * c)
+            r3 = t * t
+            H[idx + 1, idx + 1] += r3 * 2.0
+            H[idx + 1, idx + 2] += r3 * (-4.0)
+            H[idx + 2, idx + 1] += r3 * (-4.0)
+            H[idx + 2, idx + 2] += r3 * 8.0
+
+            # r4 correction (Hessian of sqrt(10) * (a - d)^2 = s10 * [a - d]^2)
+            s10 = np.sqrt(10.0)
+            u = (a - d)
+            r4 = s10 * (u * u)
+            H[idx, idx]           += r4 * 2.0
+            H[idx, idx + 3]       += r4 * (-2.0)
+            H[idx + 3, idx]       += r4 * (-2.0)
+            H[idx + 3, idx + 3]   += r4 * 2.0
+
+        return grad, H.tocsr()
     
     def Broyden_tridiagonal_function(self,x,hessian=True):
         """
@@ -733,63 +874,6 @@ class ExactDerivatives(object):
             Hv[i] += -400 * x[i] * v[i+1]  # Super-diagonal contribution
             Hv[i+1] += -400 * x[i] * v[i]  # Sub-diagonal contribution
             Hv[i+1] += 200 * v[i+1]  # Lower diagonal contribution
-
-        return Hv
-
-    def dbv_hessian_vector_product(self, x, v, grad):
-        """
-        Compute the Hessian-vector product for the DBVP function:
-        F(x) = sum_{i=1..n} [2x_i - x_{i-1} - x_{i+1} + (h²/2)(x_i + i h + 1)^3]^2.
-
-        Boundary conditions: x_0 = x_{n+1} = 0, h = 1/(n+1).
-
-        Args:
-            x (np.ndarray): Current point (x_1, ..., x_n).
-            v (np.ndarray): Vector to multiply with the Hessian.
-
-        Returns:
-            np.ndarray: Hessian-vector product H(x) @ v.
-        """
-        n = len(x)
-        assert n >= 2, "Dimension must be at least 2."
-        assert len(v) == n, "Vector v must match dimension of x."
-
-        h = 1.0 / (n + 1)
-        h_sq_over_2 = (h ** 2) / 2  # Precompute h²/2
-        f = np.zeros(n)  # Residuals f_i(x)
-        J = lil_matrix((n, n))  # Jacobian (sparse)
-        Hv = np.zeros(n)  # Hessian-vector product
-
-        # Precompute terms
-        i_array = np.arange(1, n + 1)  # i = 1..n
-        V = x + i_array * h + 1.0  # x_i + i h + 1
-        V_cubed = V ** 3  # (x_i + i h + 1)^3
-        V_squared = V ** 2  # (x_i + i h + 1)^2 (for derivatives)
-
-        # Compute residuals f_i and Jacobian J
-        for i in range(n):
-            f[i] = 2 * x[i] - (x[i - 1] if i > 0 else 0) - (x[i + 1] if i < n - 1 else 0)
-            f[i] += h_sq_over_2 * V_cubed[i]
-
-            # Diagonal of Jacobian: 2 + (3 h²/2) (x_i + i h + 1)^2
-            J[i, i] = 2 + 3 * h_sq_over_2 * V_squared[i]
-
-            # Off-diagonals: -1 (from FD Laplacian)
-            if i > 0:
-                J[i, i - 1] = -1
-            if i < n - 1:
-                J[i, i + 1] = -1
-
-        J = J.tocsr()  # Convert to CSR for efficient operations
-
-        # Hessian-vector product: Hv = J^T (J v) + (sum f_i ∇²f_i) v
-        Jv = J @ v
-        Hv = J.T @ Jv  # First term: J^T J v
-
-        # Second term: sum f_i ∇²f_i v (correction term)
-        # ∇²f_i = 3 h² (x_i + i h + 1) = 3 h² V_i
-        correction = 3 * (h ** 2) * V  # ∇²f_i = 3 h² V_i
-        Hv += f * correction * v  # Add (f_i ∇²f_i) v component-wise
 
         return Hv
     
