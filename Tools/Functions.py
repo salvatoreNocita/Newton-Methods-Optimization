@@ -8,7 +8,7 @@ class FunctionDefinition(object):
     def get_objective_function(self, function_name: str):
         self.function_map = {
             'extended_rosenbrock': self.extended_rosenbrock,
-            'discrete_boundary_value_problem': self.dbv_function,
+            'extended_powell': self.extended_powell,
             'broyden_tridiagonal_function': self.btf_function,
             'rosenbrock': self.rosenbrock_function
         }

@@ -36,8 +36,12 @@ class TruncatedNewtonMethod:
         self.bt= 0
         self.x_seq= [x0]
         self.bt_seq= []
+        self.inner_iters = []
+        self.execution_times = []
+        self.tol_seq = []
         self.derivatives = derivatives
         self.gradient = np.zeros(len(self.x0))
+        self.adaptive_h = True if derivatives == 'adaptive_finite_differences' else False
 
         self.conditions = CheckConditions()
         self.linesearch = LineSearch()
@@ -83,9 +87,8 @@ class TruncatedNewtonMethod:
             
         
         elif self.derivatives == 'finite_differences' or self.derivatives == 'adaptive_finite_differences':
-            adaptive = True if self.derivatives == 'adaptive_finite_differences' else False
-            grad_fn = partial(self.sp_finit_d.approximate_gradient_parallel, adaptive=adaptive)
-            hess_vec = partial(self.sp_finit_d.hessian_vector_product, adaptive = adaptive) # TO IMPLEMENT!!! (ADAPTIVNESS)
+            grad_fn = partial(self.sp_finit_d.approximate_gradient_parallel, adaptive=self.adaptive_h)
+            hess_vec = partial(self.sp_finit_d.hessian_vector_product, adaptive = self.adaptive_h)
         
         return grad_fn, hess_vec
 
@@ -96,7 +99,7 @@ class TruncatedNewtonMethod:
         self.bt_seq.append(alphak)
         return xk_1
     
-    def Run(self, print_every = 50):
+    def Run(self, timing = False, print_every = 50):
 
         xk = self.x0
         self.x_seq.append(xk)
@@ -106,10 +109,11 @@ class TruncatedNewtonMethod:
 
         eta_k = self._set_eta_k()
 
-        iter_cg = []
-
         start_time = time.perf_counter()
-        max_time = float(np.clip( 20 * (len(xk) / 1e3)**0.6 , a_min=10.0, a_max=300.0))     #Heuristic
+        if timing:
+            max_time = float(np.clip( 20 * (len(xk) / 1e3)**0.6 , a_min=10.0, a_max=300.0))                 #Heuristic formula
+        else:
+            max_time = np.inf
         success = True
 
         while self.conditions.StoppingCriterion_notmet(xk,gradf,self.tolgrad,self.k,self.kmax) and \
@@ -117,13 +121,15 @@ class TruncatedNewtonMethod:
             
             start = time.time()
             tol_cg = min(self.eta, eta_k(gradf_norm)) * gradf_norm
+
+            self.tol_seq.append(tol_cg)
             
             pk, it_cg = self.solvers.CG_find_pk(gradf, tol_cg, xk, self.kmax)
 
             alphak = self.linesearch.Backtracking(xk, pk, gradf, self.alpha0, self.bt, self.btmax,
                                                   self.rho, self.c1, self.objective_function)
             
-            iter_cg.append(it_cg)
+            self.inner_iters.append(it_cg)
             self.bt_seq.append(alphak)
 
             if alphak is None:
@@ -147,13 +153,16 @@ class TruncatedNewtonMethod:
                 print(f'Iterate: {xk} \n Grad Norm: {gradf_norm} \n Alpha : {alphak} \n CG Iter: {it_cg}')
             
             end = time.time()
+
+            self.execution_times.append(end - start)
             if self.k % print_every == 0:
                 print(Fore.RED + f"Iteration {self.k} took {end - start:.4f} seconds" + Fore.RESET)
 
         if gradf_norm > self.tolgrad or (time.perf_counter() - start_time) >= max_time:
             success = False
         
-        return xk, self.objective_function(xk), self.norm_grad_seq, self.k, self.x_seq, success
+        return self.execution_times, xk, self.objective_function(xk), self.norm_grad_seq, self.k, \
+              self.x_seq, success, self.inner_iters, self.bt_seq, self.tol_seq
     
 
     def _set_eta_k(self):

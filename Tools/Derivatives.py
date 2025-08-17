@@ -154,7 +154,8 @@ class SparseApproximativeDerivatives(object):
         h (float): The step size for finite differences.
         method (str): Finite difference method ('forward', 'backward', 'centered').
         n_jobs (int): Number of parallel jobs for gradient computation. Use -1 for all cores.
-
+        adaptive (bool): If True, build and use a per-coordinate perturbation vector.
+        
         Returns:
         np.ndarray: The approximated gradient.
         """
@@ -188,21 +189,21 @@ class SparseApproximativeDerivatives(object):
         Returns:
         np.ndarray: Approximated Hessian-vector product (Hv).
         """
-
+        
         match self.method:
             case "forward":
                 x_plus = x + self.h * v
-                grad_x_plus = self.approximate_gradient_parallel(x_plus)
+                grad_x_plus = self.approximate_gradient_parallel(x_plus, adaptive=adaptive)
                 Hv = (grad_x_plus - grad) / self.h
             case "backward":
                 x_minus = x - self.h * v
-                grad_x_minus = self.approximate_gradient_parallel(x_minus)
+                grad_x_minus = self.approximate_gradient_parallel(x_minus, adaptive=adaptive)
                 Hv = (grad -  grad_x_minus) / self.h
             case "central":
                 x_plus = x + self.h * v
                 x_minus = x - self.h * v
-                grad_x_plus = self.approximate_gradient_parallel(x_plus)
-                grad_x_minus = self.approximate_gradient_parallel(x_minus)
+                grad_x_plus = self.approximate_gradient_parallel(x_plus, adaptive = adaptive)
+                grad_x_minus = self.approximate_gradient_parallel(x_minus, adaptive = adaptive)
                 Hv = (grad_x_plus - grad_x_minus) / (2 * self.h)
         return Hv
 

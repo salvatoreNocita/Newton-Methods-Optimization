@@ -13,11 +13,11 @@ def main():
                                 'c1': 1e-4,
                                 'tolgrad': 1e-8,
                                 'kmax': 1000,
-                                'function': 'extended_powell',
+                                'function': 'extended_rosenbrock',
                                 'solver_linear_system': 'cg',
                                 'H_correction_factor': 2,
                                 'precond': 'yes',
-                                'derivatives': 'finite_differences',
+                                'derivatives': 'adaptive_finite_differences',
                                 'derivative_method': 'central',
                                 'perturbation': h['central_difference']
                             }

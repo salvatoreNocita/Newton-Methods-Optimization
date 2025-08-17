@@ -91,7 +91,10 @@ class ModifiedNewton(object):
         self.k= 0
         self.bt= 0
         self.x_seq= [x0]                                    #Useful for plots
+        self.bt_seq= []                                  
         self.norm_grad_seq = []
+        self.execution_times = []
+        self.inner_iters = []                               
         self.derivatives = derivatives
         self.gradient = np.zeros(len(self.x0))
         self.adaptive_h = True if derivatives == 'adaptive_finite_differences' else False
@@ -180,13 +183,14 @@ class ModifiedNewton(object):
         while self.conditions.StoppingCriterion_notmet(xk,grad,self.tolgrad,self.k,self.kmax) and \
                 (time.perf_counter() - start_time) < max_time:
             
+            start = time.time()
             hessf = self.compute_hessian(xk,grad,self.adaptive_h)
             if isinstance(hessf, tuple) and len(hessf) == 2:
                 _, hessf = hessf
 
             if self.derivatives == 'finite_differences' or self.derivatives == 'adaptive_finite_differences':
                 hessf = self.solvers.make_symmetric(hessf)
-            L, bk = self.conditions.H_is_positive_definite(hessf,self.kmax,self.H_correction_factor)
+            L, bk, inner_iter = self.conditions.H_is_positive_definite(hessf,self.kmax,self.H_correction_factor)
             
             if self.solver_linear_system == 'cg':
                 pk = self.solvers.CG_Find_pk(bk, grad, self.precond)
@@ -198,7 +202,11 @@ class ModifiedNewton(object):
                     raise(f"Is not possible to find pk with cholesky with dimension {len(xk)}")
                 
             alphak = self.linesearch.Backtracking(xk, pk, grad, self.alpha0, self.bt, self.btmax,
-                                                  self.rho, self.c1, self.objective_function)
+                                                 self.rho, self.c1, self.objective_function)
+            
+            self.bt_seq.append(alphak)
+            self.inner_iters.append(inner_iter)
+
             if alphak is None:
                 print(f"Backtracking strategy failed with {self.btmax} iterations")
                 print(f"Method doesn't converge")
@@ -211,7 +219,10 @@ class ModifiedNewton(object):
                 self.norm_grad_seq.append(np.linalg.norm(grad))
                 self.k += 1
 
+            end = time.time()
+            self.execution_times.append(end - start)
+
         if np.linalg.norm(grad) > self.tolgrad or (time.perf_counter() - start_time) >= max_time:
             success = False
 
-        return xk, self.objective_function(xk), self.norm_grad_seq, self.k, self.x_seq, success
+        return self.execution_times, xk, self.objective_function(xk), self.norm_grad_seq, self.k, success, self.inner_iters, self.bt_seq, None

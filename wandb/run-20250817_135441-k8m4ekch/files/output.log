@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Test.py", line 201, in <module>
+    Test(n,method,function)
+  File "c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Test.py", line 186, in Test
+    run_test(comb,x0)
+  File "c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Test.py", line 151, in run_test
+    inner_iter, alphas, tol_seq = computation(comb,function)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Test.py", line 19, in computation
+    return execution_times_, xk, fxk, norm_gradfx_seq, k, x_seq, success, inner_iter, alphas, tol_seq
+                                                          ^^^^^
+NameError: name 'x_seq' is not defined
