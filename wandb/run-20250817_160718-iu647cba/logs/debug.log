@@ -1,0 +1,57 @@
+2025-08-17 16:07:18,391 INFO    MainThread:23392 [wandb_init.py:setup_run_log_directory():703] Logging user logs to C:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\wandb\run-20250817_160718-iu647cba\logs\debug.log
+2025-08-17 16:07:18,391 INFO    MainThread:23392 [wandb_init.py:setup_run_log_directory():704] Logging internal logs to C:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\wandb\run-20250817_160718-iu647cba\logs\debug-internal.log
+2025-08-17 16:07:18,392 INFO    MainThread:23392 [wandb_init.py:init():830] calling init triggers
+2025-08-17 16:07:18,392 INFO    MainThread:23392 [wandb_init.py:init():835] wandb.init called with sweep_config: {}
+config: {'function': 'extended_rosenbrock', 'method': 'modified', 'n': 20, '_wandb': {}}
+2025-08-17 16:07:18,392 INFO    MainThread:23392 [wandb_init.py:init():871] starting backend
+2025-08-17 16:07:18,393 INFO    MainThread:23392 [wandb_init.py:init():874] sending inform_init request
+2025-08-17 16:07:18,397 INFO    MainThread:23392 [wandb_init.py:init():882] backend started and connected
+2025-08-17 16:07:18,399 INFO    MainThread:23392 [wandb_init.py:init():953] updated telemetry
+2025-08-17 16:07:18,409 WARNING MainThread:23392 [wandb_init.py:init():1585] [no run ID] interrupted
+Traceback (most recent call last):
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\wandb\sdk\wandb_init.py", line 1581, in init
+    return wi.init(run_settings, run_config, run_printer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\wandb\sdk\wandb_init.py", line 966, in init
+    run._populate_git_info()
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\wandb\sdk\wandb_run.py", line 1682, in _populate_git_info
+    self._settings.git_commit = repo.last_commit
+                                ^^^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\wandb\sdk\lib\gitlib.py", line 119, in last_commit
+    if not self.repo.head or not self.repo.head.is_valid():
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\git\refs\symbolic.py", line 521, in is_valid
+    self.object  # noqa: B018
+    ^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\git\refs\symbolic.py", line 401, in object
+    return self._get_object()
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\git\refs\symbolic.py", line 287, in _get_object
+    return Object.new_from_sha(self.repo, hex_to_bin(self.dereference_recursive(self.repo, self.path)))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\git\objects\base.py", line 149, in new_from_sha
+    oinfo = repo.odb.info(sha1)
+            ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\git\db.py", line 41, in info
+    hexsha, typename, size = self._git.get_object_header(bin_to_hex(binsha))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\git\cmd.py", line 1695, in get_object_header
+    cmd = self._get_persistent_cmd("cat_file_header", "cat_file", batch_check=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\git\cmd.py", line 1671, in _get_persistent_cmd
+    cmd = self._call_process(cmd_name, *args, **options)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\git\cmd.py", line 1616, in _call_process
+    return self.execute(call, **exec_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\git\cmd.py", line 1279, in execute
+    proc = safer_popen(
+           ^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\git\cmd.py", line 286, in _safer_popen_windows
+    return Popen(
+           ^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1010, in __init__
+    self.stdin = io.open(p2cwrite, 'wb', bufsize)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
+2025-08-17 16:07:19,381 INFO    MsgRouterThr:23392 [mailbox.py:close():129] [no run ID] Closing mailbox, abandoning 2 handles.

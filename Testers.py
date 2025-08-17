@@ -19,9 +19,9 @@ class Test_settings(object):
                                     'solver_linear_system': 'cg',
                                     'H_correction_factor': 3,
                                     'precond': ['yes','no'],
-                                    'derivatives': ['exact','finite_differences','adaptive_finite_differences'],
-                                    'derivative_method': ['forward','backward','central'],
-                                    'perturbation': [1e-2,1e-4,1e-6,1e-8,1e-10,1e-12]
+                                    'derivatives': ['exact','finite_differences'], #'adaptive_finite_differences'],
+                                    'derivative_method': 'forward', # ['forward','backward','central'],
+                                    'perturbation': 1e-2  # [1e-2,1e-4,1e-6,1e-8,1e-10,1e-12]
                                 }
         
         return NewtonBackTracking_ARG_f

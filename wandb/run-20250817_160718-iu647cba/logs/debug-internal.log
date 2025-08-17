@@ -1,0 +1,14 @@
+{"time":"2025-08-17T16:07:18.3985552+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-17T16:07:18.9870324+02:00","level":"INFO","msg":"stream: created new stream","id":"iu647cba"}
+{"time":"2025-08-17T16:07:18.9876273+02:00","level":"INFO","msg":"stream: started","id":"iu647cba"}
+{"time":"2025-08-17T16:07:18.9876273+02:00","level":"INFO","msg":"writer: started","stream_id":"iu647cba"}
+{"time":"2025-08-17T16:07:18.9876273+02:00","level":"INFO","msg":"sender: started","stream_id":"iu647cba"}
+{"time":"2025-08-17T16:07:18.9876273+02:00","level":"INFO","msg":"handler: started","stream_id":"iu647cba"}
+{"time":"2025-08-17T16:07:19.3832381+02:00","level":"INFO","msg":"stream: closing","id":"iu647cba"}
+{"time":"2025-08-17T16:07:19.396364+02:00","level":"ERROR","msg":"sender: uploadConfigFile: stream: no run"}
+{"time":"2025-08-17T16:07:19.64329+02:00","level":"ERROR","msg":"HTTP error","status":404,"method":"POST","url":"https://api.wandb.ai/graphql"}
+{"time":"2025-08-17T16:07:19.6444912+02:00","level":"ERROR","msg":"runfiles: CreateRunFiles returned error: returned error 404: {\"data\":{\"createRunFiles\":null},\"errors\":[{\"message\":\"project /modified_newton not found during createRunFiles\",\"path\":[\"createRunFiles\"]}]}"}
+{"time":"2025-08-17T16:07:19.6456533+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-17T16:07:19.6462312+02:00","level":"INFO","msg":"handler: closed","stream_id":"iu647cba"}
+{"time":"2025-08-17T16:07:19.6462312+02:00","level":"INFO","msg":"sender: closed","stream_id":"iu647cba"}
+{"time":"2025-08-17T16:07:19.6462312+02:00","level":"INFO","msg":"stream: closed","id":"iu647cba"}

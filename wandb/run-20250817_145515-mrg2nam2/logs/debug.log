@@ -1,0 +1,29 @@
+2025-08-17 14:55:16,013 INFO    MainThread:19184 [wandb_init.py:setup_run_log_directory():703] Logging user logs to C:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\wandb\run-20250817_145515-mrg2nam2\logs\debug.log
+2025-08-17 14:55:16,014 INFO    MainThread:19184 [wandb_init.py:setup_run_log_directory():704] Logging internal logs to C:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\wandb\run-20250817_145515-mrg2nam2\logs\debug-internal.log
+2025-08-17 14:55:16,015 INFO    MainThread:19184 [wandb_init.py:init():830] calling init triggers
+2025-08-17 14:55:16,016 INFO    MainThread:19184 [wandb_init.py:init():835] wandb.init called with sweep_config: {}
+config: {'function': 'extended_rosenbrock', 'method': 'modified', 'n': 10, '_wandb': {}}
+2025-08-17 14:55:16,016 INFO    MainThread:19184 [wandb_init.py:init():871] starting backend
+2025-08-17 14:55:16,017 INFO    MainThread:19184 [wandb_init.py:init():874] sending inform_init request
+2025-08-17 14:55:16,024 WARNING MainThread:19184 [wandb_init.py:init():1585] [no run ID] interrupted
+Traceback (most recent call last):
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\wandb\sdk\wandb_init.py", line 1581, in init
+    return wi.init(run_settings, run_config, run_printer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\wandb\sdk\wandb_init.py", line 876, in init
+    settings=settings.to_proto(),
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\wandb\sdk\wandb_settings.py", line 1859, in to_proto
+    for k, v in self.model_dump(exclude_none=True).items():
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\pydantic\main.py", line 463, in model_dump
+    return self.__pydantic_serializer__.to_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\wandb\sdk\wandb_settings.py", line 1595, in log_symlink_internal
+    return _path_convert(self.wandb_dir, "debug-internal.log")
+                         ^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\wandb\sdk\wandb_settings.py", line 1696, in wandb_dir
+    if os.path.exists(os.path.join(self.root_dir, ".wandb"))
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
+2025-08-17 14:55:16,976 INFO    MsgRouterThr:19184 [mailbox.py:close():129] [no run ID] Closing mailbox, abandoning 2 handles.

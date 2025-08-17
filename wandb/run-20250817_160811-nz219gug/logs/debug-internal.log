@@ -1,0 +1,12 @@
+{"time":"2025-08-17T16:08:11.6666266+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-17T16:08:12.0814146+02:00","level":"INFO","msg":"stream: created new stream","id":"nz219gug"}
+{"time":"2025-08-17T16:08:12.0819743+02:00","level":"INFO","msg":"stream: started","id":"nz219gug"}
+{"time":"2025-08-17T16:08:12.0819743+02:00","level":"INFO","msg":"writer: started","stream_id":"nz219gug"}
+{"time":"2025-08-17T16:08:12.0819743+02:00","level":"INFO","msg":"sender: started","stream_id":"nz219gug"}
+{"time":"2025-08-17T16:08:12.0819743+02:00","level":"INFO","msg":"handler: started","stream_id":"nz219gug"}
+{"time":"2025-08-17T16:08:14.143389+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading config.yaml","runtime_seconds":0.3540114,"progress":"2.0KB/2.0KB"}],"total_operations":1}}
+{"time":"2025-08-17T16:08:14.1939056+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-17T16:08:14.8569335+02:00","level":"INFO","msg":"stream: closing","id":"nz219gug"}
+{"time":"2025-08-17T16:08:14.8569335+02:00","level":"INFO","msg":"handler: closed","stream_id":"nz219gug"}
+{"time":"2025-08-17T16:08:14.8575336+02:00","level":"INFO","msg":"sender: closed","stream_id":"nz219gug"}
+{"time":"2025-08-17T16:08:14.8575336+02:00","level":"INFO","msg":"stream: closed","id":"nz219gug"}

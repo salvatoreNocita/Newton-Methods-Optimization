@@ -17,13 +17,14 @@ class CheckConditions(object):
         return k < k_max and np.linalg.norm(gradf) > tolgrad
 
     def H_is_positive_definite(self,hessf,k_max,corr_fact) -> np.array:
+        iter = 0
         if ssp.issparse(hessf):
             hessf = hessf.toarray()         #Convert in dense to apply cholesky (no sparse version available)
         try:
-            return np.linalg.cholesky(hessf), hessf
+            return np.linalg.cholesky(hessf), hessf, iter
         except np.linalg.LinAlgError:
-            L, bk = self.solvers.Build_bk(hessf,k_max,corr_fact)
-            return L, bk
+            L, bk, iter = self.solvers.Build_bk(hessf,k_max,corr_fact)
+            return L, bk, iter
     
     def build_perturbation_vector(self,xk:np.array,h):
         pv = np.empty(len(xk))

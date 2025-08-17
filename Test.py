@@ -7,18 +7,20 @@ import numpy as np
 import pandas as pd
 from Testers import Test_settings
 from Modified_Newton_Method import ModifiedNewtonMethod
+from Truncated_Newton_Method import TruncatedNewtonMethod
 import time
 import wandb
+from colorama import Fore
 
 
-
-def computation(comb,function):
-    MNM = ModifiedNewtonMethod.ModifiedNewton(**comb,function=function)
-    t0 = time.perf_counter()
-    xk,fxk,norm_gradfx_seq,k,x_seq,success= MNM.Run(timing=True)
-    execution = time.perf_counter() - t0
+def computation(comb,function, method):
+    if method == 'modified':
+        NM = ModifiedNewtonMethod.ModifiedNewton(**comb,function=function)
+    else:
+        NM = TruncatedNewtonMethod.TruncatedNewtonMethod(**comb,function=function)
+    execution_times_, xk, fxk, norm_gradfx_seq, k, success, inner_iter, alphas, tol_seq= NM.Run(timing=True)
     
-    return execution,xk,fxk,norm_gradfx_seq,k,success
+    return execution_times_, xk, fxk, norm_gradfx_seq, k, success, inner_iter, alphas, tol_seq
 
 def make_test_name(successful_tests,num_tests,n,method,function):
     succ_rate = f"{successful_tests}-of-{num_tests}"
@@ -29,7 +31,9 @@ def make_test_name(successful_tests,num_tests,n,method,function):
 def save_results(data,name,method):
     data_matrix = np.array(data).T
     df = pd.DataFrame(data_matrix,
-                      columns=['Execution Time','Number Iterations','F(x)','Norm Gradient(x)',
+                      columns=['Experiment Type', 'Preconditioning/RateofConv', 'Derivative',
+                               'Perturbation', 'Execution Time',
+                               'Iterations','F(x)','Norm Gradient(x)',
                                'Experimental Order of Convergence','Converged'])
 
     path_name = 'Results' + '_' + method + '_' + 'Newton Method'
@@ -38,13 +42,49 @@ def save_results(data,name,method):
     file_path = os.path.join(folder_path, f"{name}.csv")
     df.to_csv(file_path, index=False)
 
-def plot_results(execution, xk, fxk, norm_gradfx_seq, k, success):
+def plot_results(execution_times_, norm_gradfx_seq, k, inner_iter, alphas, comb, der_method_label, tol_seq=None):
     for i in range(k):
-        norm_gradfx = norm_gradfx_seq[i]
         wandb.log({
-            "Iteration": i,
-            "Norm Gradient": norm_gradfx
-        })
+            "Norm Gradient": norm_gradfx_seq[i],
+            "perturbation": comb['perturbation'] if comb['derivatives']=="finite_differences" else "exact",
+            "preconditioner": comb['precond'],
+            "derivative_method": der_method_label,
+        },
+            step = i)
+
+        wandb.log({
+            "Execution Time": execution_times_[i],
+            "perturbation": comb['perturbation'] if comb['derivatives']=="finite_differences" else "exact",
+            "preconditioner": comb['precond'],
+            "derivative_method": der_method_label,
+        },
+            step = i)
+
+        wandb.log({
+            "Backtracking Step Size": alphas[i],
+            "perturbation": comb['perturbation'] if comb['derivatives']=="finite_differences" else "exact",
+            "preconditioner": comb['precond'],
+            "derivative_method": der_method_label,
+        },
+            step = i)
+
+        wandb.log({
+            "Inner Iterations": inner_iter[i],
+            "perturbation": comb['perturbation'] if comb['derivatives']=="finite_differences" else "exact",
+            "preconditioner": comb['precond'],
+            "derivative_method": der_method_label,
+        },
+            step = i)
+
+        if tol_seq != None:
+            wandb.log({
+                "Adaptive Tolerance": tol_seq[i],
+                "perturbation": comb['perturbation'] if comb['derivatives']=="finite_differences" else "exact",
+                "preconditioner": comb['precond'],
+                "derivative_method": der_method_label,
+            },
+            step = i)
+
 
 def Test(n,method,function):
     testers = Test_settings()
@@ -85,49 +125,46 @@ def Test(n,method,function):
     x0_type_seq = []
     precond_seq = []
     rate_of_conv_seq = []
-    derivatives_type = []
     derivatives_method = []
     perturbation = []
 
     def run_test(comb, x0_value):
+        fixed = True if comb['x0'] == 'fixed' else False
         x0_type_seq.append(comb['x0'])
-        precond_seq.append(comb['precond']) if method == 'modified' else rate_of_conv_seq.append(comb['rate_of_convergence'])
-        derivatives_type.append(comb['derivatives'])
-        derivatives_method.append(comb['derivative_method'])
-        perturbation.append(comb['perturbation'])
 
         # Decide derivative_method label
-        der_method_label = comb['derivative_method'] if comb['derivatives'] == "finite" else "exact"
+        der_method_label = comb['derivative_method'] if comb['derivatives'] == "finite_differences" else "exact"
+
+        precond_seq.append(comb['precond']) if method == 'modified' else rate_of_conv_seq.append(comb['rate_of_convergence'])
+        derivatives_method.append(der_method_label)
+        perturbation.append(comb['perturbation'])
+
 
         # Group runs by function + preconditioner + derivative method
-        run_group = f"{function}_{comb['precond']}_{der_method_label}"
+        run_group = f"{function}_Precond:{comb['precond']}_Diff:{der_method_label}_n:{n:.0e}" if method == "modified" else f"{function}_Rate:{comb['rate_of_convergence']}_Diff:{der_method_label}_n:{n:.0e}"
 
         # Run name distinguishes perturbation
-        run_name = f"perturb: {comb['perturbation']}" if comb['derivatives']=="finite" else "exact"
+        run_name = f"perturb: {comb['perturbation']}" if comb['derivatives']=="finite_differences" else "exact"
 
         wandb.init(
             project=f"{method}_newton",
             group=run_group,
             name=run_name,
-            config={
-                "method": method,
-                "test_function": function,
-                "preconditioner": comb['precond'],
-                "derivatives": comb['derivatives'],
-                "derivative_method": comb['derivative_method'],
-                "perturbation": comb['perturbation']
-            }
+            config={"function": function, "method": method, "n": n}
         )
 
         comb['x0'] = x0_value
-        execution, xk, fxk, norm_gradfx_seq, k, success = computation(comb,function)
+        execution_times_, xk, fxk, norm_gradfx_seq, k, success,\
+              inner_iter, alphas, tol_seq = computation(comb,function, method)
 
-        print(f"Iterations: {k}, Success: {success}, Execution Time: {execution:.4f} seconds")
-        plot_results(execution, xk, fxk, norm_gradfx_seq, k, success)
+        print(f"Iterations: {k}, Success: {success}, Execution Time: {np.sum(execution_times_):.4f} seconds")
+        
+        if fixed:
+            plot_results(np.cumsum(execution_times_), norm_gradfx_seq, k, inner_iter, alphas, comb, der_method_label, tol_seq)
 
         wandb.finish()
         
-        execution_times.append(execution)
+        execution_times.append(np.sum(execution_times_))
         num_iterations.append(k)
         solutions.append(xk)
         values.append(float(np.asarray(fxk).squeeze()))
@@ -145,7 +182,16 @@ def Test(n,method,function):
         EOC_seq.append(EOC)
         norm_grad_seq.append(norm_gradfx_seq)
 
-    for comb in combinations:
+
+    save_every = 2
+    name = make_test_name(successful_tests,num_tests,n,method,function)
+    data = [x0_type_seq,precond_seq,derivatives_method,perturbation,
+            execution_times,num_iterations,values,final_norms,EOC_seq,succes_seq]
+    
+    for i, comb in enumerate(combinations):
+        if (i+1) % save_every == 0 and i > 0:
+            save_results(data, name, method)
+            print(Fore.GREEN +  f"Saved checkpoint for {name} at iteration {i}." + Fore.RESET)
         if isinstance(x0, list):
             for i,x in enumerate(x0):
                 run_test(comb,x)
@@ -159,14 +205,11 @@ def Test(n,method,function):
             print()
             print(f'...Comb {visited_comb} out of {tot_comb} completed...')
 
-    name = make_test_name(successful_tests,num_tests,n,method,function)
-    data = [x0_type_seq,precond_seq,derivatives_type,derivatives_method,perturbation,
-            execution_times,num_iterations,values,final_norms,EOC_seq,succes_seq]
     save_results(data,name,method)
 
 
 if __name__ == '__main__':
-    n = 10**1
+    n = 50
     method = 'modified'
     function = 'extended_rosenbrock'
     Test(n,method,function)

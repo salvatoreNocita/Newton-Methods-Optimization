@@ -30,7 +30,7 @@ class Solvers(object):
             try:
                 L = np.linalg.cholesky(bk)
                 flag = True
-                return L, bk
+                return L, bk, i
             except np.linalg.LinAlgError:
                 flag = False
             i += 1

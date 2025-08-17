@@ -6,7 +6,7 @@ from Testers import Test_settings
 def main():
     np.random.seed(1)
     test = Test_settings()
-    x0 = test.initialize_x0("discrete_boundary_value_problem", 10**3)
+    x0 = test.initialize_x0("extended_rosenbrock", 10**3)
     #x0 = np.zeros(10**3)
     h = {'forward_difference': 1e-5, 'backward_difference': 1e-5, 'central_difference': 1e-6}
     NewtonBackTracking_ARG_f2= {'x0': x0,
@@ -14,26 +14,27 @@ def main():
                                 'btmax': 50,
                                 'rho': 0.5,
                                 'c1': 1e-4,
-                                'tolgrad': 1e-7,
+                                'tolgrad': 1e-4,
                                 'kmax': 500,
                                 'eta': 0.5,
-                                'function': 'discrete_boundary_value_problem',
+                                'function': 'extended_rosenbrock',
                                 #'solver_linear_system': 'cg',
                                 #'H_correction_factor': 3,
                                 #'precond': 'yes',
-                                'rate_of_convergence': 'superlinear',
-                                'derivatives': 'exact',
+                                'rate_of_convergence': 'quadratic',
+                                'derivatives': 'finite_differences',
                                 'derivative_method': 'forward',
                                 'perturbation': h['forward_difference']
                             }
     
     Nbk= TruncatedNewtonMethod.TruncatedNewtonMethod(**NewtonBackTracking_ARG_f2)
-    xk2,fxk2,norm_gradfxk2,k2,x_seq2,bt_seq2= Nbk.Run()
+    _, xk2,fxk2,norm_gradfxk2_seq,k2,x_seq2, success, inner_iters, bt_seq2, tol_seq= Nbk.Run()
+
     print('-'*50)
     print(f'Newton Method after {k2} iterations:')
     print(f'xk: {np.round(xk2, 4)}')
     print(f'f2_xk: {np.round(fxk2, 4)}')
-    print(f'norma_gradf2_xk: {np.round(norm_gradfxk2, 4)}')
+    print(f'norma_gradf2_xk: {np.round(norm_gradfxk2_seq, 4)}')
     print('-'*50)
 
 main()
