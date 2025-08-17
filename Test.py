@@ -8,7 +8,6 @@ import pandas as pd
 from Testers import Test_settings
 from Modified_Newton_Method import ModifiedNewtonMethod
 from Truncated_Newton_Method import TruncatedNewtonMethod
-import time
 import wandb
 from colorama import Fore
 
