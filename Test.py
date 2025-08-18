@@ -39,9 +39,11 @@ def save_results(data,name,method, checkpoint=False):
                                'Iterations','F(x)','Norm Gradient(x)',
                                'Experimental Order of Convergence','Converged'])
 
-    path_name = 'Results' + '_' + method + '_' + 'Newton Method'
     if checkpoint:
-        path_name += '_checkpoint'
+        path_name = 'Modified_checkpoints' if method == 'modified' else 'Truncated_checkpoints'
+    else:
+        path_name = 'Results' + '_' + method + '_' + 'Newton Method'
+
     folder_path = os.path.join(os.getcwd(), path_name)
     os.makedirs(folder_path, exist_ok=True)
     file_path = os.path.join(folder_path, f"{name}.csv")
@@ -264,5 +266,5 @@ if __name__ == '__main__':
     """
     n = 10**3
     method = 'modified'
-    function = 'extended_powell'
+    function = 'broyden_tridiagonal_function'
     Test(n,method,function)

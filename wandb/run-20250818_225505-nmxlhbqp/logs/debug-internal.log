@@ -1,0 +1,13 @@
+{"time":"2025-08-18T22:55:05.281943+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-18T22:55:05.627721+02:00","level":"INFO","msg":"stream: created new stream","id":"nmxlhbqp"}
+{"time":"2025-08-18T22:55:05.627756+02:00","level":"INFO","msg":"handler: started","stream_id":"nmxlhbqp"}
+{"time":"2025-08-18T22:55:05.627759+02:00","level":"INFO","msg":"stream: started","id":"nmxlhbqp"}
+{"time":"2025-08-18T22:55:05.627774+02:00","level":"INFO","msg":"writer: started","stream_id":"nmxlhbqp"}
+{"time":"2025-08-18T22:55:05.627783+02:00","level":"INFO","msg":"sender: started","stream_id":"nmxlhbqp"}
+{"time":"2025-08-18T22:55:21.707862+02:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/salvatore-nocita25-politecnico-di-torino/modified_newton/nmxlhbqp/file_stream\": read tcp 192.168.1.236:59881->35.186.228.49:443: read: connection reset by peer"}
+{"time":"2025-08-18T22:55:27.407373+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-18T22:55:27.567723+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading summary, console lines 0-0","runtime_seconds":0.160058}],"total_operations":1}}
+{"time":"2025-08-18T22:55:27.9381+02:00","level":"INFO","msg":"stream: closing","id":"nmxlhbqp"}
+{"time":"2025-08-18T22:55:27.938178+02:00","level":"INFO","msg":"handler: closed","stream_id":"nmxlhbqp"}
+{"time":"2025-08-18T22:55:27.938598+02:00","level":"INFO","msg":"sender: closed","stream_id":"nmxlhbqp"}
+{"time":"2025-08-18T22:55:27.938692+02:00","level":"INFO","msg":"stream: closed","id":"nmxlhbqp"}
