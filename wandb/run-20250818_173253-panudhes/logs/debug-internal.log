@@ -1,0 +1,11 @@
+{"time":"2025-08-18T17:32:53.9444296+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-18T17:32:54.4409367+02:00","level":"INFO","msg":"stream: created new stream","id":"panudhes"}
+{"time":"2025-08-18T17:32:54.4409367+02:00","level":"INFO","msg":"stream: started","id":"panudhes"}
+{"time":"2025-08-18T17:32:54.4409367+02:00","level":"INFO","msg":"writer: started","stream_id":"panudhes"}
+{"time":"2025-08-18T17:32:54.4409367+02:00","level":"INFO","msg":"handler: started","stream_id":"panudhes"}
+{"time":"2025-08-18T17:32:54.4409367+02:00","level":"INFO","msg":"sender: started","stream_id":"panudhes"}
+{"time":"2025-08-18T17:32:55.1653032+02:00","level":"INFO","msg":"stream: closing","id":"panudhes"}
+{"time":"2025-08-18T17:32:56.0246578+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-18T17:32:56.4100084+02:00","level":"INFO","msg":"handler: closed","stream_id":"panudhes"}
+{"time":"2025-08-18T17:32:56.4105167+02:00","level":"INFO","msg":"sender: closed","stream_id":"panudhes"}
+{"time":"2025-08-18T17:32:56.4105167+02:00","level":"INFO","msg":"stream: closed","id":"panudhes"}

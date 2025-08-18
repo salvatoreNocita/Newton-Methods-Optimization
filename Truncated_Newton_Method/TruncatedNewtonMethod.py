@@ -146,23 +146,23 @@ class TruncatedNewtonMethod:
             self.norm_grad_seq.append(gradf_norm)
             self.k += 1
 
-            if self.k % print_every == 0:
-                print(Fore.LIGHTBLUE_EX + '-' * 50 + Fore.RESET)
-                print(Fore.LIGHTBLUE_EX + f'CURRENT ITERATION : {self.k} ' + Fore.RESET)
-                print(Fore.LIGHTBLUE_EX + '-' * 50 + Fore.RESET)
-                print(f'Iterate: {xk} \n Grad Norm: {gradf_norm} \n Alpha : {alphak} \n CG Iter: {it_cg}')
-            
             end = time.time()
 
             self.execution_times.append(end - start)
-            if self.k % print_every == 0:
-                print(Fore.RED + f"Iteration {self.k} took {end - start:.4f} seconds" + Fore.RESET)
+
+            if print_every > 0:
+                if self.k % print_every == 0:
+                    print(Fore.LIGHTBLUE_EX + '-' * 50 + Fore.RESET)
+                    print(Fore.LIGHTBLUE_EX + f'CURRENT ITERATION : {self.k} ' + Fore.RESET)
+                    print(Fore.LIGHTBLUE_EX + '-' * 50 + Fore.RESET)
+                    print(f'Iterate: {xk} \n Grad Norm: {gradf_norm} \n Alpha : {alphak} \n CG Iter: {it_cg}')
+                    print(Fore.RED + f"Iteration {self.k} took {end - start:.4f} seconds" + Fore.RESET)
 
         if gradf_norm > self.tolgrad or (time.perf_counter() - start_time) >= max_time:
             success = False
         
         return self.execution_times, xk, self.objective_function(xk), self.norm_grad_seq, self.k, \
-              self.x_seq, success, self.inner_iters, self.bt_seq, self.tol_seq
+             success, self.inner_iters, self.bt_seq, self.tol_seq
     
 
     def _set_eta_k(self):

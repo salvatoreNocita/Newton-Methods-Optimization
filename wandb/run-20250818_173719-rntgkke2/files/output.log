@@ -1,0 +1,31 @@
+Traceback (most recent call last):
+  File "c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Test.py", line 268, in <module>
+    Test(n,method,function)
+  File "c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Test.py", line 250, in Test
+    run_test(comb,x0)
+  File "c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Test.py", line 196, in run_test
+    inner_iter, alphas, tol_seq = computation(comb,function, method)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Test.py", line 20, in computation
+    execution_times_, xk, fxk, norm_gradfx_seq, k, success, inner_iter, alphas, tol_seq= NM.Run(timing=True, print_every=0)
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Truncated_Newton_Method\TruncatedNewtonMethod.py", line 127, in Run
+    pk, it_cg = self.solvers.CG_find_pk(gradf, tol_cg, xk, self.kmax)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Truncated_Newton_Method\SolverInstruments.py", line 18, in CG_find_pk
+    z_k = self.matvec(point, conj_direction_k, grad)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Tools\Derivatives.py", line 196, in hessian_vector_product
+    grad_x_plus = self.approximate_gradient_parallel(x_plus, adaptive=adaptive)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Tools\Derivatives.py", line 173, in approximate_gradient_parallel
+    grad = Parallel(n_jobs=n_jobs)(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\joblib\parallel.py", line 2072, in __call__
+    return output if self.return_generator else list(output)
+                                                ^^^^^^^^^^^^
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\joblib\parallel.py", line 1682, in _get_outputs
+    yield from self._retrieve()
+  File "C:\Users\salvo\AppData\Local\Programs\Python\Python312\Lib\site-packages\joblib\parallel.py", line 1800, in _retrieve
+    time.sleep(0.01)
+KeyboardInterrupt

@@ -32,7 +32,7 @@ class Test_settings(object):
                                         'btmax': 50,
                                         'rho': 0.5,
                                         'c1': 1e-4,
-                                        'tolgrad': 1e-6,
+                                        'tolgrad': 1e-5,
                                         'kmax': 1000,
                                         'eta': 0.5,
                                         'rate_of_convergence': ['superlinear','quadratic'],

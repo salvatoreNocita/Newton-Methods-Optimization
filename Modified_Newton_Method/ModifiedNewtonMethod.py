@@ -167,7 +167,7 @@ class ModifiedNewton(object):
         self.x_seq.append(xk_1)
         return xk_1
 
-    def Run(self,timing=False)-> tuple[np.array, float, float, int, list[np.array], list[float], bool]:
+    def Run(self,timing=False, print_every = 50)-> tuple[np.array, float, float, int, list[np.array], list[float], bool]:
         xk = self.x0
         grad = self.compute_gradient(xk, adaptive=self.adaptive_h)
         self.gradient = grad

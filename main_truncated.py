@@ -6,7 +6,7 @@ from Testers import Test_settings
 def main():
     np.random.seed(1)
     test = Test_settings()
-    x0 = test.initialize_x0("extended_powell", 10**5 )
+    x0 = test.initialize_x0("extended_powell", 10**3 )
     #x0 = np.zeros(10**3)
     h = {'forward_difference': 1e-5, 'backward_difference': 1e-5, 'central_difference': 1e-6}
     NewtonBackTracking_ARG_f2= {'x0': x0,
@@ -17,13 +17,13 @@ def main():
                                 'tolgrad': 1e-6,
                                 'kmax': 500,
                                 'eta': 0.5,
-                                'function': 'extended_powell', 
+                                'function': 'extended_rosenbrock', 
                                 #'solver_linear_system': 'cg',
                                 #'H_correction_factor': 3,
                                 #'precond': 'yes',
                                 'rate_of_convergence': 'superlinear',
                                 'derivatives': 'finite_differences',
-                                'derivative_method': 'central',
+                                'derivative_method': 'forward',
                                 'perturbation': h['central_difference']
                             }
     
