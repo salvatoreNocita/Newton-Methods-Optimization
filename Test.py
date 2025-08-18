@@ -33,7 +33,7 @@ def make_checkpoint_name(n,method,function):
     return name
 
 
-def save_results(data,name,method):
+def save_results(data,name,method, checkpoint=False):
     data_matrix = np.array(data).T
     df = pd.DataFrame(data_matrix,
                       columns=['Experiment Type', 'Preconditioning/RateofConv', 'Derivative',
@@ -42,6 +42,8 @@ def save_results(data,name,method):
                                'Experimental Order of Convergence','Converged'])
 
     path_name = 'Results' + '_' + method + '_' + 'Newton Method'
+    if checkpoint:
+        path_name += '_checkpoint'
     folder_path = os.path.join(os.getcwd(), path_name)
     os.makedirs(folder_path, exist_ok=True)
     file_path = os.path.join(folder_path, f"{name}.csv")
@@ -171,7 +173,12 @@ def Test(n,method,function):
         x0_type_seq.append(comb['x0'])
 
         # Decide derivative_method label
-        der_method_label = comb['derivative_method'] if comb['derivatives'] == "finite_differences" else "exact"
+        if comb['derivatives'] == "finite_differences":
+            der_method_label = comb['derivative_method']
+        elif comb['derivatives'] == "adaptive_finite_differences":
+            der_method_label = "adaptive_" + comb['derivative_method']
+        else:
+            der_method_label = "exact"
 
         precond_seq.append(comb['precond']) if method == 'modified' else rate_of_conv_seq.append(comb['rate_of_convergence'])
         derivatives_method.append(der_method_label)
@@ -182,7 +189,7 @@ def Test(n,method,function):
         run_group = f"{function}_Precond:{comb['precond']}_Diff:{der_method_label}_n:{n:.0e}" if method == "modified" else f"{function}_Rate:{comb['rate_of_convergence']}_Diff:{der_method_label}_n:{n:.0e}"
 
         # Run name distinguishes perturbation
-        run_name = f"perturb: {comb['perturbation']}" if comb['derivatives']=="finite_differences" else "exact"
+        run_name = f"perturb: {comb['perturbation']}" if comb['derivatives']=="finite_differences" or comb['derivatives'] == "adaptive_finite_differences" else "exact"
 
         wandb.init(
             project=f"{method}_newton",

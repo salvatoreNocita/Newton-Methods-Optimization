@@ -1,0 +1,12 @@
+{"time":"2025-08-18T19:21:58.788932+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-18T19:21:59.2800918+02:00","level":"INFO","msg":"stream: created new stream","id":"szbowbbg"}
+{"time":"2025-08-18T19:21:59.2800918+02:00","level":"INFO","msg":"stream: started","id":"szbowbbg"}
+{"time":"2025-08-18T19:21:59.2800918+02:00","level":"INFO","msg":"writer: started","stream_id":"szbowbbg"}
+{"time":"2025-08-18T19:21:59.2800918+02:00","level":"INFO","msg":"handler: started","stream_id":"szbowbbg"}
+{"time":"2025-08-18T19:21:59.2800918+02:00","level":"INFO","msg":"sender: started","stream_id":"szbowbbg"}
+{"time":"2025-08-18T19:24:54.2120757+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-18T19:24:54.3538538+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading summary, console lines 0-0","runtime_seconds":0.1417781}],"total_operations":1}}
+{"time":"2025-08-18T19:24:54.6273472+02:00","level":"INFO","msg":"stream: closing","id":"szbowbbg"}
+{"time":"2025-08-18T19:24:54.6273472+02:00","level":"INFO","msg":"handler: closed","stream_id":"szbowbbg"}
+{"time":"2025-08-18T19:24:54.6279621+02:00","level":"INFO","msg":"sender: closed","stream_id":"szbowbbg"}
+{"time":"2025-08-18T19:24:54.6279621+02:00","level":"INFO","msg":"stream: closed","id":"szbowbbg"}

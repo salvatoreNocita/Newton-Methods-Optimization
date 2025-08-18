@@ -1,0 +1,13 @@
+{"time":"2025-08-18T18:59:35.8286761+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-18T18:59:36.280584+02:00","level":"INFO","msg":"stream: created new stream","id":"sezb6b6n"}
+{"time":"2025-08-18T18:59:36.280584+02:00","level":"INFO","msg":"stream: started","id":"sezb6b6n"}
+{"time":"2025-08-18T18:59:36.280584+02:00","level":"INFO","msg":"writer: started","stream_id":"sezb6b6n"}
+{"time":"2025-08-18T18:59:36.280584+02:00","level":"INFO","msg":"handler: started","stream_id":"sezb6b6n"}
+{"time":"2025-08-18T18:59:36.280584+02:00","level":"INFO","msg":"sender: started","stream_id":"sezb6b6n"}
+{"time":"2025-08-18T18:59:37.188534+02:00","level":"ERROR","msg":"file transfer: upload: failed to upload: 400 Bad Request","task":"DefaultUploadTask{FileKind: 1, Path: C:\\Users\\salvo\\OneDrive\\Desktop\\model\\Newton_Methods_Optimization\\wandb\\run-20250818_185935-sezb6b6n\\files\\wandb-metadata.json, Name: wandb-metadata.json, Url: https://storage.googleapis.com/wandb-production.appspot.com/salvatore-nocita25-politecnico-di-torino/truncated_newton/sezb6b6n/wandb-metadata.json?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=gorilla-files-url-signer-man%40wandb-production.iam.gserviceaccount.com%2F20250818%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20250818T165935Z&X-Goog-Expires=86399&X-Goog-Signature=a9d5a754deb4db0cd0a1b16f13916f7372df3e24d9e4fad49c943a0a518d2c19b9ec0175df8a7a913d2d7132500914d8a6c4b3733cb346e45d335a4a828b21aca2aed6e27923eb6ede6188603c36b07a79b1f24d11872bae4f02107176901f5d2d74b154ba27af8f8d1ca530229f338738edc25925b80e3e61cc536ddf53efdbc51c7da19484e2ea28073feae712bbac2b3142dcbd15e097a29cd2e4e64cfbba4facaf5ac1f98e1de1aaebcdf1360565c6fa4529a42421a2ec9aca4d5b3196ee830314866c38af192dea432fb29f67c0bd84ea97af804741726e67c63e0a1e70aba6b9c03ff84dfdf2829bdc81710271ab09354e4610023ecd1353e0bc88857e&X-Goog-SignedHeaders=host&X-User=salvatore-nocita25, Size: 738}"}
+{"time":"2025-08-18T18:59:57.9674494+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-18T18:59:58.1538397+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-30, summary, console lines 0-0","runtime_seconds":0.1863903}],"total_operations":1}}
+{"time":"2025-08-18T18:59:58.4168613+02:00","level":"INFO","msg":"stream: closing","id":"sezb6b6n"}
+{"time":"2025-08-18T18:59:58.4168613+02:00","level":"INFO","msg":"handler: closed","stream_id":"sezb6b6n"}
+{"time":"2025-08-18T18:59:58.4181716+02:00","level":"INFO","msg":"sender: closed","stream_id":"sezb6b6n"}
+{"time":"2025-08-18T18:59:58.4181716+02:00","level":"INFO","msg":"stream: closed","id":"sezb6b6n"}

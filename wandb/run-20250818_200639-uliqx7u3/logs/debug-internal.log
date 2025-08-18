@@ -1,0 +1,12 @@
+{"time":"2025-08-18T20:06:39.3916575+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-18T20:06:39.8709642+02:00","level":"INFO","msg":"stream: created new stream","id":"uliqx7u3"}
+{"time":"2025-08-18T20:06:39.8709642+02:00","level":"INFO","msg":"stream: started","id":"uliqx7u3"}
+{"time":"2025-08-18T20:06:39.8715854+02:00","level":"INFO","msg":"handler: started","stream_id":"uliqx7u3"}
+{"time":"2025-08-18T20:06:39.8715854+02:00","level":"INFO","msg":"sender: started","stream_id":"uliqx7u3"}
+{"time":"2025-08-18T20:06:39.8709642+02:00","level":"INFO","msg":"writer: started","stream_id":"uliqx7u3"}
+{"time":"2025-08-18T20:08:05.1184423+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading output.log","runtime_seconds":0.7348497,"progress":"63B/63B"},{"desc":"uploading config.yaml","runtime_seconds":0.4559315,"progress":"2.0KB/2.0KB"}],"total_operations":2}}
+{"time":"2025-08-18T20:08:05.1827642+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-18T20:08:05.6258383+02:00","level":"INFO","msg":"stream: closing","id":"uliqx7u3"}
+{"time":"2025-08-18T20:08:05.6258383+02:00","level":"INFO","msg":"handler: closed","stream_id":"uliqx7u3"}
+{"time":"2025-08-18T20:08:05.6263491+02:00","level":"INFO","msg":"sender: closed","stream_id":"uliqx7u3"}
+{"time":"2025-08-18T20:08:05.6263491+02:00","level":"INFO","msg":"stream: closed","id":"uliqx7u3"}

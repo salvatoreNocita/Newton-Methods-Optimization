@@ -1,0 +1,60 @@
+_wandb:
+    value:
+        cli_version: 0.21.1
+        e:
+            qi1yj7q2uv61a2ywf7m3f41ja19vo6r4:
+                codePath: Test.py
+                codePathLocal: Test.py
+                cpu_count: 4
+                cpu_count_logical: 8
+                cudaVersion: "12.8"
+                disk:
+                    /:
+                        total: "510913409024"
+                        used: "487209373696"
+                email: salvatore.nocita25@gmail.com
+                executable: C:\Users\salvo\AppData\Local\Programs\Python\Python312\python.exe
+                git:
+                    commit: 7df3a01017e1aa09a8d918b1facb9eb93d29b926
+                    remote: https://github.com/LucianoScarpino/Newton_Methods_Optimization.git
+                gpu: NVIDIA GeForce RTX 2060
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Turing
+                      cudaCores: 1920
+                      memoryTotal: "6442450944"
+                      name: NVIDIA GeForce RTX 2060
+                      uuid: GPU-a4c02eee-186c-5b29-0c7c-dc151dde43f8
+                host: LAPTOP-ALB2CGFI
+                memory:
+                    total: "17002713088"
+                os: Windows-11-10.0.26100-SP0
+                program: c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Test.py
+                python: CPython 3.12.7
+                root: C:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization
+                startedAt: "2025-08-18T16:46:59.827573Z"
+                writerId: qi1yj7q2uv61a2ywf7m3f41ja19vo6r4
+        m: []
+        python_version: 3.12.7
+        t:
+            "1":
+                - 53
+            "2":
+                - 53
+            "3":
+                - 2
+                - 13
+                - 16
+                - 61
+            "4": 3.12.7
+            "5": 0.21.1
+            "8":
+                - 3
+            "12": 0.21.1
+            "13": windows-amd64
+function:
+    value: extended_rosenbrock
+method:
+    value: truncated
+"n":
+    value: 1000

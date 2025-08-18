@@ -1,0 +1,12 @@
+{"time":"2025-08-18T18:20:17.6098136+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-18T18:20:18.0883821+02:00","level":"INFO","msg":"stream: created new stream","id":"pp2utytv"}
+{"time":"2025-08-18T18:20:18.0883821+02:00","level":"INFO","msg":"stream: started","id":"pp2utytv"}
+{"time":"2025-08-18T18:20:18.0889621+02:00","level":"INFO","msg":"writer: started","stream_id":"pp2utytv"}
+{"time":"2025-08-18T18:20:18.0889621+02:00","level":"INFO","msg":"sender: started","stream_id":"pp2utytv"}
+{"time":"2025-08-18T18:20:18.0889621+02:00","level":"INFO","msg":"handler: started","stream_id":"pp2utytv"}
+{"time":"2025-08-18T18:23:08.2160685+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-18T18:23:08.2659379+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-2, summary, console lines 0-0","runtime_seconds":0.0498694}],"total_operations":1}}
+{"time":"2025-08-18T18:23:08.6612049+02:00","level":"INFO","msg":"stream: closing","id":"pp2utytv"}
+{"time":"2025-08-18T18:23:08.6612049+02:00","level":"INFO","msg":"handler: closed","stream_id":"pp2utytv"}
+{"time":"2025-08-18T18:23:08.6612049+02:00","level":"INFO","msg":"sender: closed","stream_id":"pp2utytv"}
+{"time":"2025-08-18T18:23:08.6612049+02:00","level":"INFO","msg":"stream: closed","id":"pp2utytv"}

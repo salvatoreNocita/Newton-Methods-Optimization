@@ -1,0 +1,12 @@
+{"time":"2025-08-18T18:46:37.1844721+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-18T18:46:37.690765+02:00","level":"INFO","msg":"stream: created new stream","id":"bnxcli1v"}
+{"time":"2025-08-18T18:46:37.690765+02:00","level":"INFO","msg":"stream: started","id":"bnxcli1v"}
+{"time":"2025-08-18T18:46:37.690765+02:00","level":"INFO","msg":"writer: started","stream_id":"bnxcli1v"}
+{"time":"2025-08-18T18:46:37.690765+02:00","level":"INFO","msg":"sender: started","stream_id":"bnxcli1v"}
+{"time":"2025-08-18T18:46:37.690765+02:00","level":"INFO","msg":"handler: started","stream_id":"bnxcli1v"}
+{"time":"2025-08-18T18:46:59.2420042+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading wandb-summary.json","runtime_seconds":0.7102722,"progress":"351B/351B"},{"desc":"uploading config.yaml","runtime_seconds":0.3878905,"progress":"2.0KB/2.0KB"}],"total_operations":2}}
+{"time":"2025-08-18T18:46:59.3323026+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-18T18:46:59.8194715+02:00","level":"INFO","msg":"stream: closing","id":"bnxcli1v"}
+{"time":"2025-08-18T18:46:59.8194715+02:00","level":"INFO","msg":"handler: closed","stream_id":"bnxcli1v"}
+{"time":"2025-08-18T18:46:59.8194715+02:00","level":"INFO","msg":"sender: closed","stream_id":"bnxcli1v"}
+{"time":"2025-08-18T18:46:59.8194715+02:00","level":"INFO","msg":"stream: closed","id":"bnxcli1v"}

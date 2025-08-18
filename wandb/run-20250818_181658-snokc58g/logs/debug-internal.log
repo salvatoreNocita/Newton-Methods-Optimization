@@ -1,0 +1,12 @@
+{"time":"2025-08-18T18:16:58.3017202+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-18T18:16:59.8071291+02:00","level":"INFO","msg":"stream: created new stream","id":"snokc58g"}
+{"time":"2025-08-18T18:16:59.8071291+02:00","level":"INFO","msg":"stream: started","id":"snokc58g"}
+{"time":"2025-08-18T18:16:59.8071291+02:00","level":"INFO","msg":"writer: started","stream_id":"snokc58g"}
+{"time":"2025-08-18T18:16:59.8071291+02:00","level":"INFO","msg":"sender: started","stream_id":"snokc58g"}
+{"time":"2025-08-18T18:16:59.8071291+02:00","level":"INFO","msg":"handler: started","stream_id":"snokc58g"}
+{"time":"2025-08-18T18:18:21.6864861+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-18T18:18:21.8178367+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-3, summary, console lines 0-0","runtime_seconds":0.1313506}],"total_operations":1}}
+{"time":"2025-08-18T18:18:22.1440859+02:00","level":"INFO","msg":"stream: closing","id":"snokc58g"}
+{"time":"2025-08-18T18:18:22.1440859+02:00","level":"INFO","msg":"handler: closed","stream_id":"snokc58g"}
+{"time":"2025-08-18T18:18:22.1446038+02:00","level":"INFO","msg":"sender: closed","stream_id":"snokc58g"}
+{"time":"2025-08-18T18:18:22.1446038+02:00","level":"INFO","msg":"stream: closed","id":"snokc58g"}

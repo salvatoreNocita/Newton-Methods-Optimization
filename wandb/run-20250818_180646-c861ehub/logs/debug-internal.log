@@ -1,0 +1,12 @@
+{"time":"2025-08-18T18:06:46.2226716+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-18T18:06:48.2486521+02:00","level":"INFO","msg":"stream: created new stream","id":"c861ehub"}
+{"time":"2025-08-18T18:06:48.2486521+02:00","level":"INFO","msg":"stream: started","id":"c861ehub"}
+{"time":"2025-08-18T18:06:48.2486521+02:00","level":"INFO","msg":"writer: started","stream_id":"c861ehub"}
+{"time":"2025-08-18T18:06:48.2492685+02:00","level":"INFO","msg":"sender: started","stream_id":"c861ehub"}
+{"time":"2025-08-18T18:06:48.2492685+02:00","level":"INFO","msg":"handler: started","stream_id":"c861ehub"}
+{"time":"2025-08-18T18:07:10.1181728+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading config.yaml","runtime_seconds":0.3727128,"progress":"2.0KB/2.0KB"}],"total_operations":1}}
+{"time":"2025-08-18T18:07:10.1554152+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-18T18:07:10.6727316+02:00","level":"INFO","msg":"stream: closing","id":"c861ehub"}
+{"time":"2025-08-18T18:07:10.6727316+02:00","level":"INFO","msg":"handler: closed","stream_id":"c861ehub"}
+{"time":"2025-08-18T18:07:10.6735248+02:00","level":"INFO","msg":"sender: closed","stream_id":"c861ehub"}
+{"time":"2025-08-18T18:07:10.6735248+02:00","level":"INFO","msg":"stream: closed","id":"c861ehub"}
