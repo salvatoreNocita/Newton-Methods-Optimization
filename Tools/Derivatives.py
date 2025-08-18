@@ -965,3 +965,89 @@ class ExactDerivatives(object):
         Hv += (-4.0) * (w * v)
 
         return Hv
+
+    import numpy as np
+
+    def extended_powell_hessian_vector_product(self, x, v, grad):
+        """
+        Compute the Hessian-vector product H(x) @ v for the Extended Powell function.
+
+        Parameters
+        ----------
+        x : np.ndarray
+            1-D array of length n, with n % 4 == 0.
+        v : np.ndarray
+            1-D array of length n (same size as x).
+
+        Returns
+        -------
+        np.ndarray
+            The product H(x) @ v.
+        """
+        x = np.asarray(x, dtype=float)
+        v = np.asarray(v, dtype=float)
+        n = x.size
+        assert v.size == n
+        assert n % 4 == 0
+
+        # Split into blocks
+        xb = x.reshape(-1, 4)
+        vb = v.reshape(-1, 4)
+
+        a, b, c, d = xb[:,0], xb[:,1], xb[:,2], xb[:,3]
+        va, vb_, vc, vd = vb[:,0], vb[:,1], vb[:,2], vb[:,3]
+
+        # Residual functions
+        f1 = a + 10*b
+        f2 = np.sqrt(5)*(c - d)
+        f3 = (b - 2*c)**2
+        f4 = np.sqrt(10)*(a - d)**2
+
+        # Gradients (per block)
+        Jf1 = np.stack([np.ones_like(a), 10*np.ones_like(b), np.zeros_like(c), np.zeros_like(d)], axis=1)
+        Jf2 = np.stack([np.zeros_like(a), np.zeros_like(b), np.sqrt(5)*np.ones_like(c), -np.sqrt(5)*np.ones_like(d)], axis=1)
+        Jf3 = np.stack([np.zeros_like(a),
+                        2*(b - 2*c),
+                        -4*(b - 2*c),
+                        np.zeros_like(d)], axis=1)
+        Jf4 = np.stack([2*np.sqrt(10)*(a - d),
+                        np.zeros_like(b),
+                        np.zeros_like(c),
+                        -2*np.sqrt(10)*(a - d)], axis=1)
+
+        # Jacobian-vector products (scalars per block)
+        Jv1 = np.sum(Jf1 * vb, axis=1)
+        Jv2 = np.sum(Jf2 * vb, axis=1)
+        Jv3 = np.sum(Jf3 * vb, axis=1)
+        Jv4 = np.sum(Jf4 * vb, axis=1)
+
+        # Grad^T * (Jv): shape (n_blocks, 4)
+        term1 = (
+            Jf1 * Jv1[:,None] +
+            Jf2 * Jv2[:,None] +
+            Jf3 * Jv3[:,None] +
+            Jf4 * Jv4[:,None]
+        )
+
+        # Hessians of residuals (constant small 4x4 blocks)
+        Hf3 = np.zeros((len(a), 4, 4))
+        Hf3[:,1,1] = 2.0
+        Hf3[:,1,2] = Hf3[:,2,1] = -4.0
+        Hf3[:,2,2] = 8.0
+
+        Hf4 = np.zeros((len(a), 4, 4))
+        Hf4[:,0,0] = 2*np.sqrt(10)
+        Hf4[:,0,3] = Hf4[:,3,0] = -2*np.sqrt(10)
+        Hf4[:,3,3] = 2*np.sqrt(10)
+
+        # f_k * Hf_k v
+        Hv3 = np.einsum("bij,bj->bi", Hf3, vb) * f3[:,None]
+        Hv4 = np.einsum("bij,bj->bi", Hf4, vb) * f4[:,None]
+
+        # Sum contributions
+        Hv_block = term1 + Hv3 + Hv4
+
+        # Flatten back
+        Hv = (2.0/n) * Hv_block.reshape(-1)
+        return Hv
+

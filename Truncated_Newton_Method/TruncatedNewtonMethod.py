@@ -61,12 +61,12 @@ class TruncatedNewtonMethod:
                 def hess_vec(x,v, grad):
                     return self.exact_d.extended_rosenbrock_hessian_vector_product(x, v, grad)
             
-            elif self.function == 'discrete_boundary_value_problem':
+            elif self.function == 'extended_powell':
 
-                def grad_fn(x):
-                    return self.exact_d.discrete_boundary_value_problem(x, hessian=False)
+                def grad_fn(x, adaptive=None):
+                    return self.exact_d.extended_powell(x, hessian=False)
                 def hess_vec(x,v, grad):
-                    return self.exact_d.dbv_hessian_vector_product(x, v, grad)
+                    return self.exact_d.extended_powell_hessian_vector_product(x, v, grad)
             
             elif self.function == 'broyden_tridiagonal_function':
 
