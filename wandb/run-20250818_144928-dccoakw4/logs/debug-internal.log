@@ -1,0 +1,12 @@
+{"time":"2025-08-18T14:49:28.548486+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-18T14:49:28.915719+02:00","level":"INFO","msg":"stream: created new stream","id":"dccoakw4"}
+{"time":"2025-08-18T14:49:28.915755+02:00","level":"INFO","msg":"stream: started","id":"dccoakw4"}
+{"time":"2025-08-18T14:49:28.91576+02:00","level":"INFO","msg":"writer: started","stream_id":"dccoakw4"}
+{"time":"2025-08-18T14:49:28.915774+02:00","level":"INFO","msg":"sender: started","stream_id":"dccoakw4"}
+{"time":"2025-08-18T14:49:28.915802+02:00","level":"INFO","msg":"handler: started","stream_id":"dccoakw4"}
+{"time":"2025-08-18T14:50:58.405817+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-18T14:50:58.682642+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-10, summary, console lines 0-0","runtime_seconds":0.275218084}],"total_operations":1}}
+{"time":"2025-08-18T14:50:58.732607+02:00","level":"INFO","msg":"stream: closing","id":"dccoakw4"}
+{"time":"2025-08-18T14:50:58.732626+02:00","level":"INFO","msg":"handler: closed","stream_id":"dccoakw4"}
+{"time":"2025-08-18T14:50:58.732716+02:00","level":"INFO","msg":"sender: closed","stream_id":"dccoakw4"}
+{"time":"2025-08-18T14:50:58.732725+02:00","level":"INFO","msg":"stream: closed","id":"dccoakw4"}

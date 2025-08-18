@@ -1,0 +1,12 @@
+{"time":"2025-08-18T14:06:20.319768+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-18T14:06:20.661109+02:00","level":"INFO","msg":"stream: created new stream","id":"abtfawyy"}
+{"time":"2025-08-18T14:06:20.661151+02:00","level":"INFO","msg":"stream: started","id":"abtfawyy"}
+{"time":"2025-08-18T14:06:20.661154+02:00","level":"INFO","msg":"handler: started","stream_id":"abtfawyy"}
+{"time":"2025-08-18T14:06:20.66116+02:00","level":"INFO","msg":"sender: started","stream_id":"abtfawyy"}
+{"time":"2025-08-18T14:06:20.661176+02:00","level":"INFO","msg":"writer: started","stream_id":"abtfawyy"}
+{"time":"2025-08-18T14:07:43.44447+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-18T14:07:43.743848+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-18T14:07:43.749522+02:00","level":"INFO","msg":"stream: closing","id":"abtfawyy"}
+{"time":"2025-08-18T14:07:43.749577+02:00","level":"INFO","msg":"handler: closed","stream_id":"abtfawyy"}
+{"time":"2025-08-18T14:07:43.749762+02:00","level":"INFO","msg":"sender: closed","stream_id":"abtfawyy"}
+{"time":"2025-08-18T14:07:43.749785+02:00","level":"INFO","msg":"stream: closed","id":"abtfawyy"}

@@ -1,0 +1,12 @@
+{"time":"2025-08-18T13:52:07.250516+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-18T13:52:07.601828+02:00","level":"INFO","msg":"stream: created new stream","id":"reqeaxv7"}
+{"time":"2025-08-18T13:52:07.601859+02:00","level":"INFO","msg":"stream: started","id":"reqeaxv7"}
+{"time":"2025-08-18T13:52:07.601861+02:00","level":"INFO","msg":"handler: started","stream_id":"reqeaxv7"}
+{"time":"2025-08-18T13:52:07.601877+02:00","level":"INFO","msg":"writer: started","stream_id":"reqeaxv7"}
+{"time":"2025-08-18T13:52:07.601867+02:00","level":"INFO","msg":"sender: started","stream_id":"reqeaxv7"}
+{"time":"2025-08-18T13:53:32.582537+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading output.log","runtime_seconds":0.751843667,"progress":"64B/64B"}],"total_operations":1}}
+{"time":"2025-08-18T13:53:32.58932+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-18T13:53:32.885712+02:00","level":"INFO","msg":"stream: closing","id":"reqeaxv7"}
+{"time":"2025-08-18T13:53:32.885751+02:00","level":"INFO","msg":"handler: closed","stream_id":"reqeaxv7"}
+{"time":"2025-08-18T13:53:32.886089+02:00","level":"INFO","msg":"sender: closed","stream_id":"reqeaxv7"}
+{"time":"2025-08-18T13:53:32.886151+02:00","level":"INFO","msg":"stream: closed","id":"reqeaxv7"}

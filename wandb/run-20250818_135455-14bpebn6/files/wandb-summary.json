@@ -1,0 +1,1 @@
+{"preconditioner":"yes","perturbation":"exact","_runtime":69.508694583,"Execution Time":69.32644438743591,"derivative_method":"exact","Backtracking Step Size":1,"Norm Gradient":0.00010662036874591684,"_wandb":{"runtime":69},"_timestamp":1.755518165975455e+09,"_step":20,"Inner Iterations":0}

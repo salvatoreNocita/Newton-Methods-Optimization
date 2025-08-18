@@ -1,0 +1,12 @@
+{"time":"2025-08-18T16:22:10.870771+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-18T16:22:11.203101+02:00","level":"INFO","msg":"stream: created new stream","id":"nhgzbi1x"}
+{"time":"2025-08-18T16:22:11.203153+02:00","level":"INFO","msg":"stream: started","id":"nhgzbi1x"}
+{"time":"2025-08-18T16:22:11.203162+02:00","level":"INFO","msg":"sender: started","stream_id":"nhgzbi1x"}
+{"time":"2025-08-18T16:22:11.203175+02:00","level":"INFO","msg":"handler: started","stream_id":"nhgzbi1x"}
+{"time":"2025-08-18T16:22:11.203201+02:00","level":"INFO","msg":"writer: started","stream_id":"nhgzbi1x"}
+{"time":"2025-08-18T16:23:17.556509+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-18T16:23:17.852625+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-18T16:23:17.856076+02:00","level":"INFO","msg":"stream: closing","id":"nhgzbi1x"}
+{"time":"2025-08-18T16:23:17.856115+02:00","level":"INFO","msg":"handler: closed","stream_id":"nhgzbi1x"}
+{"time":"2025-08-18T16:23:17.857158+02:00","level":"INFO","msg":"sender: closed","stream_id":"nhgzbi1x"}
+{"time":"2025-08-18T16:23:17.857205+02:00","level":"INFO","msg":"stream: closed","id":"nhgzbi1x"}
