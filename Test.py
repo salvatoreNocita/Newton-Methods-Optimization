@@ -175,6 +175,7 @@ def Test(n,method,function):
         values.append(float(np.asarray(fxk).squeeze()))
         final_norms.append(norm_gradfx_seq[-1]) if len(norm_gradfx_seq) > 0 else np.nan
 
+        nonlocal num_tests,successful_tests
         num_tests += 1
         if success:
             succes_seq.append(True)
@@ -219,7 +220,7 @@ if __name__ == '__main__':
         - method = [modified,truncated]
         - functions = [extended_rosenbrock,extended_powell,broyden_tridiagonal_function]
     """
-    n = 10**3
+    n = 10**4
     method = 'modified'
     function = 'extended_rosenbrock'
     Test(n,method,function)
