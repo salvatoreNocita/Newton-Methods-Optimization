@@ -14,14 +14,14 @@ class Test_settings(object):
                                     'btmax': 50,
                                     'rho': 0.5,
                                     'c1': 1e-4,
-                                    'tolgrad': 1e-3,
+                                    'tolgrad': 1e-5,
                                     'kmax': 1000,
                                     'solver_linear_system': 'cg',
                                     'H_correction_factor': 3,
                                     'precond': ['yes','no'],
-                                    'derivatives': ['exact','finite_differences'], #'adaptive_finite_differences'],
-                                    'derivative_method': 'forward', # ['forward','backward','central'],
-                                    'perturbation': 1e-2  # [1e-2,1e-4,1e-6,1e-8,1e-10,1e-12]
+                                    'derivatives': ['exact','finite_differences','adaptive_finite_differences'],
+                                    'derivative_method': ['forward','forward','backward','central'],
+                                    'perturbation': [1e-2,1e-2,1e-4,1e-6,1e-8,1e-10,1e-12]
                                 }
         
         return NewtonBackTracking_ARG_f
@@ -32,7 +32,7 @@ class Test_settings(object):
                                         'btmax': 50,
                                         'rho': 0.5,
                                         'c1': 1e-4,
-                                        'tolgrad': 1e-3,
+                                        'tolgrad': 1e-6,
                                         'kmax': 1000,
                                         'eta': 0.5,
                                         'rate_of_convergence': ['superlinear','quadratic'],

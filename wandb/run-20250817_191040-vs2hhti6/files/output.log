@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Test.py", line 219, in <module>
+    Test(n,method,function)
+    ~~~~^^^^^^^^^^^^^^^^^^^
+  File "/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Test.py", line 202, in Test
+    run_test(comb,x0)
+    ~~~~~~~~^^^^^^^^^
+  File "/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Test.py", line 157, in run_test
+    inner_iter, alphas, tol_seq = computation(comb,function, method)
+                                  ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Test.py", line 17, in computation
+    NM = ModifiedNewtonMethod.ModifiedNewton(**comb,function=function)
+  File "/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Modified_Newton_Method/ModifiedNewtonMethod.py", line 108, in __init__
+    self.compute_gradient, self.compute_hessian = self.compute_gradient_hessian(self.x0,self.gradient)
+                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Modified_Newton_Method/ModifiedNewtonMethod.py", line 163, in compute_gradient_hessian
+    raise ValueError("'derivatives' must be either 'exact' or 'finite_differences'")
+ValueError: 'derivatives' must be either 'exact' or 'finite_differences'

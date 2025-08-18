@@ -27,6 +27,12 @@ def make_test_name(successful_tests,num_tests,n,method,function):
     
     return name
 
+def make_checkpoint_name(n,method,function):
+    name = f"{method}_{n}_{function}"
+
+    return name
+
+
 def save_results(data,name,method):
     data_matrix = np.array(data).T
     df = pd.DataFrame(data_matrix,
@@ -169,7 +175,6 @@ def Test(n,method,function):
         values.append(float(np.asarray(fxk).squeeze()))
         final_norms.append(norm_gradfx_seq[-1]) if len(norm_gradfx_seq) > 0 else np.nan
 
-        nonlocal num_tests, successful_tests
         num_tests += 1
         if success:
             succes_seq.append(True)
@@ -183,7 +188,7 @@ def Test(n,method,function):
 
 
     save_every = 2
-    name = make_test_name(successful_tests,num_tests,n,method,function)
+    name = make_checkpoint_name(n=n,method=method,function=function)
     data = [x0_type_seq,precond_seq,derivatives_method,perturbation,
             execution_times,num_iterations,values,final_norms,EOC_seq,succes_seq]
     
@@ -204,6 +209,7 @@ def Test(n,method,function):
             print()
             print(f'...Comb {visited_comb} out of {tot_comb} completed...')
 
+    name = make_test_name(successful_tests,num_tests,n,method,function)
     save_results(data,name,method)
 
 

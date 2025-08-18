@@ -1,0 +1,12 @@
+{"time":"2025-08-17T19:36:32.774675+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-17T19:36:33.274419+02:00","level":"INFO","msg":"stream: created new stream","id":"ows6acch"}
+{"time":"2025-08-17T19:36:33.274454+02:00","level":"INFO","msg":"stream: started","id":"ows6acch"}
+{"time":"2025-08-17T19:36:33.274454+02:00","level":"INFO","msg":"handler: started","stream_id":"ows6acch"}
+{"time":"2025-08-17T19:36:33.274464+02:00","level":"INFO","msg":"sender: started","stream_id":"ows6acch"}
+{"time":"2025-08-17T19:36:33.274473+02:00","level":"INFO","msg":"writer: started","stream_id":"ows6acch"}
+{"time":"2025-08-17T19:36:43.115476+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading wandb-summary.json","runtime_seconds":0.732871,"progress":"285B/285B"},{"desc":"uploading config.yaml","runtime_seconds":0.501879583,"progress":"2.0KB/2.0KB"}],"total_operations":2}}
+{"time":"2025-08-17T19:36:43.181147+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-17T19:36:43.631127+02:00","level":"INFO","msg":"stream: closing","id":"ows6acch"}
+{"time":"2025-08-17T19:36:43.63114+02:00","level":"INFO","msg":"handler: closed","stream_id":"ows6acch"}
+{"time":"2025-08-17T19:36:43.63121+02:00","level":"INFO","msg":"sender: closed","stream_id":"ows6acch"}
+{"time":"2025-08-17T19:36:43.631217+02:00","level":"INFO","msg":"stream: closed","id":"ows6acch"}

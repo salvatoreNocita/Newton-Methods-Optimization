@@ -1,0 +1,12 @@
+{"time":"2025-08-17T19:59:34.783658+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-17T19:59:35.250619+02:00","level":"INFO","msg":"stream: created new stream","id":"dgcf50t1"}
+{"time":"2025-08-17T19:59:35.250655+02:00","level":"INFO","msg":"stream: started","id":"dgcf50t1"}
+{"time":"2025-08-17T19:59:35.25066+02:00","level":"INFO","msg":"handler: started","stream_id":"dgcf50t1"}
+{"time":"2025-08-17T19:59:35.250666+02:00","level":"INFO","msg":"sender: started","stream_id":"dgcf50t1"}
+{"time":"2025-08-17T19:59:35.250682+02:00","level":"INFO","msg":"writer: started","stream_id":"dgcf50t1"}
+{"time":"2025-08-17T19:59:45.158763+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-17T19:59:45.259369+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading summary, console lines 0-0","runtime_seconds":0.10025675}],"total_operations":1}}
+{"time":"2025-08-17T19:59:45.605422+02:00","level":"INFO","msg":"stream: closing","id":"dgcf50t1"}
+{"time":"2025-08-17T19:59:45.605457+02:00","level":"INFO","msg":"handler: closed","stream_id":"dgcf50t1"}
+{"time":"2025-08-17T19:59:45.60562+02:00","level":"INFO","msg":"sender: closed","stream_id":"dgcf50t1"}
+{"time":"2025-08-17T19:59:45.605636+02:00","level":"INFO","msg":"stream: closed","id":"dgcf50t1"}
