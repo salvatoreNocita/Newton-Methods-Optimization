@@ -1,0 +1,12 @@
+{"time":"2025-08-18T21:43:19.920336+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-18T21:43:20.257341+02:00","level":"INFO","msg":"stream: created new stream","id":"ccozeeqj"}
+{"time":"2025-08-18T21:43:20.257483+02:00","level":"INFO","msg":"stream: started","id":"ccozeeqj"}
+{"time":"2025-08-18T21:43:20.257485+02:00","level":"INFO","msg":"writer: started","stream_id":"ccozeeqj"}
+{"time":"2025-08-18T21:43:20.25751+02:00","level":"INFO","msg":"sender: started","stream_id":"ccozeeqj"}
+{"time":"2025-08-18T21:43:20.257486+02:00","level":"INFO","msg":"handler: started","stream_id":"ccozeeqj"}
+{"time":"2025-08-18T21:43:41.482475+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-18T21:43:41.728813+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-41, summary, console lines 0-0","runtime_seconds":0.245913666}],"total_operations":1}}
+{"time":"2025-08-18T21:43:41.786582+02:00","level":"INFO","msg":"stream: closing","id":"ccozeeqj"}
+{"time":"2025-08-18T21:43:41.786594+02:00","level":"INFO","msg":"handler: closed","stream_id":"ccozeeqj"}
+{"time":"2025-08-18T21:43:41.786701+02:00","level":"INFO","msg":"sender: closed","stream_id":"ccozeeqj"}
+{"time":"2025-08-18T21:43:41.786712+02:00","level":"INFO","msg":"stream: closed","id":"ccozeeqj"}

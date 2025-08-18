@@ -1,0 +1,12 @@
+{"time":"2025-08-18T21:59:24.547807+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-18T21:59:24.885374+02:00","level":"INFO","msg":"stream: created new stream","id":"4yixaljv"}
+{"time":"2025-08-18T21:59:24.885413+02:00","level":"INFO","msg":"stream: started","id":"4yixaljv"}
+{"time":"2025-08-18T21:59:24.885417+02:00","level":"INFO","msg":"handler: started","stream_id":"4yixaljv"}
+{"time":"2025-08-18T21:59:24.885419+02:00","level":"INFO","msg":"writer: started","stream_id":"4yixaljv"}
+{"time":"2025-08-18T21:59:24.885454+02:00","level":"INFO","msg":"sender: started","stream_id":"4yixaljv"}
+{"time":"2025-08-18T21:59:33.715961+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading config.yaml","runtime_seconds":0.524790417,"progress":"2.0KB/2.0KB"}],"total_operations":1}}
+{"time":"2025-08-18T21:59:34.509448+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-18T21:59:34.848002+02:00","level":"INFO","msg":"stream: closing","id":"4yixaljv"}
+{"time":"2025-08-18T21:59:34.848032+02:00","level":"INFO","msg":"handler: closed","stream_id":"4yixaljv"}
+{"time":"2025-08-18T21:59:34.848186+02:00","level":"INFO","msg":"sender: closed","stream_id":"4yixaljv"}
+{"time":"2025-08-18T21:59:34.848209+02:00","level":"INFO","msg":"stream: closed","id":"4yixaljv"}

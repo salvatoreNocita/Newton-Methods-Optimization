@@ -1,0 +1,17 @@
+{
+  "os":  "macOS-15.6-arm64-arm-64bit-Mach-O",
+  "python":  "CPython 3.13.2",
+  "startedAt":  "2025-08-18T20:11:31.843434Z",
+  "program":  "/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Test.py",
+  "codePath":  "Test.py",
+  "codePathLocal":  "Test.py",
+  "git":  {
+    "remote":  "https://github.com/LucianoScarpino/Newton_Methods_Optimization.git",
+    "commit":  "8bd3d1e8d6ab91fa069f3454cb749ab03049570f"
+  },
+  "email":  "salvatore.nocita25@gmail.com",
+  "root":  "/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical",
+  "host":  "Mac.lan",
+  "executable":  "/Users/lilshoe/miniconda3/bin/python",
+  "writerId":  "yxvfq6lxvd0qx605yvmiqi4gonemw501"
+}

@@ -11,7 +11,6 @@ from Truncated_Newton_Method import TruncatedNewtonMethod
 import wandb
 from colorama import Fore
 
-
 def computation(comb,function, method):
     if method == 'modified':
         NM = ModifiedNewtonMethod.ModifiedNewton(**comb,function=function)
@@ -31,7 +30,6 @@ def make_checkpoint_name(n,method,function):
     name = f"{method}_{n}_{function}"
 
     return name
-
 
 def save_results(data,name,method, checkpoint=False):
     data_matrix = np.array(data).T
@@ -124,7 +122,6 @@ def plot_results(execution_times_, norm_gradfx_seq, k, inner_iter, alphas, comb,
             },
             step = i)
 
-
 def Test(n,method,function):
     testers = Test_settings()
 
@@ -200,9 +197,9 @@ def Test(n,method,function):
 
         comb['x0'] = x0_value
         execution_times_, xk, fxk, norm_gradfx_seq, k, success,\
-              inner_iter, alphas, tol_seq = computation(comb,function, method)
+              inner_iter, alphas, tol_sequence = computation(comb,function, method)
         
-        tol_seq.append(tol_seq) if method == 'truncated' else tol_seq.append(np.nan)
+        tol_seq.append(tol_sequence) if method == 'truncated' else tol_seq.append(np.nan)
 
         print(f"Iterations: {k}, Success: {success}, Execution Time: {np.sum(execution_times_):.4f} seconds")
         
@@ -229,10 +226,8 @@ def Test(n,method,function):
         EOC_seq.append(EOC)
         norm_grad_seq.append(norm_gradfx_seq)
 
-
-    save_every = 20
+    save_every = 5
     name = make_checkpoint_name(n=n,method=method,function=function)
-
 
     if method == 'modified':
         data = [x0_type_seq,precond_seq,derivatives_method,perturbation,
@@ -243,7 +238,7 @@ def Test(n,method,function):
     
     for i, comb in enumerate(combinations):
         if (i+1) % save_every == 0 and i > 0:
-            save_results(data, name, method)
+            save_results(data, name, method,checkpoint=True)
             print(Fore.GREEN +  f"Saved checkpoint for {name} at combo {i+1}." + Fore.RESET)
         if isinstance(x0, list):
             for i,x in enumerate(x0):
@@ -261,7 +256,6 @@ def Test(n,method,function):
     name = make_test_name(successful_tests,num_tests,n,method,function)
     save_results(data,name,method)
 
-
 if __name__ == '__main__':
     """ Possible values:
         - n = [10**3,10**4,10**5]
@@ -269,6 +263,6 @@ if __name__ == '__main__':
         - functions = [extended_rosenbrock,extended_powell,broyden_tridiagonal_function]
     """
     n = 10**3
-    method = 'truncated'
-    function = 'extended_rosenbrock'
+    method = 'modified'
+    function = 'extended_powell'
     Test(n,method,function)
