@@ -1,0 +1,12 @@
+{"time":"2025-08-19T01:45:54.27399+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T01:45:54.612513+02:00","level":"INFO","msg":"stream: created new stream","id":"mob82b2p"}
+{"time":"2025-08-19T01:45:54.612545+02:00","level":"INFO","msg":"stream: started","id":"mob82b2p"}
+{"time":"2025-08-19T01:45:54.612551+02:00","level":"INFO","msg":"handler: started","stream_id":"mob82b2p"}
+{"time":"2025-08-19T01:45:54.612555+02:00","level":"INFO","msg":"sender: started","stream_id":"mob82b2p"}
+{"time":"2025-08-19T01:45:54.612571+02:00","level":"INFO","msg":"writer: started","stream_id":"mob82b2p"}
+{"time":"2025-08-19T01:47:18.081322+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T01:47:18.342544+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-19T01:47:18.345737+02:00","level":"INFO","msg":"stream: closing","id":"mob82b2p"}
+{"time":"2025-08-19T01:47:18.345816+02:00","level":"INFO","msg":"handler: closed","stream_id":"mob82b2p"}
+{"time":"2025-08-19T01:47:18.346248+02:00","level":"INFO","msg":"sender: closed","stream_id":"mob82b2p"}
+{"time":"2025-08-19T01:47:18.346336+02:00","level":"INFO","msg":"stream: closed","id":"mob82b2p"}

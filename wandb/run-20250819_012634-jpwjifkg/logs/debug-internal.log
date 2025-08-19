@@ -1,0 +1,12 @@
+{"time":"2025-08-19T01:26:34.512912+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T01:26:34.859016+02:00","level":"INFO","msg":"stream: created new stream","id":"jpwjifkg"}
+{"time":"2025-08-19T01:26:34.85905+02:00","level":"INFO","msg":"stream: started","id":"jpwjifkg"}
+{"time":"2025-08-19T01:26:34.859061+02:00","level":"INFO","msg":"sender: started","stream_id":"jpwjifkg"}
+{"time":"2025-08-19T01:26:34.859059+02:00","level":"INFO","msg":"handler: started","stream_id":"jpwjifkg"}
+{"time":"2025-08-19T01:26:34.859078+02:00","level":"INFO","msg":"writer: started","stream_id":"jpwjifkg"}
+{"time":"2025-08-19T01:28:07.307307+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T01:28:07.596205+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-19T01:28:07.601292+02:00","level":"INFO","msg":"stream: closing","id":"jpwjifkg"}
+{"time":"2025-08-19T01:28:07.601444+02:00","level":"INFO","msg":"handler: closed","stream_id":"jpwjifkg"}
+{"time":"2025-08-19T01:28:07.601945+02:00","level":"INFO","msg":"sender: closed","stream_id":"jpwjifkg"}
+{"time":"2025-08-19T01:28:07.602017+02:00","level":"INFO","msg":"stream: closed","id":"jpwjifkg"}

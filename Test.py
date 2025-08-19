@@ -124,7 +124,7 @@ def plot_results(execution_times_, norm_gradfx_seq, k, inner_iter, alphas, comb,
             },
             step = i)
 
-def Test(n,method,function):
+def Test(n,method,function,save_every):
     testers = Test_settings()
 
     seed = 346205
@@ -228,7 +228,7 @@ def Test(n,method,function):
         EOC_seq.append(EOC)
         norm_grad_seq.append(norm_gradfx_seq)
 
-    save_every = 5
+    save_every = save_every
     name = make_checkpoint_name(n=n,method=method,function=function)
 
     if method == 'modified':
@@ -264,7 +264,8 @@ if __name__ == '__main__':
         - method = [modified,truncated]
         - functions = [extended_rosenbrock,extended_powell,broyden_tridiagonal_function]
     """
-    n = 10**3
+    n = 10**4
+    save_every = 15
     method = 'modified'
-    function = 'broyden_tridiagonal_function'
-    Test(n,method,function)
+    function = 'extended_powell'
+    Test(n,method,function,save_every)

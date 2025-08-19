@@ -1,0 +1,12 @@
+{"time":"2025-08-19T00:40:57.069253+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T00:40:57.412953+02:00","level":"INFO","msg":"stream: created new stream","id":"vnx8eavi"}
+{"time":"2025-08-19T00:40:57.412987+02:00","level":"INFO","msg":"stream: started","id":"vnx8eavi"}
+{"time":"2025-08-19T00:40:57.412987+02:00","level":"INFO","msg":"handler: started","stream_id":"vnx8eavi"}
+{"time":"2025-08-19T00:40:57.412995+02:00","level":"INFO","msg":"sender: started","stream_id":"vnx8eavi"}
+{"time":"2025-08-19T00:40:57.413011+02:00","level":"INFO","msg":"writer: started","stream_id":"vnx8eavi"}
+{"time":"2025-08-19T00:41:22.817882+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T00:41:23.096985+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-8, summary, console lines 0-0","runtime_seconds":0.278715375}],"total_operations":1}}
+{"time":"2025-08-19T00:41:23.122064+02:00","level":"INFO","msg":"stream: closing","id":"vnx8eavi"}
+{"time":"2025-08-19T00:41:23.122075+02:00","level":"INFO","msg":"handler: closed","stream_id":"vnx8eavi"}
+{"time":"2025-08-19T00:41:23.122167+02:00","level":"INFO","msg":"sender: closed","stream_id":"vnx8eavi"}
+{"time":"2025-08-19T00:41:23.122176+02:00","level":"INFO","msg":"stream: closed","id":"vnx8eavi"}

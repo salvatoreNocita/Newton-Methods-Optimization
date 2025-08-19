@@ -1,0 +1,12 @@
+{"time":"2025-08-19T02:20:33.551673+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T02:20:33.883481+02:00","level":"INFO","msg":"stream: created new stream","id":"qxdnsjcz"}
+{"time":"2025-08-19T02:20:33.883511+02:00","level":"INFO","msg":"stream: started","id":"qxdnsjcz"}
+{"time":"2025-08-19T02:20:33.883512+02:00","level":"INFO","msg":"handler: started","stream_id":"qxdnsjcz"}
+{"time":"2025-08-19T02:20:33.883522+02:00","level":"INFO","msg":"sender: started","stream_id":"qxdnsjcz"}
+{"time":"2025-08-19T02:20:33.88355+02:00","level":"INFO","msg":"writer: started","stream_id":"qxdnsjcz"}
+{"time":"2025-08-19T02:21:58.292224+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T02:21:58.322571+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading summary, console lines 0-0","runtime_seconds":0.028823334}],"total_operations":1}}
+{"time":"2025-08-19T02:21:58.642116+02:00","level":"INFO","msg":"stream: closing","id":"qxdnsjcz"}
+{"time":"2025-08-19T02:21:58.64216+02:00","level":"INFO","msg":"handler: closed","stream_id":"qxdnsjcz"}
+{"time":"2025-08-19T02:21:58.642351+02:00","level":"INFO","msg":"sender: closed","stream_id":"qxdnsjcz"}
+{"time":"2025-08-19T02:21:58.642365+02:00","level":"INFO","msg":"stream: closed","id":"qxdnsjcz"}
