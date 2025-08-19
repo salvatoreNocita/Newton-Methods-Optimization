@@ -1,0 +1,12 @@
+{"time":"2025-08-19T12:00:50.052602+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T12:00:50.38418+02:00","level":"INFO","msg":"stream: created new stream","id":"cen64vep"}
+{"time":"2025-08-19T12:00:50.384212+02:00","level":"INFO","msg":"stream: started","id":"cen64vep"}
+{"time":"2025-08-19T12:00:50.384211+02:00","level":"INFO","msg":"handler: started","stream_id":"cen64vep"}
+{"time":"2025-08-19T12:00:50.384221+02:00","level":"INFO","msg":"writer: started","stream_id":"cen64vep"}
+{"time":"2025-08-19T12:00:50.384234+02:00","level":"INFO","msg":"sender: started","stream_id":"cen64vep"}
+{"time":"2025-08-19T12:02:11.835857+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T12:02:12.129738+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading summary, console lines 0-0","runtime_seconds":0.293396375}],"total_operations":1}}
+{"time":"2025-08-19T12:02:12.163026+02:00","level":"INFO","msg":"stream: closing","id":"cen64vep"}
+{"time":"2025-08-19T12:02:12.163045+02:00","level":"INFO","msg":"handler: closed","stream_id":"cen64vep"}
+{"time":"2025-08-19T12:02:12.16316+02:00","level":"INFO","msg":"sender: closed","stream_id":"cen64vep"}
+{"time":"2025-08-19T12:02:12.163169+02:00","level":"INFO","msg":"stream: closed","id":"cen64vep"}

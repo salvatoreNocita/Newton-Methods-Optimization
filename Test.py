@@ -267,5 +267,5 @@ if __name__ == '__main__':
     n = 10**4
     save_every = 15
     method = 'modified'
-    function = 'extended_powell'
+    function = 'broyden_tridiagonal_function'
     Test(n,method,function,save_every)

@@ -1,0 +1,12 @@
+{"time":"2025-08-19T05:00:05.323045+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T05:00:05.676357+02:00","level":"INFO","msg":"stream: created new stream","id":"dueia5hr"}
+{"time":"2025-08-19T05:00:05.676399+02:00","level":"INFO","msg":"stream: started","id":"dueia5hr"}
+{"time":"2025-08-19T05:00:05.67641+02:00","level":"INFO","msg":"handler: started","stream_id":"dueia5hr"}
+{"time":"2025-08-19T05:00:05.676455+02:00","level":"INFO","msg":"sender: started","stream_id":"dueia5hr"}
+{"time":"2025-08-19T05:00:05.676832+02:00","level":"INFO","msg":"writer: started","stream_id":"dueia5hr"}
+{"time":"2025-08-19T05:01:27.253593+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T05:01:27.538651+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-17, summary, console lines 0-0","runtime_seconds":0.283352541}],"total_operations":1}}
+{"time":"2025-08-19T05:01:27.549257+02:00","level":"INFO","msg":"stream: closing","id":"dueia5hr"}
+{"time":"2025-08-19T05:01:27.549273+02:00","level":"INFO","msg":"handler: closed","stream_id":"dueia5hr"}
+{"time":"2025-08-19T05:01:27.549558+02:00","level":"INFO","msg":"sender: closed","stream_id":"dueia5hr"}
+{"time":"2025-08-19T05:01:27.549575+02:00","level":"INFO","msg":"stream: closed","id":"dueia5hr"}

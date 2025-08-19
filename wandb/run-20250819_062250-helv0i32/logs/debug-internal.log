@@ -1,0 +1,12 @@
+{"time":"2025-08-19T06:22:50.13318+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T06:22:50.46727+02:00","level":"INFO","msg":"stream: created new stream","id":"helv0i32"}
+{"time":"2025-08-19T06:22:50.467315+02:00","level":"INFO","msg":"stream: started","id":"helv0i32"}
+{"time":"2025-08-19T06:22:50.467315+02:00","level":"INFO","msg":"handler: started","stream_id":"helv0i32"}
+{"time":"2025-08-19T06:22:50.467318+02:00","level":"INFO","msg":"writer: started","stream_id":"helv0i32"}
+{"time":"2025-08-19T06:22:50.467387+02:00","level":"INFO","msg":"sender: started","stream_id":"helv0i32"}
+{"time":"2025-08-19T06:24:13.217663+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T06:24:13.223704+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-23, summary, console lines 0-0","runtime_seconds":0.005809959}],"total_operations":1}}
+{"time":"2025-08-19T06:24:13.542358+02:00","level":"INFO","msg":"stream: closing","id":"helv0i32"}
+{"time":"2025-08-19T06:24:13.542379+02:00","level":"INFO","msg":"handler: closed","stream_id":"helv0i32"}
+{"time":"2025-08-19T06:24:13.542528+02:00","level":"INFO","msg":"sender: closed","stream_id":"helv0i32"}
+{"time":"2025-08-19T06:24:13.542534+02:00","level":"INFO","msg":"stream: closed","id":"helv0i32"}

@@ -1,0 +1,12 @@
+{"time":"2025-08-19T06:15:13.951129+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T06:15:14.286308+02:00","level":"INFO","msg":"stream: created new stream","id":"rzm2vwbz"}
+{"time":"2025-08-19T06:15:14.286337+02:00","level":"INFO","msg":"stream: started","id":"rzm2vwbz"}
+{"time":"2025-08-19T06:15:14.286342+02:00","level":"INFO","msg":"writer: started","stream_id":"rzm2vwbz"}
+{"time":"2025-08-19T06:15:14.286348+02:00","level":"INFO","msg":"handler: started","stream_id":"rzm2vwbz"}
+{"time":"2025-08-19T06:15:14.286399+02:00","level":"INFO","msg":"sender: started","stream_id":"rzm2vwbz"}
+{"time":"2025-08-19T06:16:37.932318+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T06:16:38.095811+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-22, summary, console lines 0-0","runtime_seconds":0.163030833}],"total_operations":1}}
+{"time":"2025-08-19T06:16:38.33544+02:00","level":"INFO","msg":"stream: closing","id":"rzm2vwbz"}
+{"time":"2025-08-19T06:16:38.335491+02:00","level":"INFO","msg":"handler: closed","stream_id":"rzm2vwbz"}
+{"time":"2025-08-19T06:16:38.336044+02:00","level":"INFO","msg":"sender: closed","stream_id":"rzm2vwbz"}
+{"time":"2025-08-19T06:16:38.336066+02:00","level":"INFO","msg":"stream: closed","id":"rzm2vwbz"}

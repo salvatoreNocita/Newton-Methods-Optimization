@@ -1,0 +1,12 @@
+{"time":"2025-08-19T05:49:43.344203+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T05:49:43.680679+02:00","level":"INFO","msg":"stream: created new stream","id":"rvubm5i2"}
+{"time":"2025-08-19T05:49:43.680715+02:00","level":"INFO","msg":"stream: started","id":"rvubm5i2"}
+{"time":"2025-08-19T05:49:43.680721+02:00","level":"INFO","msg":"writer: started","stream_id":"rvubm5i2"}
+{"time":"2025-08-19T05:49:43.680744+02:00","level":"INFO","msg":"sender: started","stream_id":"rvubm5i2"}
+{"time":"2025-08-19T05:49:43.680729+02:00","level":"INFO","msg":"handler: started","stream_id":"rvubm5i2"}
+{"time":"2025-08-19T05:51:05.219517+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading output.log","runtime_seconds":0.78004575,"progress":"64B/64B"},{"desc":"uploading config.yaml","runtime_seconds":0.547243666,"progress":"2.0KB/2.0KB"}],"total_operations":2}}
+{"time":"2025-08-19T05:51:05.247965+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T05:51:05.571339+02:00","level":"INFO","msg":"stream: closing","id":"rvubm5i2"}
+{"time":"2025-08-19T05:51:05.571381+02:00","level":"INFO","msg":"handler: closed","stream_id":"rvubm5i2"}
+{"time":"2025-08-19T05:51:05.571698+02:00","level":"INFO","msg":"sender: closed","stream_id":"rvubm5i2"}
+{"time":"2025-08-19T05:51:05.57173+02:00","level":"INFO","msg":"stream: closed","id":"rvubm5i2"}
