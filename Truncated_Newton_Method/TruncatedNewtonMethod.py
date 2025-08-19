@@ -106,6 +106,7 @@ class TruncatedNewtonMethod:
 
         gradf = self.compute_gradient(xk)
         gradf_norm = np.linalg.norm(gradf)
+        self.norm_grad_seq.append(gradf_norm)
 
         eta_k = self._set_eta_k()
 

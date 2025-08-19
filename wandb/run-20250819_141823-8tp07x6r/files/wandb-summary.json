@@ -1,0 +1,1 @@
+{"perturbation":"exact","_wandb":{"runtime":1},"Norm Gradient":1.0471469389669858e-07,"derivative_method":"exact","rate_of_convergence":"superlinear","Inner Iterations":2,"_step":8,"Execution Time":0.0019991397857666016,"_timestamp":1.7556059070100198e+09,"_runtime":1.6416557,"Backtracking Step Size":1,"Adaptive Tolerance":5.0757034564715966e-08}

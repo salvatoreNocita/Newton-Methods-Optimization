@@ -91,6 +91,9 @@ class Test_settings(object):
                 return x0
             case "broyden_tridiagonal_function":
                 return -np.ones(n, dtype=float)
+            case "rosenbrock":
+                x0 = np.array([-1.2, 1.0], dtype=float)
+                return x0
             case _:
                 raise ValueError(f"Unknown function '{function}'.")
     

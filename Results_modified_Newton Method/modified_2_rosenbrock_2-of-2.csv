@@ -1,0 +1,3 @@
+Experiment Type,Preconditioning/RateofConv,Derivative,Perturbation,Execution Time,Iterations,F(x),Norm Gradient(x),Experimental Order of Convergence,Converged
+fixed,yes,exact,nan,0.10861015319824219,7,3.226676189013061e-14,1.4519478863162462e-06,0.4067943060118136,True
+fixed,no,exact,nan,0.0015308856964111328,7,3.226676189013061e-14,1.4519478863162462e-06,0.4067943060116813,True

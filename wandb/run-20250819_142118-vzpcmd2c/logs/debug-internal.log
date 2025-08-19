@@ -1,0 +1,12 @@
+{"time":"2025-08-19T14:21:18.4116766+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T14:21:18.8913018+02:00","level":"INFO","msg":"stream: created new stream","id":"vzpcmd2c"}
+{"time":"2025-08-19T14:21:18.8913018+02:00","level":"INFO","msg":"stream: started","id":"vzpcmd2c"}
+{"time":"2025-08-19T14:21:18.8913018+02:00","level":"INFO","msg":"handler: started","stream_id":"vzpcmd2c"}
+{"time":"2025-08-19T14:21:18.8913018+02:00","level":"INFO","msg":"writer: started","stream_id":"vzpcmd2c"}
+{"time":"2025-08-19T14:21:18.8913018+02:00","level":"INFO","msg":"sender: started","stream_id":"vzpcmd2c"}
+{"time":"2025-08-19T14:21:20.3639777+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading config.yaml","runtime_seconds":0.250691,"progress":"1.4KB/1.4KB"}],"total_operations":1}}
+{"time":"2025-08-19T14:21:20.4197198+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T14:21:20.8424044+02:00","level":"INFO","msg":"stream: closing","id":"vzpcmd2c"}
+{"time":"2025-08-19T14:21:20.8424044+02:00","level":"INFO","msg":"handler: closed","stream_id":"vzpcmd2c"}
+{"time":"2025-08-19T14:21:20.8424044+02:00","level":"INFO","msg":"sender: closed","stream_id":"vzpcmd2c"}
+{"time":"2025-08-19T14:21:20.8424044+02:00","level":"INFO","msg":"stream: closed","id":"vzpcmd2c"}
