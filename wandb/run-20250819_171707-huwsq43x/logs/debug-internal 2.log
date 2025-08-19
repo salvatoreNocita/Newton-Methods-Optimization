@@ -1,0 +1,13 @@
+{"time":"2025-08-19T17:17:07.921918+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T17:17:38.031442+02:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"}
+{"time":"2025-08-19T17:17:40.698818+02:00","level":"INFO","msg":"stream: created new stream","id":"huwsq43x"}
+{"time":"2025-08-19T17:17:40.698952+02:00","level":"INFO","msg":"stream: started","id":"huwsq43x"}
+{"time":"2025-08-19T17:17:40.699002+02:00","level":"INFO","msg":"writer: started","stream_id":"huwsq43x"}
+{"time":"2025-08-19T17:17:40.699002+02:00","level":"INFO","msg":"sender: started","stream_id":"huwsq43x"}
+{"time":"2025-08-19T17:17:40.699053+02:00","level":"INFO","msg":"handler: started","stream_id":"huwsq43x"}
+{"time":"2025-08-19T17:18:02.975349+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading output.log","runtime_seconds":0.120506125,"progress":"64B/64B"},{"desc":"uploading wandb-summary.json","runtime_seconds":0.120481,"progress":"39B/39B"}],"total_operations":2}}
+{"time":"2025-08-19T17:18:04.398196+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T17:18:10.261705+02:00","level":"INFO","msg":"stream: closing","id":"huwsq43x"}
+{"time":"2025-08-19T17:18:10.261803+02:00","level":"INFO","msg":"handler: closed","stream_id":"huwsq43x"}
+{"time":"2025-08-19T17:18:10.262313+02:00","level":"INFO","msg":"sender: closed","stream_id":"huwsq43x"}
+{"time":"2025-08-19T17:18:10.262424+02:00","level":"INFO","msg":"stream: closed","id":"huwsq43x"}

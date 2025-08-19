@@ -1,0 +1,12 @@
+{"time":"2025-08-19T16:21:19.092565+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T16:21:19.600871+02:00","level":"INFO","msg":"stream: created new stream","id":"sawzcslo"}
+{"time":"2025-08-19T16:21:19.600914+02:00","level":"INFO","msg":"stream: started","id":"sawzcslo"}
+{"time":"2025-08-19T16:21:19.600923+02:00","level":"INFO","msg":"writer: started","stream_id":"sawzcslo"}
+{"time":"2025-08-19T16:21:19.600941+02:00","level":"INFO","msg":"sender: started","stream_id":"sawzcslo"}
+{"time":"2025-08-19T16:21:19.600938+02:00","level":"INFO","msg":"handler: started","stream_id":"sawzcslo"}
+{"time":"2025-08-19T16:21:41.272038+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T16:21:41.293962+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-51, summary, console lines 0-0","runtime_seconds":0.02175975}],"total_operations":1}}
+{"time":"2025-08-19T16:21:41.910814+02:00","level":"INFO","msg":"stream: closing","id":"sawzcslo"}
+{"time":"2025-08-19T16:21:41.910826+02:00","level":"INFO","msg":"handler: closed","stream_id":"sawzcslo"}
+{"time":"2025-08-19T16:21:41.910898+02:00","level":"INFO","msg":"sender: closed","stream_id":"sawzcslo"}
+{"time":"2025-08-19T16:21:41.910907+02:00","level":"INFO","msg":"stream: closed","id":"sawzcslo"}

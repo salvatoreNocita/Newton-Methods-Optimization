@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Test.py", line 271, in <module>
+    Test(n,method,function,save_every)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Test.py", line 253, in Test
+    run_test(comb,x0)
+    ~~~~~~~~^^^^^^^^^
+  File "/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Test.py", line 202, in run_test
+    inner_iter, alphas, tol_sequence = computation(comb,function, method)
+                                       ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Test.py", line 18, in computation
+    NM = TruncatedNewtonMethod.TruncatedNewtonMethod(**comb,function=function)
+  File "/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Truncated_Newton_Method/TruncatedNewtonMethod.py", line 52, in __init__
+    self.solvers = Solvers(matvec = self.compute_hess_vec)
+                   ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Solvers.__init__() got an unexpected keyword argument 'matvec'

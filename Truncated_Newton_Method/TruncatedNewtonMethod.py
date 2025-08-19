@@ -9,7 +9,7 @@ import scipy as sci
 from Tools.Derivatives import ApproximateDerivatives,ExactDerivatives,SparseApproximativeDerivatives
 from Tools.Functions import FunctionDefinition
 from Tools.Linesearch import LineSearch
-from .SolverInstruments import Solvers
+from TSolverInstruments import Solvers
 from Tools.Conditions import CheckConditions
 from functools import partial
 from colorama import Fore
@@ -125,7 +125,7 @@ class TruncatedNewtonMethod:
 
             self.tol_seq.append(tol_cg)
             
-            pk, it_cg = self.solvers.CG_find_pk(gradf, tol_cg, xk, self.kmax)
+            pk, it_cg = self.solvers.CG_find_pk(gradf, tol_cg, xk)
 
             alphak = self.linesearch.Backtracking(xk, pk, gradf, self.alpha0, self.bt, self.btmax,
                                                   self.rho, self.c1, self.objective_function)

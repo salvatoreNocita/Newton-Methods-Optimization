@@ -1,0 +1,12 @@
+{"time":"2025-08-19T17:03:03.264652+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T17:03:04.51394+02:00","level":"INFO","msg":"stream: created new stream","id":"gcb94ira"}
+{"time":"2025-08-19T17:03:04.514003+02:00","level":"INFO","msg":"stream: started","id":"gcb94ira"}
+{"time":"2025-08-19T17:03:04.514012+02:00","level":"INFO","msg":"writer: started","stream_id":"gcb94ira"}
+{"time":"2025-08-19T17:03:04.514024+02:00","level":"INFO","msg":"sender: started","stream_id":"gcb94ira"}
+{"time":"2025-08-19T17:03:04.51404+02:00","level":"INFO","msg":"handler: started","stream_id":"gcb94ira"}
+{"time":"2025-08-19T17:03:14.011671+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"updating run metadata","runtime_seconds":1.008790916},{"desc":"uploading output.log","runtime_seconds":0.136269458,"progress":"62B/62B"},{"desc":"uploading wandb-summary.json","runtime_seconds":0.136053,"progress":"37B/37B"}],"total_operations":3}}
+{"time":"2025-08-19T17:03:16.655673+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T17:03:18.263633+02:00","level":"INFO","msg":"stream: closing","id":"gcb94ira"}
+{"time":"2025-08-19T17:03:18.263678+02:00","level":"INFO","msg":"handler: closed","stream_id":"gcb94ira"}
+{"time":"2025-08-19T17:03:18.263869+02:00","level":"INFO","msg":"sender: closed","stream_id":"gcb94ira"}
+{"time":"2025-08-19T17:03:18.263897+02:00","level":"INFO","msg":"stream: closed","id":"gcb94ira"}

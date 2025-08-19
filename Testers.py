@@ -20,7 +20,7 @@ class Test_settings(object):
                                     'H_correction_factor': 3,
                                     'precond': ['yes','no'],
                                     'derivatives': ['adaptive_finite_differences','exact','finite_differences'],
-                                    'derivative_method': ['forward','forward','backward','central'],
+                                    'derivative_method': ['forward','backward','central'],
                                     'perturbation': [1e-2,1e-2,1e-4,1e-6,1e-8,1e-10,1e-12]
                                 }
         
@@ -36,7 +36,7 @@ class Test_settings(object):
                                         'kmax': 1000,
                                         'eta': 0.5,
                                         'rate_of_convergence': ['superlinear','quadratic'],
-                                        'derivatives': ['exact','finite_differences','adaptive_finite_differences'],
+                                        'derivatives': ['adaptive_finite_differences','exact','finite_differences'],
                                         'derivative_method': ['forward','backward','central'],
                                         'perturbation': [1e-2,1e-4,1e-6,1e-8,1e-10,1e-12]
                                     }

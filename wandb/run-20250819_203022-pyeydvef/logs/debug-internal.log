@@ -1,0 +1,12 @@
+{"time":"2025-08-19T20:30:22.39822+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T20:30:22.743306+02:00","level":"INFO","msg":"stream: created new stream","id":"pyeydvef"}
+{"time":"2025-08-19T20:30:22.743334+02:00","level":"INFO","msg":"stream: started","id":"pyeydvef"}
+{"time":"2025-08-19T20:30:22.743341+02:00","level":"INFO","msg":"writer: started","stream_id":"pyeydvef"}
+{"time":"2025-08-19T20:30:22.743362+02:00","level":"INFO","msg":"sender: started","stream_id":"pyeydvef"}
+{"time":"2025-08-19T20:30:22.743348+02:00","level":"INFO","msg":"handler: started","stream_id":"pyeydvef"}
+{"time":"2025-08-19T20:30:44.086526+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T20:30:44.382352+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-19T20:30:44.383523+02:00","level":"INFO","msg":"stream: closing","id":"pyeydvef"}
+{"time":"2025-08-19T20:30:44.383532+02:00","level":"INFO","msg":"handler: closed","stream_id":"pyeydvef"}
+{"time":"2025-08-19T20:30:44.38362+02:00","level":"INFO","msg":"sender: closed","stream_id":"pyeydvef"}
+{"time":"2025-08-19T20:30:44.383626+02:00","level":"INFO","msg":"stream: closed","id":"pyeydvef"}

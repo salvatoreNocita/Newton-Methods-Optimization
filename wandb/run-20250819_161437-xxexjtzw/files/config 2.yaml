@@ -1,0 +1,57 @@
+_wandb:
+    value:
+        cli_version: 0.21.1
+        e:
+            fghppjyhg6jpxoxg00cjuw4t1pjdtzho:
+                apple:
+                    ecpuCores: 4
+                    gpuCores: 16
+                    memoryGb: 24
+                    name: Apple M4 Pro
+                    pcpuCores: 8
+                    ramTotalBytes: "25769803776"
+                    swapTotalBytes: "3221225472"
+                codePath: Test.py
+                codePathLocal: Test.py
+                cpu_count: 12
+                cpu_count_logical: 12
+                disk:
+                    /:
+                        total: "494384795648"
+                        used: "226169315328"
+                email: salvatore.nocita25@gmail.com
+                executable: /Users/lilshoe/miniconda3/bin/python
+                git:
+                    commit: 74fb32ccadc0a0b98915dcdf6ef7cf7c5d6aa710
+                    remote: https://github.com/LucianoScarpino/Newton_Methods_Optimization.git
+                host: MacBook-Pro.local
+                memory:
+                    total: "25769803776"
+                os: macOS-15.6-arm64-arm-64bit-Mach-O
+                program: /Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Test.py
+                python: CPython 3.13.2
+                root: /Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical
+                startedAt: "2025-08-19T14:14:37.555456Z"
+                writerId: fghppjyhg6jpxoxg00cjuw4t1pjdtzho
+        m: []
+        python_version: 3.13.2
+        t:
+            "1":
+                - 53
+            "2":
+                - 53
+            "3":
+                - 2
+                - 13
+                - 16
+                - 61
+            "4": 3.13.2
+            "5": 0.21.1
+            "12": 0.21.1
+            "13": darwin-arm64
+function:
+    value: extended_rosenbrock
+method:
+    value: modified
+"n":
+    value: 1000

@@ -1,0 +1,1 @@
+{"derivative_method":"forward","Backtracking Step Size":1,"_step":22,"_wandb":{"runtime":9},"preconditioner":"yes","perturbation":1e-06,"_runtime":9.578747541,"_timestamp":1.755613141083549e+09,"Inner Iterations":0,"Execution Time":9.490581750869751,"Norm Gradient":8.272431937912745e-05}
