@@ -1,0 +1,1 @@
+{"Norm Gradient":19.88145012281306,"Backtracking Step Size":1,"preconditioner":"yes","perturbation":"exact","_step":41,"_runtime":20.699872542,"Inner Iterations":0,"_timestamp":1.755613054594646e+09,"_wandb":{"runtime":20},"derivative_method":"adaptive_central","Execution Time":20.606828451156616}

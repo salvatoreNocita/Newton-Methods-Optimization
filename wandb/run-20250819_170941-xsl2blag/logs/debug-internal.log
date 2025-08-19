@@ -1,0 +1,12 @@
+{"time":"2025-08-19T17:09:41.918538+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T17:09:43.385667+02:00","level":"INFO","msg":"stream: created new stream","id":"xsl2blag"}
+{"time":"2025-08-19T17:09:43.38574+02:00","level":"INFO","msg":"stream: started","id":"xsl2blag"}
+{"time":"2025-08-19T17:09:43.385748+02:00","level":"INFO","msg":"writer: started","stream_id":"xsl2blag"}
+{"time":"2025-08-19T17:09:43.385763+02:00","level":"INFO","msg":"sender: started","stream_id":"xsl2blag"}
+{"time":"2025-08-19T17:09:43.385771+02:00","level":"INFO","msg":"handler: started","stream_id":"xsl2blag"}
+{"time":"2025-08-19T17:10:05.253911+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"updating run metadata","runtime_seconds":1.005129}],"total_operations":1}}
+{"time":"2025-08-19T17:10:09.469063+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T17:10:12.00041+02:00","level":"INFO","msg":"stream: closing","id":"xsl2blag"}
+{"time":"2025-08-19T17:10:12.000449+02:00","level":"INFO","msg":"handler: closed","stream_id":"xsl2blag"}
+{"time":"2025-08-19T17:10:12.000592+02:00","level":"INFO","msg":"sender: closed","stream_id":"xsl2blag"}
+{"time":"2025-08-19T17:10:12.000605+02:00","level":"INFO","msg":"stream: closed","id":"xsl2blag"}
