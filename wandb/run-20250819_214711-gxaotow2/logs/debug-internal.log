@@ -1,0 +1,12 @@
+{"time":"2025-08-19T21:47:11.898166+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T21:47:12.234898+02:00","level":"INFO","msg":"stream: created new stream","id":"gxaotow2"}
+{"time":"2025-08-19T21:47:12.234925+02:00","level":"INFO","msg":"stream: started","id":"gxaotow2"}
+{"time":"2025-08-19T21:47:12.234936+02:00","level":"INFO","msg":"handler: started","stream_id":"gxaotow2"}
+{"time":"2025-08-19T21:47:12.234931+02:00","level":"INFO","msg":"writer: started","stream_id":"gxaotow2"}
+{"time":"2025-08-19T21:47:12.234953+02:00","level":"INFO","msg":"sender: started","stream_id":"gxaotow2"}
+{"time":"2025-08-19T21:48:33.250894+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T21:48:33.526307+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-194, summary, console lines 0-0","runtime_seconds":0.274218417}],"total_operations":1}}
+{"time":"2025-08-19T21:48:33.584983+02:00","level":"INFO","msg":"stream: closing","id":"gxaotow2"}
+{"time":"2025-08-19T21:48:33.584996+02:00","level":"INFO","msg":"handler: closed","stream_id":"gxaotow2"}
+{"time":"2025-08-19T21:48:33.585077+02:00","level":"INFO","msg":"sender: closed","stream_id":"gxaotow2"}
+{"time":"2025-08-19T21:48:33.585088+02:00","level":"INFO","msg":"stream: closed","id":"gxaotow2"}

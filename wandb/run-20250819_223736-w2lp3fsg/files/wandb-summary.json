@@ -1,0 +1,1 @@
+{"Backtracking Step Size":1,"Execution Time":14.48881220817566,"Inner Iterations":12,"_step":11,"_wandb":{"runtime":14},"_timestamp":1.7556358721001458e+09,"perturbation":0.01,"_runtime":14.615227458,"derivative_method":"central","Adaptive Tolerance":3.5387570924079253e-10,"Norm Gradient":1.8811584442592615e-05,"rate_of_convergence":"quadratic"}

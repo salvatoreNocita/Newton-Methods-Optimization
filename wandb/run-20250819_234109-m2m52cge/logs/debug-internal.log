@@ -1,0 +1,12 @@
+{"time":"2025-08-19T23:41:09.134426+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-19T23:41:09.472162+02:00","level":"INFO","msg":"stream: created new stream","id":"m2m52cge"}
+{"time":"2025-08-19T23:41:09.472207+02:00","level":"INFO","msg":"handler: started","stream_id":"m2m52cge"}
+{"time":"2025-08-19T23:41:09.472214+02:00","level":"INFO","msg":"writer: started","stream_id":"m2m52cge"}
+{"time":"2025-08-19T23:41:09.47223+02:00","level":"INFO","msg":"sender: started","stream_id":"m2m52cge"}
+{"time":"2025-08-19T23:41:09.472215+02:00","level":"INFO","msg":"stream: started","id":"m2m52cge"}
+{"time":"2025-08-19T23:42:47.15032+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-19T23:42:47.226193+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading summary, console lines 0-0","runtime_seconds":0.075300792}],"total_operations":1}}
+{"time":"2025-08-19T23:42:47.460535+02:00","level":"INFO","msg":"stream: closing","id":"m2m52cge"}
+{"time":"2025-08-19T23:42:47.46056+02:00","level":"INFO","msg":"handler: closed","stream_id":"m2m52cge"}
+{"time":"2025-08-19T23:42:47.46083+02:00","level":"INFO","msg":"sender: closed","stream_id":"m2m52cge"}
+{"time":"2025-08-19T23:42:47.460874+02:00","level":"INFO","msg":"stream: closed","id":"m2m52cge"}
