@@ -1,0 +1,13 @@
+{"time":"2025-08-20T11:13:28.988834+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-20T11:13:29.345128+02:00","level":"INFO","msg":"stream: created new stream","id":"i48ddbyt"}
+{"time":"2025-08-20T11:13:29.345217+02:00","level":"INFO","msg":"stream: started","id":"i48ddbyt"}
+{"time":"2025-08-20T11:13:29.345211+02:00","level":"INFO","msg":"handler: started","stream_id":"i48ddbyt"}
+{"time":"2025-08-20T11:13:29.345219+02:00","level":"INFO","msg":"writer: started","stream_id":"i48ddbyt"}
+{"time":"2025-08-20T11:13:29.345232+02:00","level":"INFO","msg":"sender: started","stream_id":"i48ddbyt"}
+{"time":"2025-08-20T11:34:00.766288+02:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": read tcp 192.168.1.236:52934->35.186.228.49:443: read: connection reset by peer"}
+{"time":"2025-08-20T11:38:07.989798+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-20T11:38:08.255328+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-1, summary, console lines 0-0","runtime_seconds":0.265175875}],"total_operations":1}}
+{"time":"2025-08-20T11:38:08.349618+02:00","level":"INFO","msg":"stream: closing","id":"i48ddbyt"}
+{"time":"2025-08-20T11:38:08.349631+02:00","level":"INFO","msg":"handler: closed","stream_id":"i48ddbyt"}
+{"time":"2025-08-20T11:38:08.349734+02:00","level":"INFO","msg":"sender: closed","stream_id":"i48ddbyt"}
+{"time":"2025-08-20T11:38:08.349746+02:00","level":"INFO","msg":"stream: closed","id":"i48ddbyt"}

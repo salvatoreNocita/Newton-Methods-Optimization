@@ -1,0 +1,12 @@
+{"time":"2025-08-20T13:00:14.996434+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-20T13:00:15.346956+02:00","level":"INFO","msg":"stream: created new stream","id":"nf2hbods"}
+{"time":"2025-08-20T13:00:15.346991+02:00","level":"INFO","msg":"stream: started","id":"nf2hbods"}
+{"time":"2025-08-20T13:00:15.347002+02:00","level":"INFO","msg":"writer: started","stream_id":"nf2hbods"}
+{"time":"2025-08-20T13:00:15.347021+02:00","level":"INFO","msg":"handler: started","stream_id":"nf2hbods"}
+{"time":"2025-08-20T13:00:15.34701+02:00","level":"INFO","msg":"sender: started","stream_id":"nf2hbods"}
+{"time":"2025-08-20T13:05:24.788579+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-20T13:05:25.000832+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-11, summary, console lines 0-0","runtime_seconds":0.211772208}],"total_operations":1}}
+{"time":"2025-08-20T13:05:25.095397+02:00","level":"INFO","msg":"stream: closing","id":"nf2hbods"}
+{"time":"2025-08-20T13:05:25.095421+02:00","level":"INFO","msg":"handler: closed","stream_id":"nf2hbods"}
+{"time":"2025-08-20T13:05:25.095525+02:00","level":"INFO","msg":"sender: closed","stream_id":"nf2hbods"}
+{"time":"2025-08-20T13:05:25.095539+02:00","level":"INFO","msg":"stream: closed","id":"nf2hbods"}

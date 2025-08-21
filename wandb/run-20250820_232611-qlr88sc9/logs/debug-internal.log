@@ -1,0 +1,12 @@
+{"time":"2025-08-20T23:26:11.294496+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-20T23:26:11.634371+02:00","level":"INFO","msg":"stream: created new stream","id":"qlr88sc9"}
+{"time":"2025-08-20T23:26:11.634412+02:00","level":"INFO","msg":"stream: started","id":"qlr88sc9"}
+{"time":"2025-08-20T23:26:11.634412+02:00","level":"INFO","msg":"handler: started","stream_id":"qlr88sc9"}
+{"time":"2025-08-20T23:26:11.634429+02:00","level":"INFO","msg":"sender: started","stream_id":"qlr88sc9"}
+{"time":"2025-08-20T23:26:11.634434+02:00","level":"INFO","msg":"writer: started","stream_id":"qlr88sc9"}
+{"time":"2025-08-20T23:31:30.765312+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-20T23:31:31.040739+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-20T23:31:31.046522+02:00","level":"INFO","msg":"stream: closing","id":"qlr88sc9"}
+{"time":"2025-08-20T23:31:31.046595+02:00","level":"INFO","msg":"handler: closed","stream_id":"qlr88sc9"}
+{"time":"2025-08-20T23:31:31.04727+02:00","level":"INFO","msg":"sender: closed","stream_id":"qlr88sc9"}
+{"time":"2025-08-20T23:31:31.047303+02:00","level":"INFO","msg":"stream: closed","id":"qlr88sc9"}

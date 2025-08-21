@@ -125,7 +125,8 @@ class TruncatedNewtonMethod:
 
             self.tol_seq.append(tol_cg)
             
-            pk, it_cg = self.solvers.CG_find_pk(gradf, tol_cg, xk)
+            remaining_time = max_time - (time.perf_counter() - start_time)
+            pk, it_cg = self.solvers.CG_find_pk(gradf, tol_cg, xk,remaining_time=remaining_time)
 
             alphak = self.linesearch.Backtracking(xk, pk, gradf, self.alpha0, self.bt, self.btmax,
                                                   self.rho, self.c1, self.objective_function)

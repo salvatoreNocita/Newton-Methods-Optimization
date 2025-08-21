@@ -1,0 +1,12 @@
+{"time":"2025-08-20T22:21:46.660512+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-20T22:21:47.002636+02:00","level":"INFO","msg":"stream: created new stream","id":"o2mdc26i"}
+{"time":"2025-08-20T22:21:47.002663+02:00","level":"INFO","msg":"stream: started","id":"o2mdc26i"}
+{"time":"2025-08-20T22:21:47.002669+02:00","level":"INFO","msg":"writer: started","stream_id":"o2mdc26i"}
+{"time":"2025-08-20T22:21:47.002712+02:00","level":"INFO","msg":"handler: started","stream_id":"o2mdc26i"}
+{"time":"2025-08-20T22:21:47.002677+02:00","level":"INFO","msg":"sender: started","stream_id":"o2mdc26i"}
+{"time":"2025-08-20T22:27:22.207554+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-20T22:27:22.464082+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading summary, console lines 0-0","runtime_seconds":0.256009167}],"total_operations":1}}
+{"time":"2025-08-20T22:27:22.533878+02:00","level":"INFO","msg":"stream: closing","id":"o2mdc26i"}
+{"time":"2025-08-20T22:27:22.533893+02:00","level":"INFO","msg":"handler: closed","stream_id":"o2mdc26i"}
+{"time":"2025-08-20T22:27:22.534006+02:00","level":"INFO","msg":"sender: closed","stream_id":"o2mdc26i"}
+{"time":"2025-08-20T22:27:22.534021+02:00","level":"INFO","msg":"stream: closed","id":"o2mdc26i"}
