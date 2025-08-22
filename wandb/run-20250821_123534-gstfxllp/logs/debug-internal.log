@@ -1,0 +1,12 @@
+{"time":"2025-08-21T12:35:34.596723+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-21T12:35:34.93387+02:00","level":"INFO","msg":"stream: created new stream","id":"gstfxllp"}
+{"time":"2025-08-21T12:35:34.933905+02:00","level":"INFO","msg":"stream: started","id":"gstfxllp"}
+{"time":"2025-08-21T12:35:34.93391+02:00","level":"INFO","msg":"writer: started","stream_id":"gstfxllp"}
+{"time":"2025-08-21T12:35:34.933938+02:00","level":"INFO","msg":"sender: started","stream_id":"gstfxllp"}
+{"time":"2025-08-21T12:35:34.934003+02:00","level":"INFO","msg":"handler: started","stream_id":"gstfxllp"}
+{"time":"2025-08-21T12:42:09.961932+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-21T12:42:10.230562+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-21T12:42:10.233903+02:00","level":"INFO","msg":"stream: closing","id":"gstfxllp"}
+{"time":"2025-08-21T12:42:10.233953+02:00","level":"INFO","msg":"handler: closed","stream_id":"gstfxllp"}
+{"time":"2025-08-21T12:42:10.23421+02:00","level":"INFO","msg":"sender: closed","stream_id":"gstfxllp"}
+{"time":"2025-08-21T12:42:10.23425+02:00","level":"INFO","msg":"stream: closed","id":"gstfxllp"}

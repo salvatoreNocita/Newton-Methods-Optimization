@@ -125,7 +125,7 @@ def plot_results(execution_times_, norm_gradfx_seq, k, inner_iter, alphas, comb,
             },
             step = i)
 
-def Test(n,method,function,save_every):
+def Test(n,method,function,save_every,resume_from_comb=0):
     testers = Test_settings()
 
     seed = 346205
@@ -191,12 +191,30 @@ def Test(n,method,function,save_every):
         # Run name distinguishes perturbation
         run_name = f"perturb: {comb['perturbation']}" if comb['derivatives']=="finite_differences" or comb['derivatives'] == "adaptive_finite_differences" else "exact"
 
-        wandb.init(
-            project=f"{method}_newton",
-            group=run_group,
-            name=run_name,
-            config={"function": function, "method": method, "n": n}
-        )
+        if resume_from_comb > 0:
+            # Modalità resume: riattacca alla stessa run
+            if method == "modified":
+                id_key = f"{method}|{function}|n={n:.0e}|precond={comb['precond']}|der={der_method_label}|pert={comb['perturbation']}"
+            else:
+                id_key = f"{method}|{function}|n={n:.0e}|rate={comb['rate_of_convergence']}|der={der_method_label}|pert={comb['perturbation']}"
+            run_id = hashlib.md5(id_key.encode("utf-8")).hexdigest()[:12]
+
+            wandb.init(
+                project=f"{method}_newton",
+                group=run_group,
+                name=run_name,
+                id=run_id,
+                resume="allow",
+                config={"function": function, "method": method, "n": n}
+            )
+        else:
+            # Nuova run: lascia che W&B generi un nuovo id
+            wandb.init(
+                project=f"{method}_newton",
+                group=run_group,
+                name=run_name,
+                config={"function": function, "method": method, "n": n}
+            )
 
         comb['x0'] = x0_value
         execution_times_, xk, fxk, norm_gradfx_seq, k, success,\
@@ -239,7 +257,7 @@ def Test(n,method,function,save_every):
         data = [x0_type_seq,rate_of_conv_seq,derivatives_method,perturbation,
             execution_times,num_iterations,values,final_norms,EOC_seq,succes_seq]
     
-    for i, comb in enumerate(combinations):
+    for i, comb in enumerate(combinations[resume_from_comb:],start=resume_from_comb):       #Index for resuming
         if (i+1) % save_every == 0 and i > 0:
             save_results(data, name, method,checkpoint=True)
             print(Fore.GREEN +  f"Saved checkpoint for {name} at combo {i+1}." + Fore.RESET)
@@ -268,5 +286,5 @@ if __name__ == '__main__':
     n = 10**5
     save_every = 15
     method = 'truncated'
-    function = 'extended_powell'
+    function = 'broyden_tridiagonal_function'
     Test(n,method,function,save_every)

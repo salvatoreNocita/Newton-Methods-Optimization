@@ -1,0 +1,12 @@
+{"time":"2025-08-21T21:32:58.957837+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-21T21:32:59.288347+02:00","level":"INFO","msg":"stream: created new stream","id":"iqbuy1vs"}
+{"time":"2025-08-21T21:32:59.288377+02:00","level":"INFO","msg":"stream: started","id":"iqbuy1vs"}
+{"time":"2025-08-21T21:32:59.288378+02:00","level":"INFO","msg":"handler: started","stream_id":"iqbuy1vs"}
+{"time":"2025-08-21T21:32:59.288388+02:00","level":"INFO","msg":"sender: started","stream_id":"iqbuy1vs"}
+{"time":"2025-08-21T21:32:59.288398+02:00","level":"INFO","msg":"writer: started","stream_id":"iqbuy1vs"}
+{"time":"2025-08-21T21:39:11.467781+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-21T21:39:11.771417+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-21T21:39:11.776421+02:00","level":"INFO","msg":"stream: closing","id":"iqbuy1vs"}
+{"time":"2025-08-21T21:39:11.776536+02:00","level":"INFO","msg":"handler: closed","stream_id":"iqbuy1vs"}
+{"time":"2025-08-21T21:39:11.777102+02:00","level":"INFO","msg":"sender: closed","stream_id":"iqbuy1vs"}
+{"time":"2025-08-21T21:39:11.777185+02:00","level":"INFO","msg":"stream: closed","id":"iqbuy1vs"}

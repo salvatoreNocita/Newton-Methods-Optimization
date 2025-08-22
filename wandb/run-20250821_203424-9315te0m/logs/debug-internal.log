@@ -1,0 +1,13 @@
+{"time":"2025-08-21T20:34:24.329347+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-21T20:34:24.662472+02:00","level":"INFO","msg":"stream: created new stream","id":"9315te0m"}
+{"time":"2025-08-21T20:34:24.662502+02:00","level":"INFO","msg":"stream: started","id":"9315te0m"}
+{"time":"2025-08-21T20:34:24.662506+02:00","level":"INFO","msg":"handler: started","stream_id":"9315te0m"}
+{"time":"2025-08-21T20:34:24.662516+02:00","level":"INFO","msg":"sender: started","stream_id":"9315te0m"}
+{"time":"2025-08-21T20:34:24.662527+02:00","level":"INFO","msg":"writer: started","stream_id":"9315te0m"}
+{"time":"2025-08-21T20:38:11.059245+02:00","level":"INFO","msg":"api: retrying HTTP error","status":502,"url":"https://api.wandb.ai/files/salvatore-nocita25-politecnico-di-torino/truncated_newton/9315te0m/file_stream","body":"\n<html><head>\n<meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">\n<title>502 Server Error</title>\n</head>\n<body text=#000000 bgcolor=#ffffff>\n<h1>Error: Server Error</h1>\n<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>\n<h2></h2>\n</body></html>\n"}
+{"time":"2025-08-21T20:40:22.796577+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-21T20:40:23.029233+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading summary, console lines 0-0","runtime_seconds":0.232353208}],"total_operations":1}}
+{"time":"2025-08-21T20:40:23.07513+02:00","level":"INFO","msg":"stream: closing","id":"9315te0m"}
+{"time":"2025-08-21T20:40:23.075146+02:00","level":"INFO","msg":"handler: closed","stream_id":"9315te0m"}
+{"time":"2025-08-21T20:40:23.075243+02:00","level":"INFO","msg":"sender: closed","stream_id":"9315te0m"}
+{"time":"2025-08-21T20:40:23.07526+02:00","level":"INFO","msg":"stream: closed","id":"9315te0m"}

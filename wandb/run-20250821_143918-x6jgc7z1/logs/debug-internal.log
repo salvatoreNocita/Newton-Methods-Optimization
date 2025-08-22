@@ -1,0 +1,13 @@
+{"time":"2025-08-21T14:39:18.881791+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-21T14:39:48.991931+02:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": net/http: request canceled (Client.Timeout exceeded while awaiting headers)"}
+{"time":"2025-08-21T14:39:51.570987+02:00","level":"INFO","msg":"stream: created new stream","id":"x6jgc7z1"}
+{"time":"2025-08-21T14:39:51.571073+02:00","level":"INFO","msg":"stream: started","id":"x6jgc7z1"}
+{"time":"2025-08-21T14:39:51.571081+02:00","level":"INFO","msg":"handler: started","stream_id":"x6jgc7z1"}
+{"time":"2025-08-21T14:39:51.571107+02:00","level":"INFO","msg":"sender: started","stream_id":"x6jgc7z1"}
+{"time":"2025-08-21T14:39:51.571157+02:00","level":"INFO","msg":"writer: started","stream_id":"x6jgc7z1"}
+{"time":"2025-08-21T14:45:08.445542+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-21T14:45:08.739078+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-2, summary, console lines 0-0","runtime_seconds":0.292906666}],"total_operations":1}}
+{"time":"2025-08-21T14:45:08.829811+02:00","level":"INFO","msg":"stream: closing","id":"x6jgc7z1"}
+{"time":"2025-08-21T14:45:08.829825+02:00","level":"INFO","msg":"handler: closed","stream_id":"x6jgc7z1"}
+{"time":"2025-08-21T14:45:08.829915+02:00","level":"INFO","msg":"sender: closed","stream_id":"x6jgc7z1"}
+{"time":"2025-08-21T14:45:08.829923+02:00","level":"INFO","msg":"stream: closed","id":"x6jgc7z1"}

@@ -1,0 +1,13 @@
+{"time":"2025-08-21T17:54:38.430312+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-21T17:54:38.763671+02:00","level":"INFO","msg":"stream: created new stream","id":"liw9wxnu"}
+{"time":"2025-08-21T17:54:38.763704+02:00","level":"INFO","msg":"handler: started","stream_id":"liw9wxnu"}
+{"time":"2025-08-21T17:54:38.763715+02:00","level":"INFO","msg":"writer: started","stream_id":"liw9wxnu"}
+{"time":"2025-08-21T17:54:38.763713+02:00","level":"INFO","msg":"stream: started","id":"liw9wxnu"}
+{"time":"2025-08-21T17:54:38.763721+02:00","level":"INFO","msg":"sender: started","stream_id":"liw9wxnu"}
+{"time":"2025-08-21T17:58:55.123467+02:00","level":"INFO","msg":"api: retrying HTTP error","status":502,"url":"https://api.wandb.ai/files/salvatore-nocita25-politecnico-di-torino/truncated_newton/liw9wxnu/file_stream","body":"\n<html><head>\n<meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">\n<title>502 Server Error</title>\n</head>\n<body text=#000000 bgcolor=#ffffff>\n<h1>Error: Server Error</h1>\n<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>\n<h2></h2>\n</body></html>\n"}
+{"time":"2025-08-21T18:01:05.169886+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading output.log","runtime_seconds":0.758896417,"progress":"64B/64B"},{"desc":"uploading wandb-summary.json","runtime_seconds":0.758883542,"progress":"338B/338B"},{"desc":"uploading config.yaml","runtime_seconds":0.502972958,"progress":"2.0KB/2.0KB"}],"total_operations":3}}
+{"time":"2025-08-21T18:01:05.274533+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-21T18:01:05.58251+02:00","level":"INFO","msg":"stream: closing","id":"liw9wxnu"}
+{"time":"2025-08-21T18:01:05.582659+02:00","level":"INFO","msg":"handler: closed","stream_id":"liw9wxnu"}
+{"time":"2025-08-21T18:01:05.582866+02:00","level":"INFO","msg":"sender: closed","stream_id":"liw9wxnu"}
+{"time":"2025-08-21T18:01:05.582886+02:00","level":"INFO","msg":"stream: closed","id":"liw9wxnu"}

@@ -1,0 +1,12 @@
+{"time":"2025-08-21T22:43:33.958185+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-21T22:43:34.280275+02:00","level":"INFO","msg":"stream: created new stream","id":"qorrok9t"}
+{"time":"2025-08-21T22:43:34.28032+02:00","level":"INFO","msg":"stream: started","id":"qorrok9t"}
+{"time":"2025-08-21T22:43:34.280328+02:00","level":"INFO","msg":"sender: started","stream_id":"qorrok9t"}
+{"time":"2025-08-21T22:43:34.280328+02:00","level":"INFO","msg":"writer: started","stream_id":"qorrok9t"}
+{"time":"2025-08-21T22:43:34.280314+02:00","level":"INFO","msg":"handler: started","stream_id":"qorrok9t"}
+{"time":"2025-08-21T22:49:11.125366+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading config.yaml","runtime_seconds":0.56970575,"progress":"2.0KB/2.0KB"}],"total_operations":1}}
+{"time":"2025-08-21T22:49:11.203485+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-21T22:49:11.487041+02:00","level":"INFO","msg":"stream: closing","id":"qorrok9t"}
+{"time":"2025-08-21T22:49:11.487121+02:00","level":"INFO","msg":"handler: closed","stream_id":"qorrok9t"}
+{"time":"2025-08-21T22:49:11.48777+02:00","level":"INFO","msg":"sender: closed","stream_id":"qorrok9t"}
+{"time":"2025-08-21T22:49:11.487853+02:00","level":"INFO","msg":"stream: closed","id":"qorrok9t"}
