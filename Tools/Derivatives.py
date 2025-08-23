@@ -212,8 +212,6 @@ class SparseApproximativeDerivatives(object):
         Approximate the Hessian of a scalar function f at point x using finite differences
         and a two-coloring technique, storing the result in a sparse matrix.
 
-        Optimized for large-scale problems (n ≈ 10⁵).
-
         Parameters:
         x (np.ndarray): The point at which to approximate the Hessian.
         grad (np.ndarray): The gradient at x.
@@ -259,7 +257,7 @@ class SparseApproximativeDerivatives(object):
                 )
 
                 # Diagonal elements (even indices)
-                rows.extend(even_indices)
+                rows.extend(even_indices)       #extend takes each element of even_indices and append to row
                 cols.extend(even_indices)
                 denom_even = _step_for(even_indices)
                 data.extend((grad_perturbed_forward_even[even_indices] - grad[even_indices]) / denom_even)

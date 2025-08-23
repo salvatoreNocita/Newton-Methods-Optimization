@@ -1,0 +1,12 @@
+{"time":"2025-08-22T17:33:35.525132+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-22T17:33:35.868335+02:00","level":"INFO","msg":"stream: created new stream","id":"i2ob748n"}
+{"time":"2025-08-22T17:33:35.86837+02:00","level":"INFO","msg":"stream: started","id":"i2ob748n"}
+{"time":"2025-08-22T17:33:35.868379+02:00","level":"INFO","msg":"sender: started","stream_id":"i2ob748n"}
+{"time":"2025-08-22T17:33:35.868377+02:00","level":"INFO","msg":"handler: started","stream_id":"i2ob748n"}
+{"time":"2025-08-22T17:33:35.868394+02:00","level":"INFO","msg":"writer: started","stream_id":"i2ob748n"}
+{"time":"2025-08-22T17:39:56.220095+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-22T17:39:56.444407+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-0, summary, console lines 0-0","runtime_seconds":0.223860125}],"total_operations":1}}
+{"time":"2025-08-22T17:39:56.65604+02:00","level":"INFO","msg":"stream: closing","id":"i2ob748n"}
+{"time":"2025-08-22T17:39:56.65607+02:00","level":"INFO","msg":"handler: closed","stream_id":"i2ob748n"}
+{"time":"2025-08-22T17:39:56.656286+02:00","level":"INFO","msg":"sender: closed","stream_id":"i2ob748n"}
+{"time":"2025-08-22T17:39:56.65631+02:00","level":"INFO","msg":"stream: closed","id":"i2ob748n"}

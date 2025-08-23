@@ -1,0 +1,12 @@
+{"time":"2025-08-22T18:04:28.603742+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-22T18:04:28.933303+02:00","level":"INFO","msg":"stream: created new stream","id":"gke6umbs"}
+{"time":"2025-08-22T18:04:28.933337+02:00","level":"INFO","msg":"stream: started","id":"gke6umbs"}
+{"time":"2025-08-22T18:04:28.933344+02:00","level":"INFO","msg":"writer: started","stream_id":"gke6umbs"}
+{"time":"2025-08-22T18:04:28.93336+02:00","level":"INFO","msg":"sender: started","stream_id":"gke6umbs"}
+{"time":"2025-08-22T18:04:28.933347+02:00","level":"INFO","msg":"handler: started","stream_id":"gke6umbs"}
+{"time":"2025-08-22T18:10:45.506043+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-22T18:10:45.778752+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-22T18:10:45.785367+02:00","level":"INFO","msg":"stream: closing","id":"gke6umbs"}
+{"time":"2025-08-22T18:10:45.785474+02:00","level":"INFO","msg":"handler: closed","stream_id":"gke6umbs"}
+{"time":"2025-08-22T18:10:45.786061+02:00","level":"INFO","msg":"sender: closed","stream_id":"gke6umbs"}
+{"time":"2025-08-22T18:10:45.786122+02:00","level":"INFO","msg":"stream: closed","id":"gke6umbs"}

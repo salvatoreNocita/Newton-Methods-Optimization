@@ -1,0 +1,12 @@
+{"time":"2025-08-23T04:13:07.635891+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-23T04:13:07.974162+02:00","level":"INFO","msg":"stream: created new stream","id":"qtpueksc"}
+{"time":"2025-08-23T04:13:07.974193+02:00","level":"INFO","msg":"stream: started","id":"qtpueksc"}
+{"time":"2025-08-23T04:13:07.974195+02:00","level":"INFO","msg":"writer: started","stream_id":"qtpueksc"}
+{"time":"2025-08-23T04:13:07.974206+02:00","level":"INFO","msg":"sender: started","stream_id":"qtpueksc"}
+{"time":"2025-08-23T04:13:07.974228+02:00","level":"INFO","msg":"handler: started","stream_id":"qtpueksc"}
+{"time":"2025-08-23T04:19:18.409545+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading output.log","runtime_seconds":0.758594958,"progress":"64B/64B"},{"desc":"uploading config.yaml","runtime_seconds":0.531984458,"progress":"2.0KB/2.0KB"}],"total_operations":2}}
+{"time":"2025-08-23T04:19:18.54256+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-23T04:19:18.840946+02:00","level":"INFO","msg":"stream: closing","id":"qtpueksc"}
+{"time":"2025-08-23T04:19:18.840975+02:00","level":"INFO","msg":"handler: closed","stream_id":"qtpueksc"}
+{"time":"2025-08-23T04:19:18.841173+02:00","level":"INFO","msg":"sender: closed","stream_id":"qtpueksc"}
+{"time":"2025-08-23T04:19:18.841197+02:00","level":"INFO","msg":"stream: closed","id":"qtpueksc"}

@@ -191,30 +191,12 @@ def Test(n,method,function,save_every,resume_from_comb=0):
         # Run name distinguishes perturbation
         run_name = f"perturb: {comb['perturbation']}" if comb['derivatives']=="finite_differences" or comb['derivatives'] == "adaptive_finite_differences" else "exact"
 
-        if resume_from_comb > 0:
-            # Modalità resume: riattacca alla stessa run
-            if method == "modified":
-                id_key = f"{method}|{function}|n={n:.0e}|precond={comb['precond']}|der={der_method_label}|pert={comb['perturbation']}"
-            else:
-                id_key = f"{method}|{function}|n={n:.0e}|rate={comb['rate_of_convergence']}|der={der_method_label}|pert={comb['perturbation']}"
-            run_id = hashlib.md5(id_key.encode("utf-8")).hexdigest()[:12]
-
-            wandb.init(
-                project=f"{method}_newton",
-                group=run_group,
-                name=run_name,
-                id=run_id,
-                resume="allow",
-                config={"function": function, "method": method, "n": n}
-            )
-        else:
-            # Nuova run: lascia che W&B generi un nuovo id
-            wandb.init(
-                project=f"{method}_newton",
-                group=run_group,
-                name=run_name,
-                config={"function": function, "method": method, "n": n}
-            )
+        wandb.init(
+            project=f"{method}_newton",
+            group=run_group,
+            name=run_name,
+            config={"function": function, "method": method, "n": n}
+        )
 
         comb['x0'] = x0_value
         execution_times_, xk, fxk, norm_gradfx_seq, k, success,\

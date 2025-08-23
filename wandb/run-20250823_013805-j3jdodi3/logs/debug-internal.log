@@ -1,0 +1,12 @@
+{"time":"2025-08-23T01:38:05.370061+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-23T01:38:05.707952+02:00","level":"INFO","msg":"stream: created new stream","id":"j3jdodi3"}
+{"time":"2025-08-23T01:38:05.707992+02:00","level":"INFO","msg":"stream: started","id":"j3jdodi3"}
+{"time":"2025-08-23T01:38:05.707995+02:00","level":"INFO","msg":"writer: started","stream_id":"j3jdodi3"}
+{"time":"2025-08-23T01:38:05.707992+02:00","level":"INFO","msg":"handler: started","stream_id":"j3jdodi3"}
+{"time":"2025-08-23T01:38:05.70801+02:00","level":"INFO","msg":"sender: started","stream_id":"j3jdodi3"}
+{"time":"2025-08-23T01:43:43.037164+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-23T01:43:43.352812+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-23T01:43:43.358635+02:00","level":"INFO","msg":"stream: closing","id":"j3jdodi3"}
+{"time":"2025-08-23T01:43:43.358729+02:00","level":"INFO","msg":"handler: closed","stream_id":"j3jdodi3"}
+{"time":"2025-08-23T01:43:43.359945+02:00","level":"INFO","msg":"sender: closed","stream_id":"j3jdodi3"}
+{"time":"2025-08-23T01:43:43.359979+02:00","level":"INFO","msg":"stream: closed","id":"j3jdodi3"}
