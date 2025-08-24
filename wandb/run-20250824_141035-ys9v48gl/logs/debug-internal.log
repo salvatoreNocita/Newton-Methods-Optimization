@@ -1,0 +1,12 @@
+{"time":"2025-08-24T14:10:35.306709+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-24T14:10:35.647294+02:00","level":"INFO","msg":"stream: created new stream","id":"ys9v48gl"}
+{"time":"2025-08-24T14:10:35.647328+02:00","level":"INFO","msg":"stream: started","id":"ys9v48gl"}
+{"time":"2025-08-24T14:10:35.647328+02:00","level":"INFO","msg":"writer: started","stream_id":"ys9v48gl"}
+{"time":"2025-08-24T14:10:35.647356+02:00","level":"INFO","msg":"handler: started","stream_id":"ys9v48gl"}
+{"time":"2025-08-24T14:10:35.64734+02:00","level":"INFO","msg":"sender: started","stream_id":"ys9v48gl"}
+{"time":"2025-08-24T14:10:56.796617+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-24T14:10:57.122899+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-24T14:10:57.126176+02:00","level":"INFO","msg":"stream: closing","id":"ys9v48gl"}
+{"time":"2025-08-24T14:10:57.126196+02:00","level":"INFO","msg":"handler: closed","stream_id":"ys9v48gl"}
+{"time":"2025-08-24T14:10:57.126347+02:00","level":"INFO","msg":"sender: closed","stream_id":"ys9v48gl"}
+{"time":"2025-08-24T14:10:57.12637+02:00","level":"INFO","msg":"stream: closed","id":"ys9v48gl"}

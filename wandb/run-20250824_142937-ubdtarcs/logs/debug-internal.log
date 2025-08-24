@@ -1,0 +1,12 @@
+{"time":"2025-08-24T14:29:37.496763+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-24T14:29:37.847009+02:00","level":"INFO","msg":"stream: created new stream","id":"ubdtarcs"}
+{"time":"2025-08-24T14:29:37.847039+02:00","level":"INFO","msg":"stream: started","id":"ubdtarcs"}
+{"time":"2025-08-24T14:29:37.847056+02:00","level":"INFO","msg":"handler: started","stream_id":"ubdtarcs"}
+{"time":"2025-08-24T14:29:37.84705+02:00","level":"INFO","msg":"writer: started","stream_id":"ubdtarcs"}
+{"time":"2025-08-24T14:29:37.847073+02:00","level":"INFO","msg":"sender: started","stream_id":"ubdtarcs"}
+{"time":"2025-08-24T14:29:58.988995+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-24T14:29:59.28808+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-24T14:29:59.291344+02:00","level":"INFO","msg":"stream: closing","id":"ubdtarcs"}
+{"time":"2025-08-24T14:29:59.291367+02:00","level":"INFO","msg":"handler: closed","stream_id":"ubdtarcs"}
+{"time":"2025-08-24T14:29:59.291525+02:00","level":"INFO","msg":"sender: closed","stream_id":"ubdtarcs"}
+{"time":"2025-08-24T14:29:59.291544+02:00","level":"INFO","msg":"stream: closed","id":"ubdtarcs"}
