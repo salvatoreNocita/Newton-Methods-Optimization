@@ -1,0 +1,12 @@
+{"time":"2025-08-24T17:29:42.136407+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-24T17:29:42.482239+02:00","level":"INFO","msg":"stream: created new stream","id":"cpxslgpb"}
+{"time":"2025-08-24T17:29:42.482296+02:00","level":"INFO","msg":"stream: started","id":"cpxslgpb"}
+{"time":"2025-08-24T17:29:42.482289+02:00","level":"INFO","msg":"writer: started","stream_id":"cpxslgpb"}
+{"time":"2025-08-24T17:29:42.482289+02:00","level":"INFO","msg":"handler: started","stream_id":"cpxslgpb"}
+{"time":"2025-08-24T17:29:42.482341+02:00","level":"INFO","msg":"sender: started","stream_id":"cpxslgpb"}
+{"time":"2025-08-24T17:31:04.187325+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-24T17:31:04.195261+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading summary, console lines 0-0","runtime_seconds":0.007553958}],"total_operations":1}}
+{"time":"2025-08-24T17:31:04.692747+02:00","level":"INFO","msg":"stream: closing","id":"cpxslgpb"}
+{"time":"2025-08-24T17:31:04.692758+02:00","level":"INFO","msg":"handler: closed","stream_id":"cpxslgpb"}
+{"time":"2025-08-24T17:31:04.692826+02:00","level":"INFO","msg":"sender: closed","stream_id":"cpxslgpb"}
+{"time":"2025-08-24T17:31:04.692832+02:00","level":"INFO","msg":"stream: closed","id":"cpxslgpb"}

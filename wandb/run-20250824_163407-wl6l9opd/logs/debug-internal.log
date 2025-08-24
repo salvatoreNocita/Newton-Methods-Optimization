@@ -1,0 +1,12 @@
+{"time":"2025-08-24T16:34:07.610748+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-24T16:34:07.94222+02:00","level":"INFO","msg":"stream: created new stream","id":"wl6l9opd"}
+{"time":"2025-08-24T16:34:07.94225+02:00","level":"INFO","msg":"stream: started","id":"wl6l9opd"}
+{"time":"2025-08-24T16:34:07.942253+02:00","level":"INFO","msg":"writer: started","stream_id":"wl6l9opd"}
+{"time":"2025-08-24T16:34:07.942268+02:00","level":"INFO","msg":"sender: started","stream_id":"wl6l9opd"}
+{"time":"2025-08-24T16:34:07.942319+02:00","level":"INFO","msg":"handler: started","stream_id":"wl6l9opd"}
+{"time":"2025-08-24T16:35:29.474804+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-24T16:35:29.736029+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-24T16:35:29.740569+02:00","level":"INFO","msg":"stream: closing","id":"wl6l9opd"}
+{"time":"2025-08-24T16:35:29.740659+02:00","level":"INFO","msg":"handler: closed","stream_id":"wl6l9opd"}
+{"time":"2025-08-24T16:35:29.74118+02:00","level":"INFO","msg":"sender: closed","stream_id":"wl6l9opd"}
+{"time":"2025-08-24T16:35:29.741264+02:00","level":"INFO","msg":"stream: closed","id":"wl6l9opd"}

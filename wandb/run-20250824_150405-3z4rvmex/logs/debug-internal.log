@@ -1,0 +1,12 @@
+{"time":"2025-08-24T15:04:05.124401+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-24T15:04:05.456532+02:00","level":"INFO","msg":"stream: created new stream","id":"3z4rvmex"}
+{"time":"2025-08-24T15:04:05.45657+02:00","level":"INFO","msg":"stream: started","id":"3z4rvmex"}
+{"time":"2025-08-24T15:04:05.456584+02:00","level":"INFO","msg":"writer: started","stream_id":"3z4rvmex"}
+{"time":"2025-08-24T15:04:05.456586+02:00","level":"INFO","msg":"handler: started","stream_id":"3z4rvmex"}
+{"time":"2025-08-24T15:04:05.456612+02:00","level":"INFO","msg":"sender: started","stream_id":"3z4rvmex"}
+{"time":"2025-08-24T15:05:26.78816+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-24T15:05:27.016669+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-61, summary, console lines 0-0","runtime_seconds":0.227718583}],"total_operations":1}}
+{"time":"2025-08-24T15:05:27.120245+02:00","level":"INFO","msg":"stream: closing","id":"3z4rvmex"}
+{"time":"2025-08-24T15:05:27.120265+02:00","level":"INFO","msg":"handler: closed","stream_id":"3z4rvmex"}
+{"time":"2025-08-24T15:05:27.120366+02:00","level":"INFO","msg":"sender: closed","stream_id":"3z4rvmex"}
+{"time":"2025-08-24T15:05:27.120377+02:00","level":"INFO","msg":"stream: closed","id":"3z4rvmex"}
