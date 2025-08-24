@@ -1,0 +1,12 @@
+{"time":"2025-08-24T18:08:34.953908+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-24T18:08:35.294074+02:00","level":"INFO","msg":"stream: created new stream","id":"swm1vxv4"}
+{"time":"2025-08-24T18:08:35.294139+02:00","level":"INFO","msg":"stream: started","id":"swm1vxv4"}
+{"time":"2025-08-24T18:08:35.294166+02:00","level":"INFO","msg":"sender: started","stream_id":"swm1vxv4"}
+{"time":"2025-08-24T18:08:35.294155+02:00","level":"INFO","msg":"writer: started","stream_id":"swm1vxv4"}
+{"time":"2025-08-24T18:08:35.294189+02:00","level":"INFO","msg":"handler: started","stream_id":"swm1vxv4"}
+{"time":"2025-08-24T18:08:56.405425+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-24T18:08:56.679414+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading summary, console lines 0-0","runtime_seconds":0.273519917}],"total_operations":1}}
+{"time":"2025-08-24T18:08:56.711967+02:00","level":"INFO","msg":"stream: closing","id":"swm1vxv4"}
+{"time":"2025-08-24T18:08:56.711981+02:00","level":"INFO","msg":"handler: closed","stream_id":"swm1vxv4"}
+{"time":"2025-08-24T18:08:56.712071+02:00","level":"INFO","msg":"sender: closed","stream_id":"swm1vxv4"}
+{"time":"2025-08-24T18:08:56.712082+02:00","level":"INFO","msg":"stream: closed","id":"swm1vxv4"}

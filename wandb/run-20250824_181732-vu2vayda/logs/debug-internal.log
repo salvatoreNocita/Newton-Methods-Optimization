@@ -1,0 +1,12 @@
+{"time":"2025-08-24T18:17:32.622569+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-24T18:17:32.964342+02:00","level":"INFO","msg":"stream: created new stream","id":"vu2vayda"}
+{"time":"2025-08-24T18:17:32.964406+02:00","level":"INFO","msg":"stream: started","id":"vu2vayda"}
+{"time":"2025-08-24T18:17:32.964405+02:00","level":"INFO","msg":"handler: started","stream_id":"vu2vayda"}
+{"time":"2025-08-24T18:17:32.964432+02:00","level":"INFO","msg":"writer: started","stream_id":"vu2vayda"}
+{"time":"2025-08-24T18:17:32.96445+02:00","level":"INFO","msg":"sender: started","stream_id":"vu2vayda"}
+{"time":"2025-08-24T18:17:54.16883+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-24T18:17:54.446193+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading summary, console lines 0-0","runtime_seconds":0.276869625}],"total_operations":1}}
+{"time":"2025-08-24T18:17:54.501294+02:00","level":"INFO","msg":"stream: closing","id":"vu2vayda"}
+{"time":"2025-08-24T18:17:54.501307+02:00","level":"INFO","msg":"handler: closed","stream_id":"vu2vayda"}
+{"time":"2025-08-24T18:17:54.501391+02:00","level":"INFO","msg":"sender: closed","stream_id":"vu2vayda"}
+{"time":"2025-08-24T18:17:54.501406+02:00","level":"INFO","msg":"stream: closed","id":"vu2vayda"}

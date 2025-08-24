@@ -1,0 +1,12 @@
+{"time":"2025-08-24T18:11:55.703578+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-24T18:11:56.046801+02:00","level":"INFO","msg":"stream: created new stream","id":"sfuaemet"}
+{"time":"2025-08-24T18:11:56.046833+02:00","level":"INFO","msg":"stream: started","id":"sfuaemet"}
+{"time":"2025-08-24T18:11:56.046839+02:00","level":"INFO","msg":"handler: started","stream_id":"sfuaemet"}
+{"time":"2025-08-24T18:11:56.046853+02:00","level":"INFO","msg":"sender: started","stream_id":"sfuaemet"}
+{"time":"2025-08-24T18:11:56.046856+02:00","level":"INFO","msg":"writer: started","stream_id":"sfuaemet"}
+{"time":"2025-08-24T18:12:17.20488+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-24T18:12:17.495845+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-24T18:12:17.500598+02:00","level":"INFO","msg":"stream: closing","id":"sfuaemet"}
+{"time":"2025-08-24T18:12:17.500679+02:00","level":"INFO","msg":"handler: closed","stream_id":"sfuaemet"}
+{"time":"2025-08-24T18:12:17.501122+02:00","level":"INFO","msg":"sender: closed","stream_id":"sfuaemet"}
+{"time":"2025-08-24T18:12:17.501189+02:00","level":"INFO","msg":"stream: closed","id":"sfuaemet"}
