@@ -268,5 +268,5 @@ if __name__ == '__main__':
     n = 10**5
     save_every = 15
     method = 'truncated'
-    function = 'broyden_tridiagonal_function'
+    function = 'extended_rosenbrock'
     Test(n,method,function,save_every)
