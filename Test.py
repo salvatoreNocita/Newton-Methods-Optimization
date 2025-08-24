@@ -265,7 +265,7 @@ if __name__ == '__main__':
         - method = [modified,truncated]
         - functions = [extended_rosenbrock,extended_powell,broyden_tridiagonal_function]
     """
-    n = 10**5
+    n = 10**4
     save_every = 15
     method = 'truncated'
     function = 'extended_rosenbrock'

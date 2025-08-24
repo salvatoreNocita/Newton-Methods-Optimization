@@ -1,0 +1,12 @@
+{"time":"2025-08-24T13:07:25.070624+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-24T13:07:25.413756+02:00","level":"INFO","msg":"stream: created new stream","id":"5gtax51n"}
+{"time":"2025-08-24T13:07:25.413863+02:00","level":"INFO","msg":"handler: started","stream_id":"5gtax51n"}
+{"time":"2025-08-24T13:07:25.413873+02:00","level":"INFO","msg":"writer: started","stream_id":"5gtax51n"}
+{"time":"2025-08-24T13:07:25.413881+02:00","level":"INFO","msg":"sender: started","stream_id":"5gtax51n"}
+{"time":"2025-08-24T13:07:25.413868+02:00","level":"INFO","msg":"stream: started","id":"5gtax51n"}
+{"time":"2025-08-24T13:08:46.336258+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-24T13:08:46.623787+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-24T13:08:46.627835+02:00","level":"INFO","msg":"stream: closing","id":"5gtax51n"}
+{"time":"2025-08-24T13:08:46.627876+02:00","level":"INFO","msg":"handler: closed","stream_id":"5gtax51n"}
+{"time":"2025-08-24T13:08:46.628168+02:00","level":"INFO","msg":"sender: closed","stream_id":"5gtax51n"}
+{"time":"2025-08-24T13:08:46.628186+02:00","level":"INFO","msg":"stream: closed","id":"5gtax51n"}

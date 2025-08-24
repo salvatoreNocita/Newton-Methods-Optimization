@@ -1,0 +1,12 @@
+{"time":"2025-08-24T10:56:21.166707+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-24T10:56:21.504083+02:00","level":"INFO","msg":"stream: created new stream","id":"lpn4spaq"}
+{"time":"2025-08-24T10:56:21.504113+02:00","level":"INFO","msg":"stream: started","id":"lpn4spaq"}
+{"time":"2025-08-24T10:56:21.504116+02:00","level":"INFO","msg":"handler: started","stream_id":"lpn4spaq"}
+{"time":"2025-08-24T10:56:21.504129+02:00","level":"INFO","msg":"sender: started","stream_id":"lpn4spaq"}
+{"time":"2025-08-24T10:56:21.504141+02:00","level":"INFO","msg":"writer: started","stream_id":"lpn4spaq"}
+{"time":"2025-08-24T10:57:42.46976+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-24T10:57:42.747352+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-113, summary, console lines 0-0","runtime_seconds":0.276963167}],"total_operations":1}}
+{"time":"2025-08-24T10:57:42.840445+02:00","level":"INFO","msg":"stream: closing","id":"lpn4spaq"}
+{"time":"2025-08-24T10:57:42.840461+02:00","level":"INFO","msg":"handler: closed","stream_id":"lpn4spaq"}
+{"time":"2025-08-24T10:57:42.840553+02:00","level":"INFO","msg":"sender: closed","stream_id":"lpn4spaq"}
+{"time":"2025-08-24T10:57:42.840567+02:00","level":"INFO","msg":"stream: closed","id":"lpn4spaq"}

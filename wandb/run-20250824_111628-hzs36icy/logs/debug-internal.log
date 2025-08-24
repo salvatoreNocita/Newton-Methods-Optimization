@@ -1,0 +1,12 @@
+{"time":"2025-08-24T11:16:28.452239+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-24T11:16:28.797559+02:00","level":"INFO","msg":"stream: created new stream","id":"hzs36icy"}
+{"time":"2025-08-24T11:16:28.797598+02:00","level":"INFO","msg":"stream: started","id":"hzs36icy"}
+{"time":"2025-08-24T11:16:28.797615+02:00","level":"INFO","msg":"sender: started","stream_id":"hzs36icy"}
+{"time":"2025-08-24T11:16:28.79761+02:00","level":"INFO","msg":"writer: started","stream_id":"hzs36icy"}
+{"time":"2025-08-24T11:16:28.797635+02:00","level":"INFO","msg":"handler: started","stream_id":"hzs36icy"}
+{"time":"2025-08-24T11:17:49.72879+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-24T11:17:50.037232+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-65, summary, console lines 0-0","runtime_seconds":0.307766583}],"total_operations":1}}
+{"time":"2025-08-24T11:17:50.048872+02:00","level":"INFO","msg":"stream: closing","id":"hzs36icy"}
+{"time":"2025-08-24T11:17:50.048892+02:00","level":"INFO","msg":"handler: closed","stream_id":"hzs36icy"}
+{"time":"2025-08-24T11:17:50.049092+02:00","level":"INFO","msg":"sender: closed","stream_id":"hzs36icy"}
+{"time":"2025-08-24T11:17:50.049109+02:00","level":"INFO","msg":"stream: closed","id":"hzs36icy"}

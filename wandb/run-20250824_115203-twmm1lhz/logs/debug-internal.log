@@ -1,0 +1,12 @@
+{"time":"2025-08-24T11:52:03.652151+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-24T11:52:03.989805+02:00","level":"INFO","msg":"stream: created new stream","id":"twmm1lhz"}
+{"time":"2025-08-24T11:52:03.989834+02:00","level":"INFO","msg":"stream: started","id":"twmm1lhz"}
+{"time":"2025-08-24T11:52:03.989838+02:00","level":"INFO","msg":"handler: started","stream_id":"twmm1lhz"}
+{"time":"2025-08-24T11:52:03.989849+02:00","level":"INFO","msg":"sender: started","stream_id":"twmm1lhz"}
+{"time":"2025-08-24T11:52:03.98986+02:00","level":"INFO","msg":"writer: started","stream_id":"twmm1lhz"}
+{"time":"2025-08-24T11:53:24.909119+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-24T11:53:25.231364+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-24T11:53:25.236912+02:00","level":"INFO","msg":"stream: closing","id":"twmm1lhz"}
+{"time":"2025-08-24T11:53:25.236988+02:00","level":"INFO","msg":"handler: closed","stream_id":"twmm1lhz"}
+{"time":"2025-08-24T11:53:25.23745+02:00","level":"INFO","msg":"sender: closed","stream_id":"twmm1lhz"}
+{"time":"2025-08-24T11:53:25.237619+02:00","level":"INFO","msg":"stream: closed","id":"twmm1lhz"}
