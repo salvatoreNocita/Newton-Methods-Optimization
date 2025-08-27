@@ -1,0 +1,12 @@
+{"time":"2025-08-27T20:50:43.875845+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-27T20:50:44.215286+02:00","level":"INFO","msg":"stream: created new stream","id":"cvp039gm"}
+{"time":"2025-08-27T20:50:44.215316+02:00","level":"INFO","msg":"stream: started","id":"cvp039gm"}
+{"time":"2025-08-27T20:50:44.215319+02:00","level":"INFO","msg":"handler: started","stream_id":"cvp039gm"}
+{"time":"2025-08-27T20:50:44.215339+02:00","level":"INFO","msg":"writer: started","stream_id":"cvp039gm"}
+{"time":"2025-08-27T20:50:44.215329+02:00","level":"INFO","msg":"sender: started","stream_id":"cvp039gm"}
+{"time":"2025-08-27T20:51:05.453142+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-27T20:51:05.738819+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading summary, console lines 0-0","runtime_seconds":0.285222}],"total_operations":1}}
+{"time":"2025-08-27T20:51:05.838291+02:00","level":"INFO","msg":"stream: closing","id":"cvp039gm"}
+{"time":"2025-08-27T20:51:05.838305+02:00","level":"INFO","msg":"handler: closed","stream_id":"cvp039gm"}
+{"time":"2025-08-27T20:51:05.838393+02:00","level":"INFO","msg":"sender: closed","stream_id":"cvp039gm"}
+{"time":"2025-08-27T20:51:05.838404+02:00","level":"INFO","msg":"stream: closed","id":"cvp039gm"}

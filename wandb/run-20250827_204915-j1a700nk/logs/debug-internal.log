@@ -1,0 +1,12 @@
+{"time":"2025-08-27T20:49:15.735343+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-27T20:49:16.087114+02:00","level":"INFO","msg":"stream: created new stream","id":"j1a700nk"}
+{"time":"2025-08-27T20:49:16.087153+02:00","level":"INFO","msg":"stream: started","id":"j1a700nk"}
+{"time":"2025-08-27T20:49:16.087158+02:00","level":"INFO","msg":"handler: started","stream_id":"j1a700nk"}
+{"time":"2025-08-27T20:49:16.087172+02:00","level":"INFO","msg":"sender: started","stream_id":"j1a700nk"}
+{"time":"2025-08-27T20:49:16.08721+02:00","level":"INFO","msg":"writer: started","stream_id":"j1a700nk"}
+{"time":"2025-08-27T20:49:37.346589+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-27T20:49:37.644936+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-27T20:49:37.645893+02:00","level":"INFO","msg":"stream: closing","id":"j1a700nk"}
+{"time":"2025-08-27T20:49:37.645904+02:00","level":"INFO","msg":"handler: closed","stream_id":"j1a700nk"}
+{"time":"2025-08-27T20:49:37.645973+02:00","level":"INFO","msg":"sender: closed","stream_id":"j1a700nk"}
+{"time":"2025-08-27T20:49:37.645978+02:00","level":"INFO","msg":"stream: closed","id":"j1a700nk"}

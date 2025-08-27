@@ -1,0 +1,12 @@
+{"time":"2025-08-27T20:16:15.005164+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-27T20:16:15.352395+02:00","level":"INFO","msg":"stream: created new stream","id":"v2sp6pid"}
+{"time":"2025-08-27T20:16:15.35243+02:00","level":"INFO","msg":"stream: started","id":"v2sp6pid"}
+{"time":"2025-08-27T20:16:15.352434+02:00","level":"INFO","msg":"writer: started","stream_id":"v2sp6pid"}
+{"time":"2025-08-27T20:16:15.352455+02:00","level":"INFO","msg":"handler: started","stream_id":"v2sp6pid"}
+{"time":"2025-08-27T20:16:15.352439+02:00","level":"INFO","msg":"sender: started","stream_id":"v2sp6pid"}
+{"time":"2025-08-27T20:16:36.621952+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-27T20:16:36.946356+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-08-27T20:16:36.952676+02:00","level":"INFO","msg":"stream: closing","id":"v2sp6pid"}
+{"time":"2025-08-27T20:16:36.952711+02:00","level":"INFO","msg":"handler: closed","stream_id":"v2sp6pid"}
+{"time":"2025-08-27T20:16:36.952869+02:00","level":"INFO","msg":"sender: closed","stream_id":"v2sp6pid"}
+{"time":"2025-08-27T20:16:36.952884+02:00","level":"INFO","msg":"stream: closed","id":"v2sp6pid"}

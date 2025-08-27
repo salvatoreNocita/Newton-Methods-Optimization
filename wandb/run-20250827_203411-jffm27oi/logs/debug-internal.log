@@ -1,0 +1,12 @@
+{"time":"2025-08-27T20:34:11.187546+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-27T20:34:11.522569+02:00","level":"INFO","msg":"stream: created new stream","id":"jffm27oi"}
+{"time":"2025-08-27T20:34:11.522601+02:00","level":"INFO","msg":"stream: started","id":"jffm27oi"}
+{"time":"2025-08-27T20:34:11.522615+02:00","level":"INFO","msg":"writer: started","stream_id":"jffm27oi"}
+{"time":"2025-08-27T20:34:11.522635+02:00","level":"INFO","msg":"handler: started","stream_id":"jffm27oi"}
+{"time":"2025-08-27T20:34:11.522615+02:00","level":"INFO","msg":"sender: started","stream_id":"jffm27oi"}
+{"time":"2025-08-27T20:34:32.911913+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-27T20:34:33.20746+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-56, summary, console lines 0-0","runtime_seconds":0.295080583}],"total_operations":1}}
+{"time":"2025-08-27T20:34:33.244297+02:00","level":"INFO","msg":"stream: closing","id":"jffm27oi"}
+{"time":"2025-08-27T20:34:33.244312+02:00","level":"INFO","msg":"handler: closed","stream_id":"jffm27oi"}
+{"time":"2025-08-27T20:34:33.244392+02:00","level":"INFO","msg":"sender: closed","stream_id":"jffm27oi"}
+{"time":"2025-08-27T20:34:33.2444+02:00","level":"INFO","msg":"stream: closed","id":"jffm27oi"}

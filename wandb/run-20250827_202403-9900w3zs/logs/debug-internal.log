@@ -1,0 +1,12 @@
+{"time":"2025-08-27T20:24:03.316585+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
+{"time":"2025-08-27T20:24:03.653897+02:00","level":"INFO","msg":"stream: created new stream","id":"9900w3zs"}
+{"time":"2025-08-27T20:24:03.653926+02:00","level":"INFO","msg":"stream: started","id":"9900w3zs"}
+{"time":"2025-08-27T20:24:03.65393+02:00","level":"INFO","msg":"writer: started","stream_id":"9900w3zs"}
+{"time":"2025-08-27T20:24:03.653951+02:00","level":"INFO","msg":"sender: started","stream_id":"9900w3zs"}
+{"time":"2025-08-27T20:24:03.653936+02:00","level":"INFO","msg":"handler: started","stream_id":"9900w3zs"}
+{"time":"2025-08-27T20:24:24.85572+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-08-27T20:24:25.182852+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 0-49, summary, console lines 0-0","runtime_seconds":0.326247666}],"total_operations":1}}
+{"time":"2025-08-27T20:24:25.209973+02:00","level":"INFO","msg":"stream: closing","id":"9900w3zs"}
+{"time":"2025-08-27T20:24:25.209991+02:00","level":"INFO","msg":"handler: closed","stream_id":"9900w3zs"}
+{"time":"2025-08-27T20:24:25.210072+02:00","level":"INFO","msg":"sender: closed","stream_id":"9900w3zs"}
+{"time":"2025-08-27T20:24:25.210082+02:00","level":"INFO","msg":"stream: closed","id":"9900w3zs"}
