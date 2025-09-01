@@ -1,0 +1,12 @@
+{"time":"2025-09-01T18:52:49.532062+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.3"}
+{"time":"2025-09-01T18:52:49.874774+02:00","level":"INFO","msg":"stream: created new stream","id":"1luyhyod"}
+{"time":"2025-09-01T18:52:49.87481+02:00","level":"INFO","msg":"stream: started","id":"1luyhyod"}
+{"time":"2025-09-01T18:52:49.874811+02:00","level":"INFO","msg":"handler: started","stream_id":"1luyhyod"}
+{"time":"2025-09-01T18:52:49.874855+02:00","level":"INFO","msg":"writer: started","stream_id":"1luyhyod"}
+{"time":"2025-09-01T18:52:49.874832+02:00","level":"INFO","msg":"sender: started","stream_id":"1luyhyod"}
+{"time":"2025-09-01T18:52:50.495042+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"updating run metadata","runtime_seconds":0.274942667},{"desc":"uploading wandb-metadata.json","runtime_seconds":0.053281958},{"desc":"uploading console lines 0-1","runtime_seconds":0.008448208}],"total_operations":3}}
+{"time":"2025-09-01T18:52:53.652099+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-09-01T18:52:53.944322+02:00","level":"INFO","msg":"stream: closing","id":"1luyhyod"}
+{"time":"2025-09-01T18:52:53.944355+02:00","level":"INFO","msg":"handler: closed","stream_id":"1luyhyod"}
+{"time":"2025-09-01T18:52:53.944576+02:00","level":"INFO","msg":"sender: closed","stream_id":"1luyhyod"}
+{"time":"2025-09-01T18:52:53.944617+02:00","level":"INFO","msg":"stream: closed","id":"1luyhyod"}

@@ -28,7 +28,7 @@ class Solvers(object):
             bk = bk + tauk_1 * np.identity(bk.shape[0])
             tauk = tauk_1
             try:
-                L = np.linalg.cholesky(bk)
+                L = scis.csc_matrix(np.linalg.cholesky(bk))
                 flag = True
                 return L, bk, i
             except np.linalg.LinAlgError:

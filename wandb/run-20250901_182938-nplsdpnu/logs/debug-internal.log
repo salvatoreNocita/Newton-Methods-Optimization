@@ -1,0 +1,12 @@
+{"time":"2025-09-01T18:29:38.735922+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.3"}
+{"time":"2025-09-01T18:29:39.067222+02:00","level":"INFO","msg":"stream: created new stream","id":"nplsdpnu"}
+{"time":"2025-09-01T18:29:39.067258+02:00","level":"INFO","msg":"stream: started","id":"nplsdpnu"}
+{"time":"2025-09-01T18:29:39.067264+02:00","level":"INFO","msg":"writer: started","stream_id":"nplsdpnu"}
+{"time":"2025-09-01T18:29:39.067305+02:00","level":"INFO","msg":"sender: started","stream_id":"nplsdpnu"}
+{"time":"2025-09-01T18:29:39.067305+02:00","level":"INFO","msg":"handler: started","stream_id":"nplsdpnu"}
+{"time":"2025-09-01T18:29:59.616324+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"updating run metadata","runtime_seconds":0.005034417}],"total_operations":1}}
+{"time":"2025-09-01T18:30:00.323176+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-09-01T18:30:00.777676+02:00","level":"INFO","msg":"stream: closing","id":"nplsdpnu"}
+{"time":"2025-09-01T18:30:00.77772+02:00","level":"INFO","msg":"handler: closed","stream_id":"nplsdpnu"}
+{"time":"2025-09-01T18:30:00.777967+02:00","level":"INFO","msg":"sender: closed","stream_id":"nplsdpnu"}
+{"time":"2025-09-01T18:30:00.778017+02:00","level":"INFO","msg":"stream: closed","id":"nplsdpnu"}

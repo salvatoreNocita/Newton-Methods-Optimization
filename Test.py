@@ -192,7 +192,7 @@ def Test(n,method,function,save_every,resume_from_comb=0):
         run_name = f"perturb: {comb['perturbation']}" if comb['derivatives']=="finite_differences" or comb['derivatives'] == "adaptive_finite_differences" else "exact"
 
         wandb.init(
-            project=f"{method}_newton_2",
+            project=f"{method}_newton_cholensky_solver",
             group=run_group,
             name=run_name,
             config={"function": function, "method": method, "n": n}
@@ -268,5 +268,5 @@ if __name__ == '__main__':
     n = 10**3
     save_every = 15
     method = 'modified'
-    function = 'extended_rosenbrock'
+    function = 'broyden_tridiagonal_function'
     Test(n,method,function,save_every)

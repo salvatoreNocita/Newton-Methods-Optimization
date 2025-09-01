@@ -196,10 +196,7 @@ class ModifiedNewton(object):
                 pk = self.solvers.CG_Find_pk(bk, grad, self.precond)
             
             elif self.solver_linear_system == 'chol':
-                if len(xk) < 10**3:
                     pk = self.solvers.chol_Find_Pk(L, grad)
-                else:
-                    raise(f"Is not possible to find pk with cholesky with dimension {len(xk)}")
                 
             alphak = self.linesearch.Backtracking(xk, pk, grad, self.alpha0, self.bt, self.btmax,
                                                  self.rho, self.c1, self.objective_function)

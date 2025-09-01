@@ -1,0 +1,1 @@
+{"_timestamp":1.756713816533729e+09,"perturbation":0.0001,"derivative_method":"backward","Norm Gradient":334.2958604626896,"Inner Iterations":0,"Execution Time":80.06237554550171,"_runtime":80.225591125,"_wandb":{"runtime":80},"_step":12,"Backtracking Step Size":1,"preconditioner":"no"}

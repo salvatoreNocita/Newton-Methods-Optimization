@@ -1,0 +1,13 @@
+{"time":"2025-09-01T09:56:20.241719+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.3"}
+{"time":"2025-09-01T09:56:20.571463+02:00","level":"INFO","msg":"stream: created new stream","id":"4itl50km"}
+{"time":"2025-09-01T09:56:20.571495+02:00","level":"INFO","msg":"stream: started","id":"4itl50km"}
+{"time":"2025-09-01T09:56:20.571503+02:00","level":"INFO","msg":"writer: started","stream_id":"4itl50km"}
+{"time":"2025-09-01T09:56:20.571513+02:00","level":"INFO","msg":"handler: started","stream_id":"4itl50km"}
+{"time":"2025-09-01T09:56:20.571585+02:00","level":"INFO","msg":"sender: started","stream_id":"4itl50km"}
+{"time":"2025-09-01T09:57:46.347025+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading data","runtime_seconds":54.79771825},{"desc":"updating run metadata","runtime_seconds":0.001120834}],"total_operations":2}}
+{"time":"2025-09-01T09:57:47.036348+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-09-01T09:57:51.875578+02:00","level":"INFO","msg":"api: retrying HTTP error","status":502,"url":"https://api.wandb.ai/files/salvatore-nocita25-politecnico-di-torino/modified_newton_cholensky_solver/4itl50km/file_stream","body":"\n<html><head>\n<meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">\n<title>502 Server Error</title>\n</head>\n<body text=#000000 bgcolor=#ffffff>\n<h1>Error: Server Error</h1>\n<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>\n<h2></h2>\n</body></html>\n"}
+{"time":"2025-09-01T09:57:54.646177+02:00","level":"INFO","msg":"stream: closing","id":"4itl50km"}
+{"time":"2025-09-01T09:57:54.646189+02:00","level":"INFO","msg":"handler: closed","stream_id":"4itl50km"}
+{"time":"2025-09-01T09:57:54.646282+02:00","level":"INFO","msg":"sender: closed","stream_id":"4itl50km"}
+{"time":"2025-09-01T09:57:54.646294+02:00","level":"INFO","msg":"stream: closed","id":"4itl50km"}

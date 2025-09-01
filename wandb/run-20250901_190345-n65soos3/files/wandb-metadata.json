@@ -1,0 +1,36 @@
+{
+  "os":  "macOS-15.6.1-arm64-arm-64bit",
+  "python":  "CPython 3.10.0",
+  "startedAt":  "2025-09-01T17:03:45.477482Z",
+  "program":  "/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Test.py",
+  "codePath":  "Test.py",
+  "codePathLocal":  "Test.py",
+  "git":  {
+    "remote":  "https://github.com/LucianoScarpino/Newton_Methods_Optimization.git",
+    "commit":  "c463af8443edb3a77d943a639c7ae5175a11f32f"
+  },
+  "email":  "salvatore.nocita25@gmail.com",
+  "root":  "/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical",
+  "host":  "Mac.lan",
+  "executable":  "/usr/local/bin/python3.10",
+  "cpu_count":  12,
+  "cpu_count_logical":  12,
+  "disk":  {
+    "/":  {
+      "total":  "494384795648",
+      "used":  "237348261888"
+    }
+  },
+  "memory":  {
+    "total":  "25769803776"
+  },
+  "apple":  {
+    "name":  "Apple M4 Pro",
+    "ecpuCores":  4,
+    "pcpuCores":  8,
+    "gpuCores":  16,
+    "memoryGb":  24,
+    "ramTotalBytes":  "25769803776"
+  },
+  "writerId":  "orhqad80gqse61npqf9qgxxymr2552d3"
+}

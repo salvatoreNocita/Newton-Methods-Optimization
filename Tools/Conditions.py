@@ -21,7 +21,7 @@ class CheckConditions(object):
         if ssp.issparse(hessf):
             hessf = hessf.toarray()         #Convert in dense to apply cholesky (no sparse version available)
         try:
-            return np.linalg.cholesky(hessf), hessf, iter
+            return ssp.csc_matrix(np.linalg.cholesky(hessf)), hessf, iter
         except np.linalg.LinAlgError:
             L, bk, iter = self.solvers.Build_bk(hessf,k_max,corr_fact)
             return L, bk, iter
