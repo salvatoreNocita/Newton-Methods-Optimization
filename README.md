@@ -178,7 +178,7 @@ Compact printed summary + optional JSON output containing:
 > Output remains compact even for large-scale problems (e.g., \( n = 10^5 \)).
 
 ## Example Output
-### Truncated Newton: Rosenbrock (10**2)
+### Truncated Newton: Rosenbrock (n = 2)
 ```json
   {
     "method": "truncated",
