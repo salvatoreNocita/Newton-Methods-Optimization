@@ -23,6 +23,7 @@ python main.py --config configs/testTemplate.json --out output\resultsTemplate.j
 ---
 
 ## Project Structure
+```
 NewtonLab/
 ├─ configs/
 │  └─ testTemplate.json
@@ -44,7 +45,7 @@ NewtonLab/
 ├─ main.py
 ├─ README.md
 └─ requirements.txt
-
+```
 ---
 
 ## Configuration
@@ -109,7 +110,7 @@ NewtonLab/
 
 ## Example Configurations
 
-### Truncated Newton: Rosenbrock (10**2)
+### Truncated Newton: Rosenbrock (n = 2)
 ```json
 {
   "method": "truncated",
@@ -135,7 +136,7 @@ NewtonLab/
 }
 ```
 
-### Modified Newton: Rosenbrock (10**2)
+### Modified Newton: Rosenbrock (n = 2)
 ```json
 {
   "method": "modified",
