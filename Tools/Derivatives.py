@@ -27,10 +27,11 @@ class approximativeDerivatives:
         H = np.zeros((n, n))
 
         if adaptive:
-            builder = CheckConditions()
+            builder = checkConditions()
             h = builder.build_perturbation_vector(x,self.perturbation)
         else:
             h = self.perturbation
+
 
         match self.derivative_method:
             case "forward":
@@ -157,12 +158,12 @@ class sparseApproximativeDerivatives(object):
         adaptive (bool): If True, build and use a per-coordinate perturbation vector.
         
         Returns:
-        np.ndarray: The approximated gradient.
+        np.ndarray: The approximated gradient
         """
         n = len(x)
 
         if adaptive:
-            builder = CheckConditions()
+            builder = checkConditions()
             h_vec = builder.build_perturbation_vector(x, self.h)
             # Use the per-coordinate step size for each partial derivative
             grad = Parallel(n_jobs=n_jobs)(
@@ -224,7 +225,7 @@ class sparseApproximativeDerivatives(object):
 
         # Build (possibly vector) step size
         if adaptive:
-            builder = CheckConditions()
+            builder = checkConditions()
             h_vec = builder.build_perturbation_vector(x, self.h)
         else:
             h_vec = self.h
@@ -399,7 +400,7 @@ class sparseApproximativeDerivatives(object):
 
         # Build (possibly vector) step size
         if adaptive:
-            builder = CheckConditions()
+            builder = checkConditions()
             h_vec = builder.build_perturbation_vector(x, self.h)
         else:
             h_vec = self.h
@@ -529,7 +530,7 @@ class sparseApproximativeDerivatives(object):
 
         # Build (possibly vector) step size
         if adaptive:
-            builder = CheckConditions()
+            builder = checkConditions()
             h_vec = builder.build_perturbation_vector(x, self.h)
         else:
             h_vec = self.h
