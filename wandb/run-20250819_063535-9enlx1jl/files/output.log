@@ -1,3 +1,0 @@
-/Users/lilshoe/miniconda3/lib/python3.13/site-packages/joblib/externals/loky/process_executor.py:782: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
-  warnings.warn(
-Iterations: 6, Success: False, Execution Time: 19141.6938 seconds

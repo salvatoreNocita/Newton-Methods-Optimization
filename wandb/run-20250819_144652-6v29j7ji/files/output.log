@@ -1,9 +1,0 @@
-Traceback (most recent call last):
-  File "c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Test.py", line 274, in <module>
-    Test(n,method,function)
-  File "c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Test.py", line 256, in Test
-    run_test(comb,x0)
-  File "c:\Users\salvo\OneDrive\Desktop\model\Newton_Methods_Optimization\Test.py", line 205, in run_test
-    tol_seq.append(tol_seq) if method == 'truncated' else tol_seq.append(np.nan)
-                                                          ^^^^^^^^^^^^^^
-AttributeError: 'NoneType' object has no attribute 'append'

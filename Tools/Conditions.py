@@ -5,13 +5,13 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 import numpy as np
 import scipy.sparse as ssp
-from Modified_Newton_Method.SolverInstruments import Solvers
+from solvers.modifiedNewton.solverInstruments import solvers
 
-class CheckConditions(object):
+class checkConditions(object):
     """ This class includes all conditions that must be checked for convergence and during algorithms """
 
     def __init__(self):
-        self.solvers = Solvers()
+        self.solvers = solvers()
 
     def StoppingCriterion_notmet(self, xk: np.array, gradf: np.array, tolgrad: float, k: int, k_max: int) -> bool:
         return k < k_max and np.linalg.norm(gradf) > tolgrad

@@ -1,6 +1,6 @@
 import numpy as np
 
-class LineSearch(object):
+class lineSearch(object):
     """ This class perform inexact line search within Armijo conditions + Backtracking to find the step size.
         Armijo conditions are used to guarantee a sufficient decrease on descent direction.
         Backtracking is used to control step size avoiding being too small.

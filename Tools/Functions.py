@@ -1,6 +1,6 @@
 import numpy as np
 
-class FunctionDefinition(object):
+class functionDefinition(object):
     """This class computes specified function in a given point"""
     def __init__(self):
         pass

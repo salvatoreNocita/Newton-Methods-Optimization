@@ -1,1 +1,0 @@
-{"Execution Time":316.60000491142273,"perturbation":1e-06,"rate_of_convergence":"superlinear","Norm Gradient":0.7253894305477512,"_timestamp":1.755697253894797e+09,"Adaptive Tolerance":0.3626947152738756,"Backtracking Step Size":0.125,"derivative_method":"central","Inner Iterations":20,"_wandb":{"runtime":324},"_runtime":324.047384916,"_step":0}

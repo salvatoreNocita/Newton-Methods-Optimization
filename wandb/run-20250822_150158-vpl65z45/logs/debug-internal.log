@@ -1,6 +1,0 @@
-{"time":"2025-08-22T15:01:59.216468+02:00","level":"INFO","msg":"stream: starting","core version":"0.21.1"}
-{"time":"2025-08-22T15:01:59.559413+02:00","level":"INFO","msg":"stream: created new stream","id":"vpl65z45"}
-{"time":"2025-08-22T15:01:59.559444+02:00","level":"INFO","msg":"stream: started","id":"vpl65z45"}
-{"time":"2025-08-22T15:01:59.55945+02:00","level":"INFO","msg":"handler: started","stream_id":"vpl65z45"}
-{"time":"2025-08-22T15:01:59.559454+02:00","level":"INFO","msg":"sender: started","stream_id":"vpl65z45"}
-{"time":"2025-08-22T15:01:59.559584+02:00","level":"INFO","msg":"writer: started","stream_id":"vpl65z45"}

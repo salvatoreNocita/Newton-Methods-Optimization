@@ -7,9 +7,9 @@ import numpy as np
 from scipy.sparse import diags
 from scipy.sparse import csr_matrix, lil_matrix
 from joblib import Parallel, delayed
-from Conditions import CheckConditions
+from conditions import checkConditions
 
-class ApproximateDerivatives:
+class approximativeDerivatives:
     def __init__(self, function, derivative_method, perturbation):
         """
         Derivative Approximation using Finite Difference methods.
@@ -109,7 +109,7 @@ class ApproximateDerivatives:
                 return csr_matrix(H)
     
 
-class SparseApproximativeDerivatives(object):
+class sparseApproximativeDerivatives(object):
     """This class computes derivatives exploiting sparsity of matrices"""
     def __init__(self,f,method,h):
         self.f = f
@@ -596,7 +596,7 @@ class SparseApproximativeDerivatives(object):
 
         return csr_matrix(H)
     
-class ExactDerivatives(object):
+class exactDerivatives(object):
     """This class computes exact derivatives of a given function in a given point"""
     def __init__(self):
         pass

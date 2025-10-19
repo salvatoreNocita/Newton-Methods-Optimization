@@ -1,1 +1,0 @@
-{"Adaptive Tolerance":77.413452581837,"Execution Time":360.9168703556061,"_step":3,"derivative_method":"adaptive_forward","_timestamp":1.7558697996170712e+09,"Inner Iterations":2,"_runtime":376.406966708,"Norm Gradient":154.826905163674,"_wandb":{"runtime":376},"perturbation":0.0001,"Backtracking Step Size":1,"rate_of_convergence":"superlinear"}

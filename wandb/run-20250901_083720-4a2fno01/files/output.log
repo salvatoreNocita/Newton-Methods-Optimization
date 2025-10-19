@@ -1,7 +1,0 @@
-/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Tools/Linesearch.py:16: RuntimeWarning: divide by zero encountered in matmul
-  return objective_function(xk_1) > objective_function(xk) + c1 * alphak * (gradf.T @ pk)
-/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Tools/Linesearch.py:16: RuntimeWarning: overflow encountered in matmul
-  return objective_function(xk_1) > objective_function(xk) + c1 * alphak * (gradf.T @ pk)
-/Users/lilshoe/Library/Mobile Documents/com~apple~CloudDocs/Politecnico Torino/Anno 2024-2025/Primo Semestre/Numerical Optimization/Projects_Code/Numerical/Tools/Linesearch.py:16: RuntimeWarning: invalid value encountered in matmul
-  return objective_function(xk_1) > objective_function(xk) + c1 * alphak * (gradf.T @ pk)
-Iterations: 8, Success: False, Execution Time: 81.3166 seconds
