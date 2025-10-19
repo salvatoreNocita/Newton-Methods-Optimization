@@ -187,6 +187,28 @@ Fields' meanings:
 }
 ```
 ---
+## Output Report
+Here’s what each field means in that **result JSON**:
+* **`method`**: solver used — `truncated` = Truncated Newton.
+* **`function`**: objective minimized — here, classic `rosenbrock`.
+* **`n`**: problem dimension (size of `x`), here 2.
+* **`k`**: number of outer iterations performed (9).
+* **`success`**: `true` if stop criteria met (e.g., ‖∇f‖ ≤ `tolgrad`) before limits.
+* **`f_star`**: final objective value (f(x^*)).
+* **`grad_norm_final`**: final gradient norm (|\nabla f(x^*)|).
+* **`grad_norm_last`**: tail of the gradient-norm history (here you stored the last 10 values).
+* **`bt_seq`**: step sizes accepted by backtracking at each iteration (often 1.0 for Newton).
+* **`tol_seq`**: CG tolerances used at each TN iteration (the target residual norms).
+* **`inner_last`**: inner CG iterations per outer step (tail only).
+* **`x_star_preview`**: small preview of the final solution vector:
+  * `len`: dimension of (x^*)
+  * `head` / `tail`: first/last few entries (you chose to include only head).
+* **`avg_iter_time_sec`**: average time per outer iteration (seconds).
+* **`total_time_sec`**: total solver runtime (seconds).
+
+> Output remains compact even for large-scale problems (e.g., \( n = 10^5 \)).
+
+---
 
 ## Example Output Report
 ### Truncated Newton: Rosenbrock (n = 2)
@@ -315,26 +337,6 @@ Fields' meanings:
     "total_time_sec": 0.3953971862792969
 }
 ```
----
-Here’s what each field means in that **result JSON**:
-* **`method`**: solver used — `truncated` = Truncated Newton.
-* **`function`**: objective minimized — here, classic `rosenbrock`.
-* **`n`**: problem dimension (size of `x`), here 2.
-* **`k`**: number of outer iterations performed (9).
-* **`success`**: `true` if stop criteria met (e.g., ‖∇f‖ ≤ `tolgrad`) before limits.
-* **`f_star`**: final objective value (f(x^*)).
-* **`grad_norm_final`**: final gradient norm (|\nabla f(x^*)|).
-* **`grad_norm_last`**: tail of the gradient-norm history (here you stored the last 10 values).
-* **`bt_seq`**: step sizes accepted by backtracking at each iteration (often 1.0 for Newton).
-* **`tol_seq`**: CG tolerances used at each TN iteration (the target residual norms).
-* **`inner_last`**: inner CG iterations per outer step (tail only).
-* **`x_star_preview`**: small preview of the final solution vector:
-  * `len`: dimension of (x^*)
-  * `head` / `tail`: first/last few entries (you chose to include only head).
-* **`avg_iter_time_sec`**: average time per outer iteration (seconds).
-* **`total_time_sec`**: total solver runtime (seconds).
-
-> Output remains compact even for large-scale problems (e.g., \( n = 10^5 \)).
 
 ---
 
