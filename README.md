@@ -1,4 +1,4 @@
-# NewtonLab — Truncated & Modified Newton (CLI)
+# NewtonLab — Truncated & Modified Newton
 
 **Fast Newton-type solvers for unconstrained optimization** featuring:
 - **Truncated Newton (TN):** Hessian-free optimization using CG on Hessian–vector products
@@ -70,14 +70,27 @@ NewtonLab/
   "print_every": 50
 }
 ```
+Fields' meanings:
+* **`function`**: which test objective to minimize. Supported:
+  `extended_rosenbrock`, `extended_powell`, `broyden_tridiagonal_function`, `rosenbrock`.
+* **`x0`**: initial point (list of numbers). Its length = problem dimension `n`.
+* **`alpha0`**: initial step size for line search (typically `1.0` for Newton-type methods).
+* **`kmax`**: maximum number of outer iterations (safeguard cap).
+* **`tolgrad`**: stopping tolerance on the gradient norm, i.e., stop when `||∇f(x)|| ≤ tolgrad`.
+* **`c1`**: Armijo parameter in backtracking (sufficient decrease). Usual range `1e-4`–`1e-2`.
+* **`rho`**: backtracking shrink factor for the step size, in `(0,1)` (e.g., `0.5` halves `α` each backtrack).
+* **`btmax`**: max number of backtracking reductions per iteration.
+* **`derivatives`**: how to compute gradient/Hessian info:
+  * `"exact"` → use analytic derivatives where available.
+  * `"finite_differences"` → numerical FD (fixed step).
+  * `"adaptive_finite_differences"` → numerical FD with per-coordinate step.
+* **`derivative_method`** (used when FD is selected):
+  `"forward"`, `"backward"`, or `"central"` (central is typically most accurate but costs ~2×).
+* **`perturbation`**: FD step size `h` (e.g., `1e-6`). If using adaptive FD, this is the base scale for building per-coordinate steps.
 
-**Supported Functions:**
-- `extended_rosenbrock`, `extended_powell`
-- `broyden_tridiagonal_function`, `rosenbrock`
-
-**Derivative Methods:**
-- `exact`, `finite_differences`, `adaptive_finite_differences`
-- Methods: `forward`, `backward`, `central` (for finite differences)
+Top-level controls:
+* **`timing`**: if `true`, enforces a time budget per run using a heuristic max-time; if `false`, no time cap (runs until convergence/`kmax`).
+* **`print_every`**: how often to print iteration logs (e.g., `50` → print every 50 iterations; `0` to silence).
 
 ### Truncated Newton Settings
 ```json
@@ -89,8 +102,13 @@ NewtonLab/
   }
 }
 ```
-- `eta`: CG tolerance cap factor
-- `rate_of_convergence`: `superlinear` (√‖g‖) or `quadratic` (‖g‖)
+Fields' meanings:
+* **`method`**: `"truncated"` → use Truncated Newton.
+* **`truncated.eta`**: cap for CG tolerance; smaller = more accurate (more CG iters), larger = cheaper (fewer iters). Typical 0.1–0.9.
+* **`truncated.rate_of_convergence`**:
+  * `"superlinear"` → ηₖ = √‖g‖ (loose early, tight near solution).
+  * `"quadratic"` → ηₖ = ‖g‖ (stricter; targets quadratic local rate).
+
 
 ### Modified Newton Settings
 ```json
@@ -103,8 +121,14 @@ NewtonLab/
   }
 }
 ```
-- `solver_linear_system`: `chol` (Cholesky) or `cg` (Conjugate Gradient)
-- `precond`: `yes`/`no` (preconditioning for CG only)
+
+Fields' meanings:
+* **`method`**: `"modified"` → use Modified Newton.
+* **`modified.solver_linear_system`**: how to solve (H p = -g)
+  * `"chol"`: Cholesky (fast for small/medium dense PD (H)).
+  * `"cg"`: Conjugate Gradient (better for large/sparse (H)).
+* **`modified.H_correction_factor`**: factor used to **add diagonal shifts** until (H) is **positive definite** (larger ⇒ more aggressive/safer but can distort (H) more).
+* **`modified.precond`** (only for `"cg"`): `"yes"`/`"no"` to use a preconditioner (e.g., incomplete Cholesky) to speed up CG. Ignored for `"chol"`.
 
 ---
 
@@ -164,20 +188,7 @@ NewtonLab/
 ```
 ---
 
-## Output Format
-
-Compact printed summary + optional JSON output containing:
-
-- **Optimization Results:** `method`, `function`, `n`, `k`, `success`
-- **Solution Quality:** `f_star`, `grad_norm_final`
-- **History Tails:** Last N values of `grad_norm_last`, `bt_last`, `tol_last` (TN), `inner_last`
-- **Statistics:** `inner_summary`, `bt_summary`, `grad_norm_summary`, `tol_summary`
-- **Performance:** `avg_iter_time_sec`, `total_time_sec`
-- **Optional:** `x_star_preview` (with `--include-x` flag)
-
-> Output remains compact even for large-scale problems (e.g., \( n = 10^5 \)).
-
-## Example Output
+## Example Output Report
 ### Truncated Newton: Rosenbrock (n = 2)
 ```json
   {
@@ -246,7 +257,9 @@ Compact printed summary + optional JSON output containing:
     "total_time_sec": 1.888746738433838
   }
 ```
-### Modified Newton: Rosenbrock (10**2)
+---
+
+### Modified Newton: Rosenbrock (n = 2)
 ```json
  {
     "method": "modified",
@@ -302,6 +315,27 @@ Compact printed summary + optional JSON output containing:
     "total_time_sec": 0.3953971862792969
 }
 ```
+---
+Here’s what each field means in that **result JSON**:
+* **`method`**: solver used — `truncated` = Truncated Newton.
+* **`function`**: objective minimized — here, classic `rosenbrock`.
+* **`n`**: problem dimension (size of `x`), here 2.
+* **`k`**: number of outer iterations performed (9).
+* **`success`**: `true` if stop criteria met (e.g., ‖∇f‖ ≤ `tolgrad`) before limits.
+* **`f_star`**: final objective value (f(x^*)).
+* **`grad_norm_final`**: final gradient norm (|\nabla f(x^*)|).
+* **`grad_norm_last`**: tail of the gradient-norm history (here you stored the last 10 values).
+* **`bt_seq`**: step sizes accepted by backtracking at each iteration (often 1.0 for Newton).
+* **`tol_seq`**: CG tolerances used at each TN iteration (the target residual norms).
+* **`inner_last`**: inner CG iterations per outer step (tail only).
+* **`x_star_preview`**: small preview of the final solution vector:
+  * `len`: dimension of (x^*)
+  * `head` / `tail`: first/last few entries (you chose to include only head).
+* **`avg_iter_time_sec`**: average time per outer iteration (seconds).
+* **`total_time_sec`**: total solver runtime (seconds).
+
+> Output remains compact even for large-scale problems (e.g., \( n = 10^5 \)).
+
 ---
 
 ## Usage Tips
